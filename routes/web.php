@@ -16,15 +16,12 @@ use Inertia\Inertia;
 | contains the "web" middleware group. Now create something great!
 |
 */
+Route::get('/test', function () {
+    return Inertia::render('Test');
+});
 
-Route::get('/contact', function () {
 
-    return Inertia::render('Contact', [
-        'canLogin' => Route::has('login'),
-    ]);
-})->name('contact');
 
-Route::post('/contact', [ContactController::class, 'send'])->name('contact.send');
 
 Route::get('/', function () {
     return Inertia::render('Welcome', [
@@ -33,9 +30,21 @@ Route::get('/', function () {
     ]);
 })->name('welcome');
 
+Route::get('/contact', function () {
+    return Inertia::render('Contact', [
+        'canLogin' => Route::has('login'),
+    ]);
+})->name('contact');
+
+Route::post('/contact', [ContactController::class, 'send'])->name('contact.send');
+
 Route::get('/dashboard', function () {
     return Inertia::render('Dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');
+
+Route::get('/admin/dashboard', function () {
+    return Inertia::render('Admin/Dashboard');
+})->middleware(['auth', 'verified', 'admin.authorize'])->name('admin.dashboard');
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
