@@ -6,6 +6,7 @@ import InputLabel from '@/Components/InputLabel.vue';
 import PrimaryButton from '@/Components/PrimaryButton.vue';
 import TextInput from '@/Components/TextInput.vue';
 import { Head, Link, useForm } from '@inertiajs/vue3';
+import TextArea from "@/Components/TextArea.vue";
 
 defineOptions({ layout: GuestLayout })
 
@@ -17,14 +18,14 @@ defineProps({
 });
 
 const form = useForm({
+    name: '',
     email: '',
-    password: '',
-    remember: false,
+    body: '',
 });
 
 const submit = () => {
-    form.post(route('login'), {
-        onFinish: () => form.reset('password'),
+    form.post(route('contact.send'), {
+        onFinish: () => form.reset(),
     });
 };
 </script>
@@ -53,28 +54,28 @@ const submit = () => {
             <div class="mx-12">
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
     <div v-if="status" class="mb-4 font-medium text-sm text-green-600">
         {{ status }}
     </div>
 
     <form @submit.prevent="submit">
+
         <div>
+            <InputLabel for="name" value="Name" />
+
+            <TextInput
+                id="name"
+                type="text"
+                class="mt-1 block w-full"
+                v-model="form.name"
+                required
+                autocomplete="current-password"
+            />
+
+            <InputError class="mt-2" :message="form.errors.name" />
+        </div>
+
+        <div class="mt-4">
             <InputLabel for="email" value="Email" />
 
             <TextInput
@@ -90,19 +91,22 @@ const submit = () => {
             <InputError class="mt-2" :message="form.errors.email" />
         </div>
 
-        <div class="mt-4">
-            <InputLabel for="password" value="Password" />
 
-            <TextInput
-                id="password"
-                type="password"
+
+
+        <div class="mt-4">
+            <InputLabel for="body" value="Message" />
+
+            <TextArea
+                id="body"
+
                 class="mt-1 block w-full"
-                v-model="form.password"
+                v-model="form.body"
                 required
                 autocomplete="current-password"
             />
 
-            <InputError class="mt-2" :message="form.errors.password" />
+            <InputError class="mt-2" :message="form.errors.body" />
         </div>
 
         <div class="flex items-center justify-end mt-4">
