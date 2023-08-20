@@ -18,15 +18,15 @@ use Inertia\Inertia;
 
 Route::get('/contact', function () {
 
-    return Inertia::render('Contact');
+    return Inertia::render('Contact', [
+        'canLogin' => Route::has('login'),
+    ]);
 })->name('contact');
 
 Route::get('/', function () {
     return Inertia::render('Welcome', [
         'canLogin' => Route::has('login'),
         'canRegister' => Route::has('register'),
-        'laravelVersion' => Application::VERSION,
-        'phpVersion' => PHP_VERSION,
     ]);
 })->name('welcome');
 

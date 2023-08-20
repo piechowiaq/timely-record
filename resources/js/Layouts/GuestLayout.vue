@@ -7,7 +7,6 @@ defineProps({
     canLogin: Boolean,
 })
 
-
 </script>
 
 <template>
