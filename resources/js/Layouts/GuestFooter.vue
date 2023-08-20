@@ -33,7 +33,7 @@ import { Link } from '@inertiajs/vue3';
         <div class="ml-4 text-center items-center sm:text-right sm:ml-0 flex">
             <Link
                 :href="route('contact')"
-                class="underline text-xs text-gray-600 hover:text-gray-900 rounded-md "
+                class="text-xs text-gray-600 hover:text-cyan-700 rounded-md "
                 :class="{ isDisabled: $page.props.route === 'contact' }"
                 preserve-scroll
             >
