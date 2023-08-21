@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Company;
 use App\Http\Requests\StoreCompanyRequest;
 use App\Http\Requests\UpdateCompanyRequest;
+use App\Models\Registry;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 
@@ -47,7 +48,9 @@ class CompanyController extends Controller
      */
     public function create()
     {
-        //
+        return Inertia::render('Admin/Companies/CompanyCreate',[
+            'registries' => Registry::all()->toArray(),
+        ]);
     }
 
     /**

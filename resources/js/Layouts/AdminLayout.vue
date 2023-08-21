@@ -27,7 +27,7 @@ const showingNavigationDropdown = ref(false);
             </div>
             <!--Left Bottom Side Wrapper -->
             <!-- Side Navigation-->
-            <div class="flex bg-red-800 h-screen hidden md:block bg-cyan-700 w-56 p-12">
+            <div class="flex h-screen hidden md:block bg-cyan-700 w-56 p-12">
                 <div class="mb-4">
                     <Link :href="route('admin.dashboard')" class="flex items-center group py-3">
                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" class="w-4 h-4 mr-2 fill-zinc-400 group-hover:fill-white">

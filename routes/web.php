@@ -3,6 +3,8 @@
 use App\Http\Controllers\CompanyController;
 use App\Http\Controllers\ContactController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\RegistryController;
+use App\Models\Registry;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -50,6 +52,7 @@ Route::middleware(['auth', 'verified', 'admin.authorize'])->prefix('admin')->gro
     })->name('admin.dashboard');
 
     Route::resource('companies', CompanyController::class);
+    Route::resource('registries', RegistryController::class);
 
 
 });

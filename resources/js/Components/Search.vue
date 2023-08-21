@@ -25,14 +25,9 @@
 
 <script>
 import {onUnmounted} from 'vue';
-import DropdownPing from "@/Components/DropdownPing.vue";
-
 
 export default {
 
-    components: {
-        DropdownPing,
-    },
     data(){
         return{
             isOpen: false,
