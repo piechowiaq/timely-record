@@ -7,6 +7,7 @@ use App\Http\Requests\StoreCompanyRequest;
 use App\Http\Requests\UpdateCompanyRequest;
 use App\Models\Registry;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Redirect;
 use Inertia\Inertia;
 
 class CompanyController extends Controller
@@ -58,7 +59,21 @@ class CompanyController extends Controller
      */
     public function store(StoreCompanyRequest $request)
     {
-        //
+        $company = new Company();
+        $company->name = $request->get('name');
+        $company->city = $request->get('city');
+        $company->email = $request->get('email');
+        $company->phone = $request->get('phone');
+        $company->save();
+
+        $registries = Registry::all();
+        $companyRegistries = Registry::findMany($request->get('registry_ids'));
+
+        $company->registries()->syncWithPivotValues($registries, ['assigned' => false]);
+        $company->registries()->detach($companyRegistries);
+        $company->registries()->attach($companyRegistries, ['assigned' => true]);
+
+        return Redirect::route('companies.index');
     }
 
     /**

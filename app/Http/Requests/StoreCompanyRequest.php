@@ -11,18 +11,22 @@ class StoreCompanyRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     /**
      * Get the validation rules that apply to the request.
      *
-     * @return array<string, \Illuminate\Contracts\Validation\ValidationRule|array|string>
+     * @return array
      */
     public function rules(): array
     {
         return [
-            //
+            'name' => ['required', 'string', 'max:255'],
+            'city' => ['string', 'max:255'],
+            'email' => ['string', 'email', 'max:255', 'unique:companies'],
+            'phone' => ['string', 'max:255'],
+            'companyRegistries' => []
         ];
     }
 }
