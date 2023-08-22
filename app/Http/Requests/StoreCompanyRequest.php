@@ -2,7 +2,10 @@
 
 namespace App\Http\Requests;
 
+use App\Models\Company;
+use Exception;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class StoreCompanyRequest extends FormRequest
 {
@@ -18,15 +21,20 @@ class StoreCompanyRequest extends FormRequest
      * Get the validation rules that apply to the request.
      *
      * @return array
+     * @throws Exception
      */
     public function rules(): array
     {
+
+        if (! assert($this->route('company') instanceof Company)) {
+            throw new Exception('Received company is not the required object');
+        }
+
         return [
-            'name' => ['required', 'string', 'max:255'],
-            'city' => ['string', 'max:255'],
-            'email' => ['string', 'email', 'max:255', 'unique:companies'],
-            'phone' => ['string', 'max:255'],
-            'companyRegistries' => []
+            'name' => 'required|string|max:255',
+            'city' => 'nullable|string|max:255',
+            'email' => 'nullable|string|max:255|email',
+            'phone' => 'nullable|string|max:255',
         ];
     }
 }

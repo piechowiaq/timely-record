@@ -52,6 +52,7 @@ Route::middleware(['auth', 'verified', 'admin.authorize'])->prefix('admin')->gro
     })->name('admin.dashboard');
 
     Route::resource('companies', CompanyController::class);
+    Route::put('companies/{company}/restore', [CompanyController::class, 'restore'])->name('companies.restore');
     Route::resource('registries', RegistryController::class);
 
 

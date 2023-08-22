@@ -2,7 +2,11 @@
 
 namespace App\Http\Requests;
 
+use App\Models\Company;
+use Exception;
+use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class UpdateCompanyRequest extends FormRequest
 {
@@ -11,18 +15,25 @@ class UpdateCompanyRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     /**
      * Get the validation rules that apply to the request.
      *
-     * @return array<string, \Illuminate\Contracts\Validation\ValidationRule|array|string>
+     * @return array
+     * @throws Exception
      */
     public function rules(): array
     {
+        if (! assert($this->route('company') instanceof Company)) {
+        throw new Exception('Received company is not the required object');
+    }
         return [
-            //
+            'name' => 'required|string|max:255',
+            'city' => 'nullable|string|max:255',
+            'email' => 'nullable|string|max:255|email',
+            'phone' => 'nullable|string|max:255',
         ];
     }
 }

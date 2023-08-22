@@ -6,9 +6,11 @@ use App\Models\Company;
 use App\Http\Requests\StoreCompanyRequest;
 use App\Http\Requests\UpdateCompanyRequest;
 use App\Models\Registry;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Redirect;
 use Inertia\Inertia;
+use Inertia\Response;
 
 class CompanyController extends Controller
 {
@@ -87,9 +89,19 @@ class CompanyController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Company $company)
+    public function edit(Company $company): Response
     {
-        //
+        $registries = $company->registries()->where('assigned', 1)->get();
+
+        $companyRegistries = $registries->map(function ($registry, $key) {
+            return $registry->id;
+        });
+
+        return Inertia::render('Admin/Companies/CompanyEdit', [
+            'company' => $company,
+            'registries' => $company->registries()->get(),
+            'registry_ids' => $companyRegistries->toArray(),
+        ]);
     }
 
     /**
@@ -97,7 +109,20 @@ class CompanyController extends Controller
      */
     public function update(UpdateCompanyRequest $request, Company $company)
     {
-        //
+        $company->name = $request->get('name');
+        $company->city = $request->get('city');
+        $company->email = $request->get('email');
+        $company->phone = $request->get('phone');
+        $company->save();
+
+        $companyRegistries = Registry::findMany($request->get('registry_ids'));
+
+        $registries = Registry::all();
+        $company->registries()->syncWithPivotValues($registries, ['assigned' => false]);
+        $company->registries()->detach($companyRegistries);
+        $company->registries()->attach($companyRegistries, ['assigned' => true]);
+
+        return Redirect::route('companies.index')->with('success', 'Company updated.');
     }
 
     /**
@@ -105,6 +130,15 @@ class CompanyController extends Controller
      */
     public function destroy(Company $company)
     {
-        //
+        $company->delete();
+
+        return Redirect::route('companies.index')->with('success', 'Company deleted.');
+    }
+
+    public function restore(Company $company): RedirectResponse
+    {
+        $company->restore();
+
+        return Redirect::route('companies.index')->with('success', 'Company restored.');
     }
 }

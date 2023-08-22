@@ -6,9 +6,9 @@
 
 
 
-    <div class="bg-gray-100 py-2 px-3 h-12 items-center flex font-bold mb-2">
-        <p>Companies</p>
-    </div>
+        <div class="bg-gray-100 py-2 px-3 h-12 items-center flex justify-between font-bold mb-2">
+            <p class="text-gray-600">Companies</p>    <FlashMessages />
+        </div>
 
     <div>
         <div class="mb-6 flex justify-between items-center">
@@ -77,8 +77,9 @@ import {debounce, mapValues} from "lodash"
 import { Link, Head } from "@inertiajs/vue3";
 import Icon from "@/Components/Icon.vue"
 import Pagination from '@/Components/Pagination.vue'
-import Search from "@/Components/Search.vue";
+import Search from "@/Components/Search.vue"
 import AdminLayout from "@/Layouts/AdminLayout.vue"
+import FlashMessages from "@/Components/FlashMessages.vue";
 
 export default defineComponent({
     name: 'Admin/Companies/Index',
@@ -88,7 +89,8 @@ export default defineComponent({
         Icon,
         Search,
         AdminLayout,
-        Head
+        Head,
+        FlashMessages
     },
     props: {
         companies: Object,
