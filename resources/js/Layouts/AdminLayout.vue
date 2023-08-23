@@ -11,7 +11,7 @@ const showingNavigationDropdown = ref(false);
 
 <template>
 
-    <div class="flex flex-col h-screen">
+    <div class="flex flex-col h-screen ">
         <div class="flex">
             <!--Logo-->
             <div class="flex flex-shrink-0 w-56 items-center justify-center md:bg-gray-200 ">
@@ -22,17 +22,25 @@ const showingNavigationDropdown = ref(false);
                 </Link>
             </div>
             <!--Top Left Nav-->
-            <nav class="flex w-full border-b border-gray-100 bg-white">
-                <!-- Primary Navigation Menu -->
-                <div class="flex justify-between h-24 mx-auto">
-                    <!-- Full width Top Navigation -->
-                    <div class="flex justify-between w-full">
+            <nav class="flex w-full border-b md:justify-between justify-end items-center border-gray-100 bg-white">
 
-                        <!-- Settings Dropdown -->
-                        <div class="hidden sm:flex sm:items-center sm:ml-6">
-                            <div class="ml-3 relative">
-                                <Dropdown align="right" width="48">
-                                    <template #trigger>
+               <div class="hidden md:block">
+                   <p>Radisson Blu </p>
+
+               </div>
+
+                <div>
+
+                    <!-- Primary Navigation Menu -->
+                    <div class="flex justify-between h-24 mx-auto">
+                        <!-- Full width Top Navigation -->
+                        <div class="flex justify-between w-full">
+
+                            <!-- Settings Dropdown -->
+                            <div class="hidden sm:flex sm:items-center sm:ml-6">
+                                <div class="ml-3 relative">
+                                    <Dropdown align="right" width="48">
+                                        <template #trigger>
                                         <span class="inline-flex rounded-md">
                                             <button
                                                 type="button"
@@ -54,80 +62,81 @@ const showingNavigationDropdown = ref(false);
                                                 </svg>
                                             </button>
                                         </span>
-                                    </template>
+                                        </template>
 
-                                    <template #content>
-                                        <DropdownLink :href="route('profile.edit')"> Profile </DropdownLink>
-                                        <DropdownLink :href="route('logout')" method="post" as="button">
-                                            Log Out
-                                        </DropdownLink>
-                                    </template>
-                                </Dropdown>
+                                        <template #content>
+                                            <DropdownLink :href="route('profile.edit')"> Profile </DropdownLink>
+                                            <DropdownLink :href="route('logout')" method="post" as="button">
+                                                Log Out
+                                            </DropdownLink>
+                                        </template>
+                                    </Dropdown>
+                                </div>
                             </div>
+
                         </div>
 
-                    </div>
 
-
-                    <!-- Hamburger -->
-                    <div class="-mr-2 flex items-center sm:hidden">
-                        <button
-                            @click="showingNavigationDropdown = !showingNavigationDropdown"
-                            class="inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-gray-500 hover:bg-gray-100 focus:outline-none focus:bg-gray-100 focus:text-gray-500 transition duration-150 ease-in-out"
-                        >
-                            <svg class="h-6 w-6" stroke="currentColor" fill="none" viewBox="0 0 24 24">
-                                <path
-                                    :class="{
+                        <!-- Hamburger -->
+                        <div class="-mr-2 flex items-center sm:hidden">
+                            <button
+                                @click="showingNavigationDropdown = !showingNavigationDropdown"
+                                class="inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-gray-500 hover:bg-gray-100 focus:outline-none focus:bg-gray-100 focus:text-gray-500 transition duration-150 ease-in-out"
+                            >
+                                <svg class="h-6 w-6" stroke="currentColor" fill="none" viewBox="0 0 24 24">
+                                    <path
+                                        :class="{
                                             hidden: showingNavigationDropdown,
                                             'inline-flex': !showingNavigationDropdown,
                                         }"
-                                    stroke-linecap="round"
-                                    stroke-linejoin="round"
-                                    stroke-width="2"
-                                    d="M4 6h16M4 12h16M4 18h16"
-                                />
-                                <path
-                                    :class="{
+                                        stroke-linecap="round"
+                                        stroke-linejoin="round"
+                                        stroke-width="2"
+                                        d="M4 6h16M4 12h16M4 18h16"
+                                    />
+                                    <path
+                                        :class="{
                                             hidden: !showingNavigationDropdown,
                                             'inline-flex': showingNavigationDropdown,
                                         }"
-                                    stroke-linecap="round"
-                                    stroke-linejoin="round"
-                                    stroke-width="2"
-                                    d="M6 18L18 6M6 6l12 12"
-                                />
-                            </svg>
-                        </button>
-                    </div>
-
-                </div>
-
-
-                <!-- Responsive Navigation Menu -->
-                <div
-                    :class="{ block: showingNavigationDropdown, hidden: !showingNavigationDropdown }"
-                    class="sm:hidden"
-                >
-                    <div class="pt-2 pb-3 space-y-1">
-                        <ResponsiveNavLink :href="route('dashboard')" :active="route().current('dashboard')">
-                            Dashboard
-                        </ResponsiveNavLink>
-                    </div>
-
-                    <!-- Responsive Settings Options -->
-                    <div class="pt-4 pb-1 border-t border-gray-200">
-                        <div class="px-4">
-                            <div class="font-medium text-base text-gray-800">
-                                {{ $page.props.auth.user.name }}
-                            </div>
-                            <div class="font-medium text-sm text-gray-500">{{ $page.props.auth.user.email }}</div>
+                                        stroke-linecap="round"
+                                        stroke-linejoin="round"
+                                        stroke-width="2"
+                                        d="M6 18L18 6M6 6l12 12"
+                                    />
+                                </svg>
+                            </button>
                         </div>
 
-                        <div class="mt-3 space-y-1">
-                            <ResponsiveNavLink :href="route('profile.edit')"> Profile </ResponsiveNavLink>
-                            <ResponsiveNavLink :href="route('logout')" method="post" as="button">
-                                Log Out
+                    </div>
+
+
+                    <!-- Responsive Navigation Menu -->
+                    <div
+                        :class="{ block: showingNavigationDropdown, hidden: !showingNavigationDropdown }"
+                        class="sm:hidden"
+                    >
+                        <div class="pt-2 pb-3 space-y-1">
+                            <ResponsiveNavLink :href="route('dashboard')" :active="route().current('dashboard')">
+                                Dashboard
                             </ResponsiveNavLink>
+                        </div>
+
+                        <!-- Responsive Settings Options -->
+                        <div class="pt-4 pb-1 border-t border-gray-200">
+                            <div class="px-4">
+                                <div class="font-medium text-base text-gray-800">
+                                    {{ $page.props.auth.user.name }}
+                                </div>
+                                <div class="font-medium text-sm text-gray-500">{{ $page.props.auth.user.email }}</div>
+                            </div>
+
+                            <div class="mt-3 space-y-1">
+                                <ResponsiveNavLink :href="route('profile.edit')"> Profile </ResponsiveNavLink>
+                                <ResponsiveNavLink :href="route('logout')" method="post" as="button">
+                                    Log Out
+                                </ResponsiveNavLink>
+                            </div>
                         </div>
                     </div>
                 </div>
