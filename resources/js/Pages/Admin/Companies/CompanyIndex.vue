@@ -10,7 +10,7 @@
             <p class="text-gray-600">Companies</p>    <FlashMessages />
         </div>
 
-    <div>
+
         <div class="mb-6 flex justify-between items-center">
             <search v-model="form.search" v-model:trashed="form.trashed" @reset="reset"
                     class="flex items-center w-full max-w-md mr-4"/>
@@ -59,14 +59,13 @@
                 </tr>
             </table>
         </div>
-        <div class="mt-6">
-            <div class="flex flex-wrap -mb-1">
-                <Pagination :links="companies.links"></Pagination>
-            </div>
-        </div>
-    </div>
 
-  </AdminLayout>
+            <Pagination :links="companies.links" class="flex flex-wrap py-6"></Pagination>
+
+
+
+
+    </AdminLayout>
 
 </template>
 
