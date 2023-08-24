@@ -60,7 +60,11 @@
             </table>
         </div>
 
-            <Pagination :links="companies.links" class="flex flex-wrap py-6"></Pagination>
+
+
+
+
+        <Pagination :links="companies.links" class="flex flex-wrap py-6"></Pagination>
 
 
 
@@ -93,7 +97,7 @@ export default defineComponent({
     },
     props: {
         companies: Object,
-        filters: Object
+        filters: Object,
     },
     data() {
         return {

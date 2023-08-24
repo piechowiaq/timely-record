@@ -33,7 +33,7 @@ class CompanyController extends Controller
                     } elseif ($trashed === 'only') {
                         $query->onlyTrashed();
                     }
-                })->paginate(10)
+                })->paginate(5)
                 ->withQueryString()
                 ->through(fn($company) => [
                     'id' => $company->id,
