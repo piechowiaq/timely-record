@@ -1,73 +1,55 @@
 <template>
 
-    <Head title="Companies" />
+    <Head title="Registries" />
 
     <AdminLayout>
 
 
 
         <div class="bg-gray-100 py-2 px-3 h-12 items-center flex  justify-between font-bold mb-2">
-            <p class="text-gray-600">Companies</p>    <FlashMessages />
+            <p class="text-gray-600">Registries</p>    <FlashMessages />
         </div>
 
 
         <div class="mb-6 flex justify-between items-center">
             <Search v-model="form.search" v-model:trashed="form.trashed" @reset="reset"
                     class="flex items-center w-full max-w-md mr-4"/>
-            <Link :href="route('companies.create')">
-                Create Company
+            <Link :href="route('registries.create')">
+                Create Registry
             </Link>
         </div>
         <div class="bg-white rounded-md shadow overflow-x-auto">
             <table class="w-full whitespace-nowrap">
                 <tr class="text-left font-bold">
                     <th class="px-6 pt-6 pb-4">Name</th>
-                    <th class="px-6 pt-6 pb-4">City</th>
-                    <th class="px-6 pt-6 pb-4">E-mail</th>
-                    <th colspan="2" class="px-6 pt-6 pb-4">Phone</th>
+                    <th class="px-6 pt-6 pb-4">Valid for | months</th>
                 </tr>
-                <tr v-for="company of companies.data" :key="company.id"
+                <tr v-for="registry of registries.data" :key="registry.id"
                     class="hover:bg-gray-100 focus-within:bg-gray-100">
                     <td class="border-t">
-                        <Link value="Edit" :href="route('companies.edit', company)"
-                              class="px-6 py-4 flex items-center focus:text-indigo-500">{{ company.name }}
+                        <Link value="Edit" :href="route('registries.edit', registry)"
+                              class="px-6 py-4 flex items-center focus:text-indigo-500">{{ registry.name }}
                         </Link>
                     </td>
+
                     <td class="border-t">
-                        <Link value="Edit" :href="route('companies.edit', company)"
-                              class="px-6 py-4 flex items-center focus:text-indigo-500">{{ company.city }}
-                        </Link>
-                    </td>
-                    <td class="border-t">
-                        <Link value="Edit" :href="route('companies.edit', company)"
-                              class="px-6 py-4 flex items-center focus:text-indigo-500">{{ company.email }}
-                        </Link>
-                    </td>
-                    <td class="border-t">
-                        <Link value="Edit" :href="route('companies.edit', company)"
-                              class="px-6 py-4 flex items-center focus:text-indigo-500">{{ company.phone }}
+                        <Link value="Edit" :href="route('registries.edit', registry)"
+                              class="px-6 py-4 flex items-center focus:text-indigo-500">{{ registry.valid_for }}
                         </Link>
                     </td>
                     <td class="w-px border-t">
-                        <Link class="flex items-center px-4" :href="route('companies.edit', company)" tabindex="-1">
+                        <Link class="flex items-center px-4" :href="route('registries.edit', registry)" tabindex="-1">
                             <icon name="cheveron-right" class="block w-6 h-6 fill-gray-400"/>
                         </Link>
                     </td>
                 </tr>
-                <tr v-if="companies.length === 0">
-                    <td class="px-6 py-4 border-t" colspan="4">No companies found.</td>
+                <tr v-if="registries.length === 0">
+                    <td class="px-6 py-4 border-t" colspan="4">No registries found.</td>
                 </tr>
             </table>
         </div>
 
-
-
-
-
-        <Pagination :links="companies.links" class="flex flex-wrap py-6"></Pagination>
-
-
-
+        <Pagination :links="registries.links" class="flex flex-wrap py-6"></Pagination>
 
     </AdminLayout>
 
@@ -85,19 +67,19 @@ import AdminLayout from "@/Layouts/AdminLayout.vue"
 import FlashMessages from "@/Components/FlashMessages.vue";
 
 export default defineComponent({
-    name: 'Admin/Companies/Index',
+    name: 'Admin/Registries/Index',
     components: {
+        AdminLayout,
         Link,
         Pagination,
         Icon,
         Search,
-        AdminLayout,
-        Head,
-        FlashMessages
+        FlashMessages,
+        Head
     },
     props: {
-        companies: Object,
-        filters: Object,
+        registries: Object,
+        filters: Object
     },
     data() {
         return {
@@ -112,13 +94,13 @@ export default defineComponent({
         form: {
             deep: true,
             handler: debounce(function () {
-                this.$inertia.get(this.route('companies.index'), this.form, {preserveState: true, replace: true})
+                this.$inertia.get(this.route('registries.index'), this.form, {preserveState: true, replace: true})
             }, 150),
         },
     },
     methods: {
-        destroy(user) {
-            this.$inertia.delete(this.route('companies.destroy', user))
+        destroy(registry) {
+            this.$inertia.delete(this.route('registries.destroy', registry))
         },
         reset() {
             this.form = mapValues(this.form, () => null)
@@ -127,3 +109,5 @@ export default defineComponent({
 
 })
 </script>
+
+
