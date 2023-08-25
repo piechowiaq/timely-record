@@ -45,7 +45,7 @@ class RegistryController extends Controller
      */
     public function create()
     {
-        //
+        return Inertia::render('Admin/Registries/RegistryCreate');
     }
 
     /**
