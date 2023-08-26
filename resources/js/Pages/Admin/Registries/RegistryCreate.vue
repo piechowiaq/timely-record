@@ -22,7 +22,7 @@
                     </div>
                     <div class="px-8 py-4 bg-gray-50 border-t border-gray-100 flex justify-end items-center">
                         <PrimaryButton class="ml-4" :class="{ 'opacity-25': form.processing }" :disabled="form.processing">
-                            Send
+                            Create Registry
                         </PrimaryButton>
                     </div>
                 </form>
@@ -43,7 +43,7 @@ import SelectInput from "@/Components/SelectInput.vue";
 
 
 import _ from "lodash";
-import TextArea from "@/Components/TextArea.vue";
+import TextArea from "@/Components/TextAreaPing.vue";
 
 
 export default defineComponent({
@@ -59,54 +59,20 @@ export default defineComponent({
     },
 
 
-    props: {
-        registries: Array
-    },
-    computed: {
-        orderedRegistries: function () {
-            return _.orderBy(this.registries, 'name')
-        }
-    },
-
     setup() {
         const form = useForm(useRemember(
             reactive({
                 name: null,
-                city: null,
-                email: null,
-                phone: null,
-                registry_ids: []
+                description: null,
+                valid_for: null,
             })))
 
         return {form}
     },
     methods: {
         store() {
-            this.form.post(this.route('companies.store'))
+            this.form.post(this.route('registries.store'))
         },
-        onToRight() {
-
-            let select = this.$refs["form-registry_ids"].value
-            if (select !== "") {
-                this.form.registry_ids.push({id: select})
-                let del = this.registries.indexOf({id: select})
-                this.registries.splice(del, 1)
-
-
-            }
-
-        },
-        onToLeft() {
-            let select = this.$refs["registries"].value
-            if (select !== "") {
-                this.registries.push({id: select})
-                let del = this.form.registry_ids.indexOf({id: select})
-                this.form.registry_ids.splice(del, 1)
-
-            }
-
-        }
-
     },
 });
 

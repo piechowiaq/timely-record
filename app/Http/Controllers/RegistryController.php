@@ -2,10 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Company;
 use App\Models\Registry;
 use App\Http\Requests\StoreRegistryRequest;
 use App\Http\Requests\UpdateRegistryRequest;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Redirect;
 use Inertia\Inertia;
 
 class RegistryController extends Controller
@@ -53,7 +55,15 @@ class RegistryController extends Controller
      */
     public function store(StoreRegistryRequest $request)
     {
-        //
+        $registry = new Registry();
+        $registry->name = $request->get('name');
+        $registry->description = $request->get('description');
+        $registry->valid_for = $request->get('valid_for');
+        $registry->save();
+
+        $registry->companies()->sync(Company::all());
+
+        return Redirect::route('registries.index');
     }
 
     /**
@@ -69,7 +79,9 @@ class RegistryController extends Controller
      */
     public function edit(Registry $registry)
     {
-        //
+        return Inertia::render('Admin/Registries/RegistryEdit', [
+            'registry' => $registry,
+        ]);
     }
 
     /**
@@ -77,7 +89,14 @@ class RegistryController extends Controller
      */
     public function update(UpdateRegistryRequest $request, Registry $registry)
     {
-        //
+        $registry->name = $request->get('name');
+        $registry->description = $request->get('description');
+        $registry->valid_for = $request->get('valid_for');
+        $registry->save();
+
+        $registry->companies()->sync(Company::all());
+
+        return Redirect::route('registries.index')->with('success', 'Registry updated.');
     }
 
     /**
@@ -85,6 +104,16 @@ class RegistryController extends Controller
      */
     public function destroy(Registry $registry)
     {
-        //
+        $registry->delete();
+
+        return Redirect::route('registries.index')->with('success', 'Registry deleted.');
+    }
+
+    public function restore(Registry $registry)
+    {
+
+        $registry->restore();
+
+        return Redirect::route('registries.index')->with('success', 'Registry restored.');
     }
 }

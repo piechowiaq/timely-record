@@ -2,6 +2,9 @@
 
 namespace App\Http\Requests;
 
+use App\Models\Registry;
+use Exception;
+use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest;
 
 class UpdateRegistryRequest extends FormRequest
@@ -11,18 +14,24 @@ class UpdateRegistryRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     /**
      * Get the validation rules that apply to the request.
      *
-     * @return array<string, \Illuminate\Contracts\Validation\ValidationRule|array|string>
+     * @return array
+     * @throws Exception
      */
     public function rules(): array
     {
+        if (! assert($this->route('registry') instanceof Registry)) {
+            throw new Exception('Received registry is not the required object');
+        }
         return [
-            //
+            'name' => 'required|string|max:255',
+            'description' => 'required|string',
+            'valid_for' => 'required|int',
         ];
     }
 }
