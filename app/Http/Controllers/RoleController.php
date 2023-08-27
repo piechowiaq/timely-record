@@ -2,12 +2,13 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Role;
-use App\Http\Requests\StoreRoleRequest;
-use App\Http\Requests\UpdateRoleRequest;
+
+
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Redirect;
 use Inertia\Inertia;
 use Spatie\Permission\Models\Permission;
+use Spatie\Permission\Models\Role;
 
 class RoleController extends Controller
 {
@@ -52,9 +53,16 @@ class RoleController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StoreRoleRequest $request)
+    public function store(Request $request)
     {
-        //
+
+        $role = Role::create(['name' => $request->get('name')]);
+
+        $role->syncPermissions($request->get('permission_ids'));
+
+
+
+        return Redirect::route('roles.edit', ['role' => $role])->with('success', 'Role created.');
     }
 
     /**
@@ -70,7 +78,15 @@ class RoleController extends Controller
      */
     public function edit(Role $role)
     {
-        //
+        $permissions = Permission::all()->toArray();
+
+        $rolePermissionIds = $role->permissions->pluck('name')->toArray();
+
+        return Inertia::render('Admin/Roles/RoleEdit', [
+            'role' => $role,
+            'permissions' => $permissions,
+            'permission_ids' => $rolePermissionIds
+        ]);
     }
 
     /**
