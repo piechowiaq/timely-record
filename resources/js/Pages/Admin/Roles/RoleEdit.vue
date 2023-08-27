@@ -4,10 +4,10 @@
         <div>
             <div class="bg-gray-100 py-2 px-3 h-12 items-center justify-between flex font-bold mb-2">
                 <div class="flex">
-                    <Link :href="route('registries.index')" class="text-cyan-600">Registries </Link>
+                    <Link :href="route('roles.index')" class="text-cyan-600">Roles </Link>
                     <p class="text-gray-600">&nbsp|&nbspEdit</p>
                 </div>
-                <TrashedMessage v-if="registry.deleted_at" @restore="restore(registry)"> This registry has been
+                <TrashedMessage v-if="role.deleted_at" @restore="restore(role)"> This role has been
                     deleted.
                 </TrashedMessage>
             </div>
@@ -15,23 +15,17 @@
             <div class="bg-white rounded-md shadow overflow-hidden max-w-3xl">
                 <form @submit.prevent="update">
                     <div class="p-8 -mr-6 -mb-8 flex flex-wrap">
-                        <TextInput v-model="form.name" :error="form.errors.name" class="pb-8 pr-6 w-full lg:w-1/2"
-                                    label="Registry Name"/>
-                        <TextInput v-model="form.valid_for" :error="form.errors.valid_for" class="pb-8 pr-6 w-full lg:w-1/2"
-                                    label="Valid for | months"/>
-                        <TextArea v-model="form.description" :error="form.errors.description" class="pb-8 pr-6 w-full "
-                                   label="Description"/>
-
-                    </div>
-                    <div class="px-8 py-4 bg-gray-50 border-t border-gray-100 flex justify-end items-center">
-                        <PrimaryButton v-if="!registry.deleted_at" value="Delete" @click.once="destroy(registry)" tabindex="-1"
-                                type="button" class="text-red-600 hover:underline">Delete Registry
-                        </PrimaryButton>
-                        <PrimaryButton :loading="form.processing" class="btn-indigo ml-auto" type="submit">Edit
-                            Registry
-                        </PrimaryButton>
+                        <TextInput v-model="form.name" :error="form.errors.name" class="pb-8 pr-6 w-full lg:w-1/2" label="Name a role" />
+                        <SelectInput v-model="form.permission_ids" multiple :error="form.errors.permission_ids" class="pb-8 pr-6 w-full lg:w-1/2" label="Permissions">
+                            <option v-for="(permission, id) in permissions" :key="permission.id" :value="permission.id" >{{ permission.name }}</option>
+                        </SelectInput>
                     </div>
 
+
+                    <div class="px-8 py-4 bg-gray-50 border-t border-gray-100 flex items-center">
+                        <PrimaryButton v-if=" role.name !== 'Super Admin' || role.name !== 'Super Admin' && !role.deleted_at" value="Delete" @click.once="destroy(role)" tabindex="-1" type="button" class="text-red-600 hover:underline">Delete Contact</PrimaryButton>
+                        <PrimaryButton :loading="form.processing" class="btn-indigo ml-auto" type="submit" >Edit Role</PrimaryButton>
+                    </div>
                 </form>
             </div>
 
@@ -49,52 +43,44 @@ import AdminLayout from "@/Layouts/AdminLayout.vue"
 import TextInput from "@/Components/TextInputPing.vue";
 import PrimaryButton from "@/Components/PrimaryButton.vue";
 import TrashedMessage from "@/Components/TrashedMessage.vue";
-import _ from "lodash";
-import TextArea from "@/Components/TextAreaPing.vue";
+import SelectInput from "@/Components/SelectInput.vue";
 
 export default defineComponent({
 
     components: {
-        TextArea,
+        SelectInput,
         AdminLayout,
         Link,
         TextInput,
         PrimaryButton,
         TrashedMessage
     },
-    props: {
-        registry: Object,
+    props:{
+        role: Object,
+        permissions: Object,
+        permission_ids: Array,
         errors: Object
     },
-    computed: {
-        orderedRegistries: function () {
-            return _.orderBy(this.registries, 'name')
-        }
-    },
 
-    setup({registry}) {
-        const form = useForm(useRemember(
-            reactive({
-                name: registry.name,
-                description: registry.description,
-                valid_for: registry.valid_for,
-            })))
+    setup({ role, permission_ids }) {
+        const form = useForm(useRemember(reactive({
+            name: role.name,
+            permission_ids: permission_ids
+        })))
 
         return {form}
-
     },
-    methods: {
+    methods:{
         update() {
-            this.form.put(this.route('registries.update', this.registry.id))
+            this.form.put(this.route('roles.update', this.role.id))
         },
-        destroy(registry) {
-            this.$inertia.delete(this.route('registries.destroy', registry))
+        destroy(role) {
+            this.$inertia.delete(this.route('roles.destroy', role))
         },
-        restore(registry) {
-            this.$inertia.put(this.route('registries.restore', registry))
+        restore(role) {
+            this.$inertia.put(this.route('roles.restore', role))
         },
     },
-
 
 });
 

@@ -60,8 +60,6 @@ class RoleController extends Controller
 
         $role->syncPermissions($request->get('permission_ids'));
 
-
-
         return Redirect::route('roles.edit', ['role' => $role])->with('success', 'Role created.');
     }
 
@@ -92,9 +90,14 @@ class RoleController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateRoleRequest $request, Role $role)
+    public function update(Request $request, Role $role)
     {
-        //
+        $role->name = $request->get('name');
+        $role->save();
+
+        $role->syncPermissions($request->get('permission_ids'));
+
+        return Redirect::route('roles.index')->with('success', 'Role updated.');
     }
 
     /**
@@ -102,6 +105,15 @@ class RoleController extends Controller
      */
     public function destroy(Role $role)
     {
-        //
+        $role->delete();
+
+        return Redirect::route('roles.index')->with('success', 'Role deleted.');
+    }
+
+    public function restore(Role $role)
+    {
+        $role->restore();
+
+        return Redirect::route('roles.index')->with('success', 'Role restored.');
     }
 }

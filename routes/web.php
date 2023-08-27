@@ -60,7 +60,7 @@ Route::middleware(['auth', 'verified', 'admin.authorize'])->prefix('admin')->gro
     Route::resource('permissions', PermissionController::class);
     Route::put('permissions/{permission}/restore', [PermissionController::class, 'restore'])->name('permissions.restore');
     Route::resource('roles', RoleController::class);
-    Route::put('permissions/{role}/restore', [RoleController::class, 'restore'])->name('roles.restore');
+    Route::put('roles/{role}/restore', [RoleController::class, 'restore'])->name('roles.restore');
 
 });
 
