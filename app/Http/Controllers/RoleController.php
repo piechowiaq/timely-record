@@ -78,7 +78,7 @@ class RoleController extends Controller
     {
         $permissions = Permission::all()->toArray();
 
-        $rolePermissionIds = $role->permissions->pluck('name')->toArray();
+        $rolePermissionIds = $role->permissions->pluck('id')->toArray();
 
         return Inertia::render('Admin/Roles/RoleEdit', [
             'role' => $role,
