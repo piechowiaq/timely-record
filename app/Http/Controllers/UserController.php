@@ -2,12 +2,18 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Controllers\Auth\RegisteredUserController;
-use App\Models\User;
-use Illuminate\Http\Request;
-use Inertia\Inertia;
 
-class UserController extends RegisteredUserController
+use App\Models\Company;
+use App\Models\User;
+use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Redirect;
+use Inertia\Inertia;
+use Spatie\Permission\Models\Role;
+use Illuminate\Validation\Rules;
+
+class UserController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -40,6 +46,44 @@ class UserController extends RegisteredUserController
                     'deleted_at' => $user->deleted_at
                 ]),
         ]);
+    }
+    /**
+     * Display the registration view.
+     */
+    public function create()
+    {
+        return Inertia::render('Admin/Users/UserCreate', [
+            'roles' => Role::all()->toArray(),
+            'companies' => Company::all()->toArray()
+        ]);
+    }
+
+    public function store(Request $request)
+    {
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'email' => 'required|string|email|max:255|unique:'.User::class,
+            'password' => ['required', 'confirmed', Rules\Password::defaults()],
+        ]);
+
+        $user = User::create([
+            'name' => $request->name,
+            'email' => $request->email,
+            'password' => Hash::make($request->password),
+        ]);
+
+        $user->assignRole($request->get('role_id'));
+
+        $companyIds = $request->get('company_ids');
+        $companies  = new Collection();
+
+        if (is_array($companyIds)) {
+            $companies = Company::whereIn('id', $companyIds)->get();
+        }
+
+        $user->companies()->sync($companies);
+
+        return Redirect::route('users.edit',  ['user' => $user])->with('success', 'User created.');
     }
 
     /**

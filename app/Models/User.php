@@ -2,10 +2,12 @@
 
 namespace App\Models;
 
+ use App\Domains\Company\Models\Company;
  use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Contracts\Auth\CanResetPassword;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Foundation\Auth\User as Authenticatable;
+ use Illuminate\Database\Eloquent\Relations\Relation;
+ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
  use Spatie\Permission\Traits\HasRoles;
@@ -49,6 +51,11 @@ use Laravel\Sanctum\HasApiTokens;
      public function isSuperAdmin(): bool
      {
          return $this->hasRole('Super Admin');
+     }
+
+     public function companies(): Relation
+     {
+         return $this->belongsToMany(Company::class);
      }
 
 

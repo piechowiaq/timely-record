@@ -4,56 +4,27 @@
 
         <div>
             <div class="bg-gray-100 py-2 px-3 h-12 items-center flex font-bold mb-2">
-                <Link :href="route('companies.index')" class="text-cyan-600">Companies </Link>
+                <Link :href="route('users.index')" class="text-cyan-600">Users </Link>
                 <p class="text-gray-600">&nbsp|&nbspCreate</p>
             </div>
 
             <div class="bg-white rounded-md shadow overflow-hidden max-w-3xl">
                 <form @submit.prevent="store">
                     <div class="p-8 -mr-6 -mb-8 flex flex-wrap">
-                        <TextInput v-model="form.name" :error="form.errors.name" class="pb-8 pr-6 w-full lg:w-1/2"
-                                    label="Company Name"/>
-                        <TextInput v-model="form.city" :error="form.errors.city" class="pb-8 pr-6 w-full lg:w-1/2"
-                                    label="City"/>
-                        <TextInput v-model="form.email" :error="form.errors.email" class="pb-8 pr-6 w-full lg:w-1/2"
-                                    label="Company E-mail"/>
-                        <TextInput v-model="form.phone" :error="form.errors.phone" class="pb-8 pr-6 w-full lg:w-1/2"
-                                    label="Company Phone"/>
-
+                        <TextInput v-model="form.name" :error="form.errors.name" class="pb-8 pr-6 w-full lg:w-1/2" label="First Name" />
+                        <TextInput v-model="form.email" :error="form.errors.email" class="pr-6 pb-8 w-full lg:w-1/2" label="Email" />
+                        <SelectInput v-model="form.role_id" :error="form.errors.role_id" class="pb-8 pr-6 w-full lg:w-1/2" label="Role">
+                            <option :value="null" />
+                            <option v-for="(role, id) in roles" :key="role.id" :value="role.id">{{ role.name }}</option>
+                        </SelectInput>
+                        <SelectInput v-model="form.company_ids" multiple :error="form.errors.company_ids" class="pb-8 pr-6 w-full lg:w-1/2" label="Companies">
+                            <option v-for="(company, id) in companies" :key="company.id" :value="company.id" >{{ company.name }}</option>
+                        </SelectInput>
+                        <TextInput v-model="form.password" :error="form.errors.password" class="pr-6 pb-8 w-full lg:w-1/2" label="Password" />
+                        <TextInput v-model="form.password_confirmation" :error="form.errors.password_confirmation" class="pr-6 pb-8 w-full lg:w-1/2" label="Password Confirmation" />
                     </div>
-                    <div class="p-8">
-                        <p>Registries:</p>
-                        <table class="table-auto w-full text-sm">
-                            <thead class="border-b">
-                            <tr >
-                                <th class="">Name:</th>
-                                <th class="">Duration in months:</th>
-                            </tr>
-                            </thead>
-                            <tbody>
-                            <tr v-for="registry in orderedRegistries" :key="registry.id"
-                                class="">
-                                <td class="border-r lg:w-1/2">
-                                    <input type="checkbox" v-model="form.registry_ids" :value="registry.id" :id="registry.id" class="mr-6 ">
-                                    <label :for="registry.id">{{ registry.name }}</label>
-                                </td>
-                                <td class="text-center lg:w-1/2">
-                                    <p>{{ registry.valid_for }}</p>
-                                </td>
-                            </tr>
-                            <tr v-if="registries.length === 0">
-                                <td class="" colspan="4">No registries found.</td>
-                            </tr>
-                            </tbody>
-
-
-                        </table>
-                    </div>
-
-                    <div class="px-8 py-4 bg-gray-50 border-t border-gray-100 flex justify-end items-center">
-                        <PrimaryButton class="ml-4" :class="{ 'opacity-25': form.processing }" :disabled="form.processing">
-                            Send
-                        </PrimaryButton>
+                    <div class="flex items-center justify-end px-8 py-4 bg-gray-50 border-t border-gray-100">
+                        <PrimaryButton :loading="form.processing" class="btn-indigo" type="submit">Create User</PrimaryButton>
                     </div>
                 </form>
             </div>
@@ -85,55 +56,31 @@ export default defineComponent({
 
     },
 
-
-    props: {
-        registries: Array
-    },
-    computed: {
-        orderedRegistries: function () {
-            return _.orderBy(this.registries, 'name')
-        }
+    props:{
+        roles: Array,
+        errors: Object,
+        companies: Array,
     },
 
-    setup() {
+    setup () {
         const form = useForm(useRemember(
             reactive({
                 name: null,
-                city: null,
+                last_name: null,
                 email: null,
                 phone: null,
-                registry_ids: []
-            })))
+                password: null,
+                password_confirmation: null,
+                role_id: '',
+                company_ids: [],
+            },)))
 
-        return {form}
+        return { form }
     },
-    methods: {
+    methods:{
         store() {
-            this.form.post(this.route('companies.store'))
+            this.form.post(this.route('users.store'))
         },
-        onToRight() {
-
-            let select = this.$refs["form-registry_ids"].value
-            if (select !== "") {
-                this.form.registry_ids.push({id: select})
-                let del = this.registries.indexOf({id: select})
-                this.registries.splice(del, 1)
-
-
-            }
-
-        },
-        onToLeft() {
-            let select = this.$refs["registries"].value
-            if (select !== "") {
-                this.registries.push({id: select})
-                let del = this.form.registry_ids.indexOf({id: select})
-                this.form.registry_ids.splice(del, 1)
-
-            }
-
-        }
-
     },
 });
 
