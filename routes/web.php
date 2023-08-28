@@ -6,6 +6,7 @@ use App\Http\Controllers\PermissionController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\RegistryController;
 use App\Http\Controllers\RoleController;
+use App\Http\Controllers\UserController;
 use App\Models\Registry;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
@@ -61,6 +62,8 @@ Route::middleware(['auth', 'verified', 'admin.authorize'])->prefix('admin')->gro
     Route::put('permissions/{permission}/restore', [PermissionController::class, 'restore'])->name('permissions.restore');
     Route::resource('roles', RoleController::class);
     Route::put('roles/{role}/restore', [RoleController::class, 'restore'])->name('roles.restore');
+    Route::resource('users', UserController::class);
+    Route::put('users/{user}/restore', [UserController::class, 'restore'])->name('users.restore');
 
 });
 
