@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 
+use App\Http\Requests\StoreUserRequest;
+use App\Http\Requests\UpdateUserRequest;
 use App\Models\Company;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Collection;
@@ -58,14 +60,8 @@ class UserController extends Controller
         ]);
     }
 
-    public function store(Request $request)
+    public function store(StoreUserRequest $request)
     {
-        $request->validate([
-            'name' => 'required|string|max:255',
-            'email' => 'required|string|email|max:255|unique:'.User::class,
-            'password' => ['required', 'confirmed', Rules\Password::defaults()],
-        ]);
-
         $user = User::create([
             'name' => $request->name,
             'email' => $request->email,
@@ -97,24 +93,60 @@ class UserController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id)
+    public function edit(User $user)
     {
-        //
+        return Inertia::render('Admin/Users/UserEdit', [
+            'user' => $user,
+            'roles' => Role::all()->toArray(),
+            'role_id' => $user->roles()->pluck('id')->first(),
+            'companies' => Company::all()->toArray(),
+            'company_ids' => $user->companies()->get()->pluck('id')->toArray()
+        ]);
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(UpdateUserRequest $request, User $user)
     {
-        //
+        $user->name = $request->get('name');
+        $user->email = $request->get('email');
+        $user->save();
+
+        if (!$request->get('password') === null)
+        {
+            $user->password = Hash::make($request->get('password'));
+            $user->save();
+        }
+
+        $user->syncRoles($request->get('role_id'));
+
+        $companyIds = $request->get('company_ids');
+        $companies  = new Collection();
+
+        if (is_array($companyIds)) {
+            $companies = Company::whereIn('id', $companyIds)->get();
+        }
+
+        $user->companies()->sync($companies);
+
+        return Redirect::route('users.index')->with('success', 'User updated.');
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(User $user)
     {
-        //
+        $user->delete();
+
+        return Redirect::route('users.index')->with('success', 'User deleted.');
+    }
+
+    public function restore(User $user)
+    {
+        $user->restore();
+
+        return Redirect::route('users.index')->with('success', 'User restored.');
     }
 }
