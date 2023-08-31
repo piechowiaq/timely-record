@@ -75,7 +75,7 @@ class CompanyController extends Controller
         $company->registries()->detach($companyRegistries);
         $company->registries()->attach($companyRegistries, ['assigned' => true]);
 
-        return Redirect::route('companies.index');
+        return Redirect::route('companies.index')->with('success', 'Company created.');;
     }
 
     /**

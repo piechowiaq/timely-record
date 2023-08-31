@@ -60,7 +60,7 @@ class RoleController extends Controller
 
         $role->syncPermissions($request->get('permission_ids'));
 
-        return Redirect::route('roles.edit', ['role' => $role])->with('success', 'Role created.');
+        return Redirect::route('roles.index')->with('success', 'Role created.');
     }
 
     /**

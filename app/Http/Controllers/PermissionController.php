@@ -55,7 +55,7 @@ class PermissionController extends Controller
     {
         $permission = Permission::create(['name' => $request->get('name')]);
 
-        return Redirect::route('permissions.edit',  ['permission' => $permission])->with('success', 'Permission created.');
+        return Redirect::route('permissions.index')->with('success', 'Permission created.');
     }
 
     /**

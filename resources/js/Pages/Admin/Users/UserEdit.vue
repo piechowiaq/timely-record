@@ -1,7 +1,6 @@
 <template>
 
     <AdminLayout>
-        {{form.role_id}}
         <div>
             <div class="bg-gray-100 py-2 px-3 h-12 items-center justify-between flex font-bold mb-2">
                 <div class="flex">
