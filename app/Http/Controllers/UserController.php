@@ -3,10 +3,12 @@
 namespace App\Http\Controllers;
 
 
+use App\Events\UserRegistered;
 use App\Http\Requests\StoreUserRequest;
 use App\Http\Requests\UpdateUserRequest;
 use App\Models\Company;
 use App\Models\User;
+use Illuminate\Auth\Events\Registered;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
@@ -79,7 +81,9 @@ class UserController extends Controller
 
         $user->companies()->sync($companies);
 
-        return Redirect::route('users.edit',  ['user' => $user])->with('success', 'User created.');
+        event(new UserRegistered($user));
+
+        return Redirect::route('users.index')->with('success', 'User created.');
     }
 
     /**
