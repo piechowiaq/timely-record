@@ -2,6 +2,7 @@
 
 namespace App\Mail;
 
+use App\Models\User;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
@@ -16,7 +17,7 @@ class UserRegistration extends Mailable
     /**
      * Create a new message instance.
      */
-    public function __construct()
+    public function __construct(public string $uri)
     {
         //
     }
@@ -38,6 +39,10 @@ class UserRegistration extends Mailable
     {
         return new Content(
             markdown: 'emails.registration',
+            with: [
+
+                'uri' => $this->uri,
+            ],
         );
     }
 

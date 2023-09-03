@@ -7,6 +7,7 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\RegistryController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\VerifyUserController;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
@@ -66,7 +67,12 @@ Route::middleware(['auth', 'verified', 'admin.authorize'])->prefix('admin')->gro
 });
 
 
+//Route::get('verify-email/{id}/{hash}', VerifyEmailController::class)
+//    ->middleware(['signed', 'throttle:6,1'])
+//    ->name('verification.verify');
 
+
+ Route::get('user-verification/{email}/{token}', [VerifyUserController::class, 'index'])->name('user.verification');
 
 
 

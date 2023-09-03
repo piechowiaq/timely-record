@@ -81,7 +81,12 @@ class UserController extends Controller
 
         $user->companies()->sync($companies);
 
-        event(new UserRegistered($user));
+        $user->createToken('my-token');
+
+        $token = $user->tokens->first()->token;
+
+        $uri = route('user.verification', ['email' =>$request->email, 'token' =>  $token]);
+        event(new UserRegistered($user, $uri));
 
         return Redirect::route('users.index')->with('success', 'User created.');
     }

@@ -23,7 +23,6 @@ class SendUserRegistrationEmail
      */
     public function handle(UserRegistered $event): void
     {
-
-        Mail::to($event->user->email)->send(new UserRegistration());
+        Mail::to($event->user->email)->send(new UserRegistration($event->uri));
     }
 }
