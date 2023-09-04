@@ -1,7 +1,9 @@
 <x-mail::message>
     # Contact From - Timely Record
 
-{{$uri}}
+    <a href="{{ route("user.register",  $token) }}"> Registration Link </a>
+
+   Witaj {{ $user  }}
 
     #Sender Email
 

@@ -3,7 +3,8 @@
 namespace App\Http\Controllers;
 
 
-use App\Events\UserRegistered;
+use App\Events\RegisterUser;
+use App\Events\UserCreated;
 use App\Http\Requests\StoreUserRequest;
 use App\Http\Requests\UpdateUserRequest;
 use App\Models\Company;
@@ -85,10 +86,9 @@ class UserController extends Controller
 
         $token = $user->tokens->first()->token;
 
-        $uri = route('user.verification', ['email' =>$request->email, 'token' =>  $token]);
-        event(new UserRegistered($user, $uri));
+        event(new UserCreated($user, $token));
 
-        return Redirect::route('users.index')->with('success', 'User created.');
+        return Redirect::route('users.index')->with('success', 'User created. Verification e-mail sent.');
     }
 
     /**

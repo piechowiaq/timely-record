@@ -6,7 +6,7 @@ use Illuminate\Http\Request;
 use Inertia\Inertia;
 
 
-class VerifyUserController extends Controller
+class RegisterUserController extends Controller
 {
     /**
      * Display a listing of the resource.

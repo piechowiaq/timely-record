@@ -72,7 +72,7 @@ Route::middleware(['auth', 'verified', 'admin.authorize'])->prefix('admin')->gro
 //    ->name('verification.verify');
 
 
- Route::get('user-verification/{email}/{token}', [VerifyUserController::class, 'index'])->name('user.verification');
+
 
 
 

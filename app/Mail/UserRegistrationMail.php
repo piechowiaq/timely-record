@@ -10,16 +10,17 @@ use Illuminate\Mail\Mailables\Content;
 use Illuminate\Mail\Mailables\Envelope;
 use Illuminate\Queue\SerializesModels;
 
-class UserRegistration extends Mailable
+class UserRegistrationMail extends Mailable
 {
     use Queueable, SerializesModels;
 
     /**
      * Create a new message instance.
      */
-    public function __construct(public string $uri)
+    public function __construct(string $user, string $token,)
     {
-        //
+        $this->user = $user;
+        $this->token = $token;
     }
 
     /**
@@ -40,8 +41,8 @@ class UserRegistration extends Mailable
         return new Content(
             markdown: 'emails.registration',
             with: [
-
-                'uri' => $this->uri,
+                'user' => $this->user,
+                'token' => $this->token,
             ],
         );
     }
