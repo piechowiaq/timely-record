@@ -88,6 +88,8 @@ class UserController extends Controller
 
         event(new UserCreated($user, $token));
 
+        $user->delete();
+
         return Redirect::route('users.index')->with('success', 'User created. Verification e-mail sent.');
     }
 

@@ -5,6 +5,7 @@ namespace App\Mail;
 use App\Models\User;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
+use Illuminate\Mail\Mailables\Address;
 use Illuminate\Mail\Mailable;
 use Illuminate\Mail\Mailables\Content;
 use Illuminate\Mail\Mailables\Envelope;
@@ -17,11 +18,10 @@ class UserRegistrationMail extends Mailable
     /**
      * Create a new message instance.
      */
-    public function __construct(string $user, string $token,)
-    {
-        $this->user = $user;
-        $this->token = $token;
-    }
+    public function __construct(
+        public string $user,
+        public string $token
+    ){}
 
     /**
      * Get the message envelope.
@@ -29,6 +29,7 @@ class UserRegistrationMail extends Mailable
     public function envelope(): Envelope
     {
         return new Envelope(
+            from: new Address('contact@timelyrecord.com', 'Timely Record'),
             subject: 'User Registration',
         );
     }
@@ -39,10 +40,10 @@ class UserRegistrationMail extends Mailable
     public function content(): Content
     {
         return new Content(
-            markdown: 'emails.registration',
+            view: 'emails.registration',
             with: [
-                'user' => $this->user,
-                'token' => $this->token,
+                'url' => route("user.register", $this->token ),
+                'logo' => url("https://drive.google.com/file/d/19kdTKjOSgqw_LzgkWLExNkp53HgB62ID/view?usp=sharing")
             ],
         );
     }
