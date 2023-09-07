@@ -71,6 +71,7 @@ class UserController extends Controller
             'password' => Hash::make($request->password),
         ]);
 
+
         $user->assignRole($request->get('role_id'));
 
         $companyIds = $request->get('company_ids');
