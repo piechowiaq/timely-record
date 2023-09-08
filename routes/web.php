@@ -9,6 +9,7 @@ use App\Http\Controllers\RoleController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\VerifyUserController;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Storage;
 use Inertia\Inertia;
 
 /*
@@ -22,7 +23,13 @@ use Inertia\Inertia;
 |
 */
 Route::get('/test', function () {
-    return Inertia::render('Test');
+//    return Inertia::render('Test');
+
+
+
+    Storage::setVisibility('public/timely_record_logo_hor.png', 'public');
+    $visibility = Storage::getVisibility('public/timely_record_logo_hor.png');
+    dd(  $visibility );
 });
 
 
