@@ -9,10 +9,7 @@
 <table style="max-width: 600px; margin: 0 auto; background-color: #fff; border: 1px solid #ddd; border-radius: 5px;">
     <tr>
         <td style="text-align: center; padding: 20px;">
-
-{{--            <img src="{{ asset('storage/timely_record_logo_hor.png')}}" alt="Timely Record" style="max-width: 150px;">--}}
-            <h1 style="margin-left: 0.5rem; font-weight: 700; letter-spacing: 0.1em; color: #4B5563; white-space: nowrap; "><span
-                    style="color: #0891b2; ">TIMELY</span> RECORD</h1>
+            <img src="https://timely-record.s3.eu-central-1.amazonaws.com/public/timely_record_logo_hor2.png" alt="Timely Record" style="max-width: 244px">
         </td>
     </tr>
     <tr>

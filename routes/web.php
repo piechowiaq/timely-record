@@ -27,9 +27,6 @@ Route::get('/test', function () {
 
 
 
-    Storage::setVisibility('public/timely_record_logo_hor.png', 'public');
-    $visibility = Storage::getVisibility('public/timely_record_logo_hor.png');
-    dd(  $visibility );
 });
 
 

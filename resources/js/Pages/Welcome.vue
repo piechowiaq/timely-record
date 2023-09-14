@@ -20,6 +20,7 @@ defineProps({
     <div class="grid grid-cols-1 md:grid-cols-2 bg-white dark:bg-gray-800 shadow rounded-lg ">
         <div class="p-6">
             <div class="flex items-center">
+
                 <svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
                      stroke-width="2" viewBox="0 0 24 24" class="w-8 h-8 text-gray-500">
                     <path
