@@ -8,12 +8,12 @@
 <body style="font-family: Arial, sans-serif; background-color: #f4f4f4; padding: 20px;">
 <table style="max-width: 600px; margin: 0 auto; background-color: #fff; border: 1px solid #ddd; border-radius: 5px;">
     <tr>
-        <td style="text-align: center; padding: 20px;">
+        <td style="text-align: center; padding: 20px 20px 0px;">
             <img src="https://timely-record.s3.eu-central-1.amazonaws.com/public/timely_record_logo_hor2.png" alt="Timely Record" style="max-width: 244px">
         </td>
     </tr>
     <tr>
-        <td style="text-align: center; padding: 20px;">
+        <td style="text-align: center; padding: 0px 20px;">
             <h2 style="color: #333;">Welcome {{ $user }}</h2>
             <p style="font-size: 16px; color: #666;">Please click the link below to finalize user registration process.</p>
         </td>
