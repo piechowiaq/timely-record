@@ -16,7 +16,10 @@ class RegisterUserController extends Controller
         dd($request->route('token'));
 
 
-        return Inertia::render('Auth/Register');
+
+
+//        return Inertia::render('Auth/Register');
+        return Auth::user();
 
     }
 
