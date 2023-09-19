@@ -10,10 +10,13 @@ use App\Http\Requests\UpdateUserRequest;
 use App\Models\Company;
 use App\Models\User;
 use Illuminate\Auth\Events\Registered;
+use Illuminate\Auth\Notifications\ResetPassword;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Password;
 use Illuminate\Support\Facades\Redirect;
+use Illuminate\Support\Str;
 use Inertia\Inertia;
 use Spatie\Permission\Models\Role;
 use Illuminate\Validation\Rules;
@@ -83,13 +86,21 @@ class UserController extends Controller
 
         $user->companies()->sync($companies);
 
-        $user->createToken('my-token');
+        Password::sendResetLink(
+            $request->only('email')
+        );
 
-        $token = $user->tokens->first()->token;
 
-        event(new UserCreated($user, $token));
 
-//        $user->delete();
+//        $user->createToken('my-token');
+//
+//        $token = $user->tokens->first()->token;
+//
+//
+//
+//        event(new UserCreated($user, $token));
+//
+////        $user->delete();
 
         return Redirect::route('users.index')->with('success', 'User created. Verification e-mail sent.');
     }
