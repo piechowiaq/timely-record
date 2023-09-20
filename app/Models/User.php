@@ -3,6 +3,7 @@
 namespace App\Models;
 
  use App\Models\Company;
+ use App\Notifications\RegisterUser;
  use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Contracts\Auth\CanResetPassword;
 use Illuminate\Database\Eloquent\Factories\HasFactory;

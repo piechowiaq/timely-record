@@ -11,6 +11,7 @@ use App\Models\Company;
 use App\Models\User;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Auth\Notifications\ResetPassword;
+use Illuminate\Auth\Passwords\TokenRepositoryInterface;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
@@ -86,21 +87,14 @@ class UserController extends Controller
 
         $user->companies()->sync($companies);
 
-        Password::sendResetLink(
-            $request->only('email')
-        );
+        $token = app('auth.password.broker')->createToken($user);
 
 
+        $url = route('password.reset', ['token' => $token, 'email' => $request->email]);
 
-//        $user->createToken('my-token');
-//
-//        $token = $user->tokens->first()->token;
-//
-//
-//
-//        event(new UserCreated($user, $token));
-//
-////        $user->delete();
+        $user->notify(new \App\Notifications\RegisterUser($url));
+
+        $user->markEmailAsVerified();
 
         return Redirect::route('users.index')->with('success', 'User created. Verification e-mail sent.');
     }
