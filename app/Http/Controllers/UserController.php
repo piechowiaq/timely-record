@@ -89,12 +89,9 @@ class UserController extends Controller
 
         $token = app('auth.password.broker')->createToken($user);
 
-
-        $url = route('password.reset', ['token' => $token, 'email' => $request->email]);
+        $url = route('user.register', ['token' => $token, 'email' => $request->email]);
 
         $user->notify(new \App\Notifications\RegisterUser($url));
-
-        $user->markEmailAsVerified();
 
         return Redirect::route('users.index')->with('success', 'User created. Verification e-mail sent.');
     }
