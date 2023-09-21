@@ -40,7 +40,15 @@
                                 @click.once="destroy(user)" tabindex="-1" type="button"
                                 class="text-red-600 hover:underline">Delete Contact
                         </PrimaryButton>
-                        <PrimaryButton v-if="user.id !== 1" :loading=" form.processing" class="btn-indigo ml-auto" type="submit">Edit User
+
+                        <form @submit.prevent="send">
+                                <PrimaryButton :class="{ 'opacity-25': form2.processing }" :disabled="form2.processing">
+                                    Resend Verification Email
+                                </PrimaryButton>
+                        </form>
+
+
+                     <PrimaryButton v-if="user.id !== 1" :loading=" form.processing" class="btn-indigo ml-auto" type="submit">Edit User
                         </PrimaryButton>
                     </div>
                 </form>
@@ -91,8 +99,13 @@ export default defineComponent({
                 company_ids: company_ids,
             },)))
 
-        return {form}
+        const form2 = useForm({ user: user})
+
+        return {form, form2}
     },
+
+
+
     methods: {
         update() {
             this.form.put(this.route('users.update', this.user.id))
@@ -103,6 +116,9 @@ export default defineComponent({
         restore(user) {
             this.$inertia.put(this.route('users.restore', user))
         },
+        send() {
+            this.form2.post(this.route('user.link', this.user.id))
+        }
     },
 
 

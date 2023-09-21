@@ -14,9 +14,10 @@ class RegisterUser extends Notification
     /**
      * Create a new notification instance.
      */
-    public function __construct($url)
+    public function __construct($url, $userName)
     {
         $this->url = $url;
+        $this->userName = $userName;
     }
 
     /**
@@ -35,8 +36,9 @@ class RegisterUser extends Notification
     public function toMail(object $notifiable): MailMessage
     {
         return (new MailMessage)
-                    ->line('The introduction to the notification.')
-                    ->action('Notification Action', $this->url)
+                    ->greeting('Hello '.$this->userName.'!')
+                    ->line('Please click the link below to finalize user registration process.')
+                    ->action('Register', $this->url)
                     ->line('Thank you for using our application!');
     }
 

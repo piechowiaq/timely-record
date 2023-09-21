@@ -36,6 +36,7 @@ Route::middleware('guest')->group(function () {
                 ->name('password.store');
 
     Route::get('register-user/{token}', [RegisterUserController::class, 'create'])->name('user.register');
+    Route::post('register-user/{id}', [RegisterUserController::class, 'send'])->name('user.link');
 
 });
 

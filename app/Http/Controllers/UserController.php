@@ -91,7 +91,7 @@ class UserController extends Controller
 
         $url = route('user.register', ['token' => $token, 'email' => $request->email]);
 
-        $user->notify(new \App\Notifications\RegisterUser($url));
+        $user->notify(new \App\Notifications\RegisterUser($url,  $request->name));
 
         return Redirect::route('users.index')->with('success', 'User created. Verification e-mail sent.');
     }

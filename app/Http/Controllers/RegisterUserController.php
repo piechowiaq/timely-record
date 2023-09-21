@@ -20,54 +20,30 @@ class RegisterUserController extends Controller
 {
     public function create(Request $request): Response
     {
+        $user = User::where('email',$request->email)->first();
 
-        User::where('email',$request->email)->first()->markEmailAsVerified();;
+        $user->markEmailAsVerified();
 
             return Inertia::render('Auth/RegisterUser', [
                 'email' => $request->email,
                 'token' => $request->route('token'),
+                'name'  => $user->name
             ]);
-
     }
 
-    /**
-     * Handle an incoming new password request.
-     *
-     * @throws \Illuminate\Validation\ValidationException
-     */
-    public function store(Request $request): RedirectResponse
+    public function send($id)
     {
-        $request->validate([
-            'token' => 'required',
-            'email' => 'required|email',
-            'password' => ['required', 'confirmed', Rules\Password::defaults()],
-        ]);
 
-        // Here we will attempt to reset the user's password. If it is successful we
-        // will update the password on an actual user model and persist it to the
-        // database. Otherwise we will parse the error and return the response.
-        $status = Password::reset(
-            $request->only('email', 'password', 'password_confirmation', 'token'),
-            function ($user) use ($request) {
-                $user->forceFill([
-                    'password' => Hash::make($request->password),
-                    'remember_token' => Str::random(60),
-                ])->save();
+        dd($id);
 
-                event(new PasswordReset($user));
-            }
-        );
+        $user = User::where('id', $id)->first();
 
-        // If the password was successfully reset, we will redirect the user back to
-        // the application's home authenticated view. If there is an error we can
-        // redirect them back to where they came from with their error message.
-        if ($status == Password::PASSWORD_RESET) {
-            return redirect()->route('login')->with('status', __($status));
-        }
+        $token = app('auth.password.broker')->createToken($user);
 
-        throw ValidationException::withMessages([
-            'email' => [trans($status)],
-        ]);
+        $url = route('user.register', ['token' => $token, 'email' => $user->email]);
+
+        $user->notify(new \App\Notifications\RegisterUser($url,  $user->name));
+
+        return back()->with('status', 'verification-link-sent');
     }
-
 }

@@ -17,9 +17,14 @@ const props = defineProps({
         type: String,
         required: true,
     },
+    name: {
+        type: String,
+        required: true,
+    }
 });
 
 const form = useForm({
+
     token: props.token,
     email: props.email,
     password: '',
@@ -58,9 +63,9 @@ const submit = () => {
 
                 <form @submit.prevent="submit">
             <div>
-                <InputLabel for="email" value="Email" />
 
-                <p class="mt-1 block w-full">{{form.email}}</p>
+
+                <p class="mt-1 block w-full">Welcome {{props.name}}. Please set your password.</p>
 
 
 
