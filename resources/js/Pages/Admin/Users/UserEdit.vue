@@ -41,16 +41,17 @@
                                 class="text-red-600 hover:underline">Delete Contact
                         </PrimaryButton>
 
-                        <form @submit.prevent="send">
-                                <PrimaryButton :class="{ 'opacity-25': form2.processing }" :disabled="form2.processing">
-                                    Resend Verification Email
-                                </PrimaryButton>
-                        </form>
+
 
 
                      <PrimaryButton v-if="user.id !== 1" :loading=" form.processing" class="btn-indigo ml-auto" type="submit">Edit User
                         </PrimaryButton>
                     </div>
+                </form>
+                <form @submit.prevent="send">
+                    <PrimaryButton :class="{ 'opacity-25': form2.processing }" :disabled="form2.processing">
+                        Resend Verification Email
+                    </PrimaryButton>
                 </form>
             </div>
         </div>
@@ -99,7 +100,7 @@ export default defineComponent({
                 company_ids: company_ids,
             },)))
 
-        const form2 = useForm({ user: user})
+        const form2 = useForm({ })
 
         return {form, form2}
     },

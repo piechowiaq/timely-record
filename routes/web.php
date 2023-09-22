@@ -4,6 +4,7 @@ use App\Http\Controllers\CompanyController;
 use App\Http\Controllers\ContactController;
 use App\Http\Controllers\PermissionController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\RegisterUserController;
 use App\Http\Controllers\RegistryController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\UserController;
@@ -69,6 +70,8 @@ Route::middleware(['auth', 'verified', 'admin.authorize'])->prefix('admin')->gro
     Route::put('users/{user}/restore', [UserController::class, 'restore'])->name('users.restore');
 
 });
+
+
 
 
 //Route::get('verify-email/{id}/{hash}', VerifyEmailController::class)

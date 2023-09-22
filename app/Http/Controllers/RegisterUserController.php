@@ -34,9 +34,11 @@ class RegisterUserController extends Controller
     public function send($id)
     {
 
-        dd($id);
+
 
         $user = User::where('id', $id)->first();
+
+
 
         $token = app('auth.password.broker')->createToken($user);
 
@@ -46,4 +48,5 @@ class RegisterUserController extends Controller
 
         return back()->with('status', 'verification-link-sent');
     }
+
 }

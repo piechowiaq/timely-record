@@ -12,6 +12,8 @@ use App\Http\Controllers\Auth\VerifyEmailController;
 use App\Http\Controllers\RegisterUserController;
 use Illuminate\Support\Facades\Route;
 
+
+
 Route::middleware('guest')->group(function () {
     Route::get('register', [RegisteredUserController::class, 'create'])
                 ->name('register');
@@ -36,7 +38,7 @@ Route::middleware('guest')->group(function () {
                 ->name('password.store');
 
     Route::get('register-user/{token}', [RegisterUserController::class, 'create'])->name('user.register');
-    Route::post('register-user/{id}', [RegisterUserController::class, 'send'])->name('user.link');
+//    Route::get('register-user', [RegisterUserController::class, 'index'])->name('user.link');
 
 });
 
@@ -48,7 +50,7 @@ Route::middleware('auth')->group(function () {
                 ->middleware(['signed', 'throttle:6,1'])
                 ->name('verification.verify');
 
-
+    Route::post('register-user/{id}', [RegisterUserController::class, 'send'])->name('user.link');
     Route::post('email/verification-notification', [EmailVerificationNotificationController::class, 'store'])
                 ->middleware('throttle:6,1')
                 ->name('verification.send');
