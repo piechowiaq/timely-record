@@ -38,7 +38,7 @@ Route::middleware('guest')->group(function () {
                 ->name('password.store');
 
     Route::get('register-user/{token}', [RegisterUserController::class, 'create'])->name('user.register');
-//    Route::get('register-user', [RegisterUserController::class, 'index'])->name('user.link');
+
 
 });
 
@@ -51,6 +51,7 @@ Route::middleware('auth')->group(function () {
                 ->name('verification.verify');
 
     Route::post('register-user/{id}', [RegisterUserController::class, 'send'])->name('user.link');
+
     Route::post('email/verification-notification', [EmailVerificationNotificationController::class, 'store'])
                 ->middleware('throttle:6,1')
                 ->name('verification.send');

@@ -87,7 +87,11 @@ class UserController extends Controller
 
         $user->companies()->sync($companies);
 
-        $token = app('auth.password.broker')->createToken($user);
+//        $token = app('auth.password.broker')->createToken($user);
+
+        $token = Password::createToken($user);
+
+
 
         $url = route('user.register', ['token' => $token, 'email' => $request->email]);
 
