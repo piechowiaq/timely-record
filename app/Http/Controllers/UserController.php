@@ -89,13 +89,13 @@ class UserController extends Controller
 
 //        $token = app('auth.password.broker')->createToken($user);
 
-        $token = Password::createToken($user);
+//        $token = Password::createToken($user);
+//
+//
+//
+//        $url = route('user.register', ['token' => $token, 'email' => $request->email]);
 
-
-
-        $url = route('user.register', ['token' => $token, 'email' => $request->email]);
-
-        $user->notify(new \App\Notifications\RegisterUser($url,  $request->name));
+        $user->notify(new \App\Notifications\SendEmailRegistrationNotification());
 
         return Redirect::route('users.index')->with('success', 'User created. Verification e-mail sent.');
     }
