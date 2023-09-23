@@ -118,7 +118,7 @@ export default defineComponent({
             this.$inertia.put(this.route('users.restore', user))
         },
         send() {
-            this.form2.post(this.route('user.link', this.user.id))
+            this.form2.post(this.route('registration.send'))
         }
     },
 

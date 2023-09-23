@@ -14,11 +14,12 @@ class EmailRegistrationNotificationController extends Controller
      */
     public function store(Request $request): RedirectResponse
     {
-        if ($request->user()->hasVerifiedEmail()) {
-            return redirect()->intended(RouteServiceProvider::HOME);
-        }
 
-        $request->user()->sendEmailRegistrationNotification();
+//        if ($request->user()->hasVerifiedEmail()) {
+//            return redirect()->intended(RouteServiceProvider::HOME);
+//        }
+
+        $request->user()->notify(new \App\Notifications\SendEmailRegistrationNotification());
 
         return back()->with('status', 'registration-link-sent');
     }
