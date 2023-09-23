@@ -38,21 +38,21 @@
                     <div class="px-8 py-4 bg-gray-50 border-t border-gray-100 flex items-center">
                         <PrimaryButton v-if="user.id !== 1 || user.id !== 1 && !user.deleted_at" value="Delete"
                                 @click.once="destroy(user)" tabindex="-1" type="button"
-                                class="text-red-600 hover:underline">Delete Contact
+                                >Delete Contact
                         </PrimaryButton>
 
-
+                        <form @submit.prevent="send">
+                            <PrimaryButton :class="{ 'opacity-25': form2.processing }" :disabled="form2.processing" class="mx-2">
+                                Resend Verification Email
+                            </PrimaryButton>
+                        </form>
 
 
                      <PrimaryButton v-if="user.id !== 1" :loading=" form.processing" class="btn-indigo ml-auto" type="submit">Edit User
                         </PrimaryButton>
                     </div>
                 </form>
-                <form @submit.prevent="send">
-                    <PrimaryButton :class="{ 'opacity-25': form2.processing }" :disabled="form2.processing">
-                        Resend Verification Email
-                    </PrimaryButton>
-                </form>
+
             </div>
         </div>
     </AdminLayout>

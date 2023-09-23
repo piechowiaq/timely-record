@@ -4,9 +4,9 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use App\Models\User;
-use App\Providers\RouteServiceProvider;
 use Illuminate\Http\RedirectResponse;
-use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Redirect;
+
 
 class EmailRegistrationNotificationController extends Controller
 {
@@ -15,13 +15,8 @@ class EmailRegistrationNotificationController extends Controller
      */
     public function store(User $user): RedirectResponse
     {
-
-//        if ($request->user()->hasVerifiedEmail()) {
-//            return redirect()->intended(RouteServiceProvider::HOME);
-//        }
-
         $user->notify(new \App\Notifications\SendEmailRegistrationNotification());
 
-        return back()->with('status', 'registration-link-sent');
+        return Redirect::route('users.index')->with('success', 'Registration email sent.');
     }
 }
