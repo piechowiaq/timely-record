@@ -81,7 +81,7 @@ class SendEmailRegistrationNotification extends Notification
     {
         $token = Password::createToken($user);
 
-        return route('user.register', ['token' => $token, 'email' => $user->getEmailForVerification()]);
+        return route('user.registration', ['token' => $token, 'email' => $user->getEmailForVerification()]);
     }
 
 }

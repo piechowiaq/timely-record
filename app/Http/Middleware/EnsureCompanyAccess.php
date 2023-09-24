@@ -14,12 +14,15 @@ class EnsureCompanyAccess
      *
      * @param Request $request
      * @param Closure(\Illuminate\Http\Request): (\Symfony\Component\HttpFoundation\Response)  $next
-     * @param Company $company
-     * @return Response
+     * @return string
      */
-    public function handle(Request $request, Closure $next, Company $company): Response
+    public function handle(Request $request, Closure $next): string
     {
-        if (!$request->user() || !$request->user()->hasCompanyAccess($company)) {
+        if($request->user()->isAdmin || !$request->user()->hasCompanyAccess()){
+            return route('admin.dashboard');
+        }
+
+        if (!$request->user() || !$request->user()->hasCompanyAccess()) {
             // Redirect or abort, based on your preference.
             return abort(403, 'Unauthorized access.');
         }

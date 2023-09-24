@@ -23,10 +23,7 @@ use Inertia\Inertia;
 |
 */
 Route::get('/test', function () {
-//    return Inertia::render('Test');
-
-
-
+    return Inertia::render('Test');
 });
 
 
@@ -59,7 +56,7 @@ Route::middleware('guest')->group(function(){
 
 Route::get('/dashboard', function () {
     return Inertia::render('Dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard');
+})->name('dashboard');
 
 Route::middleware(['auth', 'verified', 'admin'])->prefix('admin')->group(function () {
 
@@ -89,9 +86,9 @@ Route::middleware('auth')->group(function () {
 });
 
 
-Route::middleware(['auth', 'verified', 'company.access'])->group(function () {
+Route::middleware(['auth', 'verified', 'company.access', 'admin'])->group(function () {
 
-    Route::get('/{company}/dashboard', [CompanyDashboardController::class])->name('company.dashboard');
+//    Route::get('/dashboard', CompanyDashboardController::class)->name('company.dashboard');
 
 });
 

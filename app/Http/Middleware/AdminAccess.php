@@ -19,7 +19,7 @@ class AdminAccess
      */
     public function handle(Request $request, Closure $next): Response
     {
-        if(!Auth::user()->isSuperAdmin()){
+        if(!$request->user()->isSuperAdmin()){
             abort(ResponseAlias::HTTP_UNAUTHORIZED);
         }
 
