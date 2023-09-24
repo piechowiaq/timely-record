@@ -8,7 +8,7 @@ use Illuminate\Support\Facades\Auth;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Response as ResponseAlias;
 
-class AuthorizeAdminDashboardAccess
+class AdminAccess
 {
     /**
      * Handle an incoming request.

@@ -1,16 +1,15 @@
 <?php
 
+use App\Http\Controllers\Company\CompanyDashboardController;
 use App\Http\Controllers\CompanyController;
 use App\Http\Controllers\ContactController;
 use App\Http\Controllers\PermissionController;
 use App\Http\Controllers\ProfileController;
-use App\Http\Controllers\RegisterUserController;
 use App\Http\Controllers\RegistryController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\VerifyUserController;
 use Illuminate\Support\Facades\Route;
-use Illuminate\Support\Facades\Storage;
 use Inertia\Inertia;
 
 /*
@@ -40,19 +39,29 @@ Route::get('/', function () {
     ]);
 })->name('welcome');
 
-Route::get('/contact', function () {
-    return Inertia::render('Contact', [
-        'canLogin' => Route::has('login'),
-    ]);
-})->name('contact');
 
-Route::post('/contact', [ContactController::class, 'send'])->name('contact.send');
+Route::middleware('guest')->group(function(){
+
+    Route::get('/contact', function () {
+        return Inertia::render('Contact', [
+            'canLogin' => Route::has('login'),
+        ]);
+    })->name('contact');
+
+    Route::post('/contact', [ContactController::class, 'send'])->name('contact.send');
+
+});
+
+
+
+
+
 
 Route::get('/dashboard', function () {
     return Inertia::render('Dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');
 
-Route::middleware(['auth', 'verified', 'admin.authorize'])->prefix('admin')->group(function () {
+Route::middleware(['auth', 'verified', 'admin'])->prefix('admin')->group(function () {
 
     Route::get('/dashboard', function () {
         return Inertia::render('Admin/Dashboard');
@@ -73,23 +82,17 @@ Route::middleware(['auth', 'verified', 'admin.authorize'])->prefix('admin')->gro
 
 
 
-
-//Route::get('verify-email/{id}/{hash}', VerifyEmailController::class)
-//    ->middleware(['signed', 'throttle:6,1'])
-//    ->name('verification.verify');
-
-
-
-
-
-
-
-
-
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+});
+
+
+Route::middleware(['auth', 'verified', 'company.access'])->group(function () {
+
+    Route::get('/{company}/dashboard', [CompanyDashboardController::class])->name('company.dashboard');
+
 });
 
 require __DIR__.'/auth.php';

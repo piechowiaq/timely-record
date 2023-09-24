@@ -59,6 +59,10 @@ class User extends Authenticatable implements MustVerifyEmail
     {
         return $this->belongsToMany(Company::class);
     }
+    public function hasCompanyAccess(Company $company)
+    {
+        return $this->companies->contains($company->id);
+    }
 
 
 }
