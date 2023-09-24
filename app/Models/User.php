@@ -2,20 +2,20 @@
 
 namespace App\Models;
 
- use App\Models\Company;
- use App\Notifications\RegisterUser;
- use Illuminate\Contracts\Auth\MustVerifyEmail;
+use App\Models\Company;
+use App\Notifications\RegisterUser;
+use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Contracts\Auth\CanResetPassword;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
- use Illuminate\Database\Eloquent\Relations\Relation;
- use Illuminate\Database\Eloquent\SoftDeletes;
- use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Database\Eloquent\Relations\Relation;
+use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
- use Spatie\Permission\Traits\HasRoles;
+use Spatie\Permission\Traits\HasRoles;
 
 
- class User extends Authenticatable implements MustVerifyEmail
+class User extends Authenticatable implements MustVerifyEmail
 {
     use HasApiTokens, HasFactory, Notifiable, HasRoles, SoftDeletes, ResolveRouteBinding;
 
@@ -50,15 +50,15 @@ use Laravel\Sanctum\HasApiTokens;
         'password' => 'hashed',
     ];
 
-     public function isSuperAdmin(): bool
-     {
-         return $this->hasRole('Super Admin');
-     }
+    public function isSuperAdmin(): bool
+    {
+        return $this->hasRole('Super Admin');
+    }
 
-     public function companies(): Relation
-     {
-         return $this->belongsToMany(Company::class);
-     }
+    public function companies(): Relation
+    {
+        return $this->belongsToMany(Company::class);
+    }
 
 
 }

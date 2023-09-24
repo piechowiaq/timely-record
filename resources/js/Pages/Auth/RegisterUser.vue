@@ -56,19 +56,10 @@ const submit = () => {
                         </svg>
                     </Link>
                 </div>
-
-
                 <div class="mx-12">
-
-
                 <form @submit.prevent="submit">
             <div>
-
-
                 <p class="mt-1 block w-full">Welcome {{props.name}}. Please set your password.</p>
-
-
-
                 <InputError class="mt-2" :message="form.errors.email" />
             </div>
 
