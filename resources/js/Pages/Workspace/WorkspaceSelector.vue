@@ -5,12 +5,12 @@ import { Head, Link } from '@inertiajs/vue3';
 
 // defineOptions({ layout: AdminLayout })
 
-const props = defineProps({
-    company: {
-        type: Object,
-        required: true,
-    },
-});
+// const props = defineProps({
+//     companies: {
+//         type: Object,
+//         required: true,
+//     },
+// });
 
 
 </script>
@@ -20,7 +20,7 @@ const props = defineProps({
     <Head title="Dashboard" />
 
     <div class="bg-gray-100 py-2 px-3 h-12 items-center flex font-bold">
-        <p>{{ company.name }}Dashboard</p>
+        <p>Dashboard</p>
     </div>
 
     <p>Company Dashboard</p>

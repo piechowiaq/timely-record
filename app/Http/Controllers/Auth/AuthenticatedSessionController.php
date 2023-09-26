@@ -30,19 +30,21 @@ class AuthenticatedSessionController extends Controller
      */
     public function store(LoginRequest $request): RedirectResponse
     {
+
         $request->authenticate();
 
         $request->session()->regenerate();
 
+
+
         if(Auth::user()->isSuperAdmin()){
 
-            return redirect()->intended('/admin/dashboard');
+            return redirect()->intended(route('admin.dashboard'));
         }
         else
         {
-            return redirect()->intended(RouteServiceProvider::HOME);
+            return redirect()->intended(route('workspace.dashboard'));
         }
-
     }
 
     /**

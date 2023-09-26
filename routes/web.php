@@ -1,6 +1,6 @@
 <?php
 
-use App\Http\Controllers\Company\CompanyDashboardController;
+use App\Http\Controllers\Workspace\WorkspaceDashboardController;
 use App\Http\Controllers\CompanyController;
 use App\Http\Controllers\ContactController;
 use App\Http\Controllers\PermissionController;
@@ -9,6 +9,7 @@ use App\Http\Controllers\RegistryController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\VerifyUserController;
+use App\Http\Controllers\Workspace\WorkspaceDashboardSelectorController;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
@@ -23,7 +24,7 @@ use Inertia\Inertia;
 |
 */
 Route::get('/test', function () {
-    return Inertia::render('Test');
+    return Inertia::render('Workspace/WorkspaceSelector');
 });
 
 
@@ -54,7 +55,7 @@ Route::middleware('guest')->group(function(){
 
 
 
-Route::get('/dashboard', function () {
+Route::get('/dashboardh', function () {
     return Inertia::render('Dashboard');
 })->name('dashboard');
 
@@ -86,10 +87,9 @@ Route::middleware('auth')->group(function () {
 });
 
 
-Route::middleware(['auth', 'verified', 'company.access', 'admin'])->group(function () {
-
-//    Route::get('/dashboard', CompanyDashboardController::class)->name('company.dashboard');
-
+Route::middleware(['auth', 'verified', 'company.access'])->group(function () {
+    Route::get('/dashboard',WorkspaceDashboardController::class)->name('workspace.dashboard');
+    Route::get('/selector', WorkspaceDashboardSelectorController::class)->name('workspace.selector');
 });
 
 require __DIR__.'/auth.php';
