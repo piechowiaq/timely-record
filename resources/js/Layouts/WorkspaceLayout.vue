@@ -1,6 +1,6 @@
 <script setup>
 import { ref } from 'vue';
-import ApplicationLogo from '@/Components/ApplicationLogo.vue';
+
 import Dropdown from '@/Components/Dropdown.vue';
 import DropdownLink from '@/Components/DropdownLink.vue';
 import ResponsiveNavLink from '@/Components/ResponsiveNavLink.vue';
@@ -36,7 +36,7 @@ const showingNavigationDropdown = ref(false);
                                 <div class="flex">
                                     <!-- Navigation Links -->
                                     <div class="hidden space-x-8  sm:flex items-center">
-                                        <Link :href="route('admin.dashboard')" :active="route().current('admin.dashboard')">
+                                        <Link :href="route('workspace.dashboard')" :active="route().current('workspace.dashboard')">
                                             Radisson Blu
                                         </Link>
                                     </div>

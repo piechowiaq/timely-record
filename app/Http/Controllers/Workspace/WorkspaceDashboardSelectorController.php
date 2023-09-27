@@ -13,7 +13,7 @@ class WorkspaceDashboardSelectorController extends Controller
 
         $user = auth()->user();
 
-        $companies = $user->companies->get();
+        $companies = $user->companies;
 
         return Inertia::render('Workspace/WorkspaceSelector', [
             'companies' => $companies,
