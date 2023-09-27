@@ -5,7 +5,7 @@ import Dropdown from '@/Components/Dropdown.vue';
 import DropdownLink from '@/Components/DropdownLink.vue';
 import ResponsiveNavLink from '@/Components/ResponsiveNavLink.vue';
 import { Link } from '@inertiajs/vue3';
-import AdminLeftNavigationBar from '@/Layouts/AdminLeftNavigationBar.vue'
+import WorkspaceLeftNavigationBar from '@/Layouts/WorkspaceLeftNavigationBar.vue'
 
 const showingNavigationDropdown = ref(false);
 </script>
@@ -171,8 +171,7 @@ const showingNavigationDropdown = ref(false);
 
                 <div class="flex flex-grow overflow-hidden">
                     <!-- Left Nav Bar -->
-                    <AdminLeftNavigationBar/>
-
+                    <WorkspaceLeftNavigationBar/>
 
                     <div class="flex-1 overflow-y-auto p-2" >
                         <!--Content-->
