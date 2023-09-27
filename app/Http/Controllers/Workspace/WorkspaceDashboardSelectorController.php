@@ -8,9 +8,8 @@ use Inertia\Inertia;
 
 class WorkspaceDashboardSelectorController extends Controller
 {
-    public function __invoke(): \Inertia\Response    {
-
-        dd('hello');
+    public function __invoke(): \Inertia\Response
+    {
 
         $user = auth()->user();
 

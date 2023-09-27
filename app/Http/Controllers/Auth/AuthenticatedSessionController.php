@@ -30,21 +30,29 @@ class AuthenticatedSessionController extends Controller
      */
     public function store(LoginRequest $request): RedirectResponse
     {
-
         $request->authenticate();
-
         $request->session()->regenerate();
 
+        return $this->redirectToAppropriateDashboard($request);
+    }
 
+    protected function redirectToAppropriateDashboard(LoginRequest $request): RedirectResponse
+    {
+        $user = Auth::user();
 
-        if(Auth::user()->isSuperAdmin()){
-
+        if ($user->isSuperAdmin()) {
             return redirect()->intended(route('admin.dashboard'));
         }
-        else
-        {
+
+        $companyCount = $user->companies()->count();
+
+        if ($companyCount === 1) {
             return redirect()->intended(route('workspace.dashboard'));
+        } elseif ($companyCount > 1) {
+            return redirect()->intended(route('workspace.selector'));
         }
+
+        return $this->destroy($request);
     }
 
     /**
