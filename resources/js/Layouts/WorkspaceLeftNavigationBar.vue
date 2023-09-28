@@ -2,11 +2,16 @@
 
 import { Link } from '@inertiajs/vue3';
 
+defineProps({
+    company: Object,
+})
+
+
 </script>
 <template>
     <div class="flex-shrink-0 hidden md:block w-56 p-12 bg-cyan-700">
         <div class="mb-4">
-            <Link :href="route('workspace.dashboard')" class="flex items-center group py-3">
+            <Link :href="route('workspace.dashboard', { company: company.id })" class="flex items-center group py-3">
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"
                      class="w-4 h-4 mr-2 fill-zinc-400 group-hover:fill-white">
                     <path
@@ -16,7 +21,7 @@ import { Link } from '@inertiajs/vue3';
             </Link>
         </div>
         <div class="mb-4">
-            <Link :href="route('workspace.dashboard')" class="flex items-center group py-3">
+            <Link :href="route('workspace.dashboard', { company: company.id })" class="flex items-center group py-3">
                 <svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100"
                      class="w-4 h-4 mr-2 fill-zinc-400 group-hover:fill-white">
                     <path fill-rule="evenodd"
@@ -26,7 +31,7 @@ import { Link } from '@inertiajs/vue3';
             </Link>
         </div>
         <div class="mb-4">
-            <Link :href="route('workspace.dashboard')" class="flex items-center group py-3">
+            <Link :href="route('workspace.dashboard', { company: company.id })" class="flex items-center group py-3">
                 <svg class="w-4 h-4 mr-2 fill-zinc-400 group-hover:fill-white" viewBox="0 0 20 20">
                     <path
                         d="M18.344,16.174l-7.98-12.856c-0.172-0.288-0.586-0.288-0.758,0L1.627,16.217c0.339-0.543-0.603,0.668,0.384,0.682h15.991C18.893,16.891,18.167,15.961,18.344,16.174 M2.789,16.008l7.196-11.6l7.224,11.6H2.789z M10.455,7.552v3.561c0,0.244-0.199,0.445-0.443,0.445s-0.443-0.201-0.443-0.445V7.552c0-0.245,0.199-0.445,0.443-0.445S10.455,7.307,10.455,7.552M10.012,12.439c-0.733,0-1.33,0.6-1.33,1.336s0.597,1.336,1.33,1.336c0.734,0,1.33-0.6,1.33-1.336S10.746,12.439,10.012,12.439M10.012,14.221c-0.244,0-0.443-0.199-0.443-0.445c0-0.244,0.199-0.445,0.443-0.445s0.443,0.201,0.443,0.445C10.455,14.021,10.256,14.221,10.012,14.221"></path>

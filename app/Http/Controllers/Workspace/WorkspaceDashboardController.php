@@ -4,18 +4,17 @@ namespace App\Http\Controllers\Workspace;
 
 use App\Http\Controllers\Controller;
 use App\Models\Company;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 use Inertia\Inertia;
+use Inertia\Response;
 
 class WorkspaceDashboardController extends Controller
 {
-    public function __invoke(): \Inertia\Response
+    public function __invoke(Company $company): Response
     {
-        $company =  Auth::user()->companies()->first();
 
-        return Inertia::render('Workspace/Dashboard',
+        return Inertia::render('Workspace/Dashboard', [
+            'company' => $company,
+        ]);
 
-        ['company' => $company]);
     }
 }

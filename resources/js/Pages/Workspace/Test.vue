@@ -1,3 +1,15 @@
+<script setup>
+
+
+
+defineProps({
+    company: Object,
+})
+
+
+</script>
+
+
 <template>
 
 
@@ -5,7 +17,7 @@
             <div class="flex">
 
                 <div class="flex flex-shrink-0 w-56">
-                    Logo
+                    {{ company }}
                 </div>
 
                 <div class="flex w-full">

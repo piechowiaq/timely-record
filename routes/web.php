@@ -88,7 +88,7 @@ Route::middleware('auth')->group(function () {
 
 
 Route::middleware(['auth', 'verified', 'company.access'])->group(function () {
-    Route::get('/dashboard',WorkspaceDashboardController::class)->name('workspace.dashboard');
+    Route::get('/dashboard/{company}',WorkspaceDashboardController::class)->name('workspace.dashboard');
     Route::get('/selector', WorkspaceDashboardSelectorController::class)->name('workspace.selector');
 });
 
