@@ -16,8 +16,7 @@ defineProps({
     <div class="relative flex items-top justify-center min-h-screen min-w-fit bg-gray-100 dark:bg-gray-900">
 
         <div v-if="canLogin && $page.props.auth.user" class=" absolute top-0 right-0 px-6 py-4 block">
-
-            <Link :href="route('login')" class=" text-sm text-gray-700 underline mr-1">
+            <Link :href="route('workspace.selector')" class=" text-sm text-gray-700 underline mr-1">
                 Dashboard
             </Link>
             <Link :href="route('logout')" method="post" as="button" class=" text-sm text-gray-700 underline">
