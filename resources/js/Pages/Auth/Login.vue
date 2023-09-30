@@ -5,9 +5,9 @@ import InputError from '@/Components/InputError.vue';
 import InputLabel from '@/Components/InputLabel.vue';
 import PrimaryButton from '@/Components/PrimaryButton.vue';
 import TextInput from '@/Components/TextInput.vue';
-import { Head, Link, useForm } from '@inertiajs/vue3';
+import {Head, Link, useForm} from '@inertiajs/vue3';
 
-defineOptions({ layout: GuestLayout })
+defineOptions({layout: GuestLayout})
 
 defineProps({
     canResetPassword: {
@@ -33,7 +33,7 @@ const submit = () => {
 
 <template>
 
-        <Head title="Log in" />
+    <Head title="Log in"/>
 
     <div class=" lg:flex lg:justify-center grid grid-cols-1">
         <div class="p-6 lg:w-1/2 bg-white dark:bg-gray-800 shadow rounded-lg">
@@ -48,7 +48,8 @@ const submit = () => {
                 </div>
                 <Link :href="route('welcome')" preserve-scroll>
                     <svg xmlns="http://www.w3.org/2000/svg" class="m-4 w-4 h-4 text-gray-500" viewBox="0 0 24 24">
-                        <path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18 6L6 18M6 6l12 12"/>
+                        <path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
+                              stroke-width="2" d="M18 6L6 18M6 6l12 12"/>
                     </svg>
                 </Link>
             </div>
@@ -57,72 +58,67 @@ const submit = () => {
             <div class="mx-12">
 
 
+                <div v-if="status" class="mb-4 font-medium text-sm text-green-600">
+                    {{ status }}
+                </div>
 
+                <form @submit.prevent="submit">
+                    <div>
+                        <InputLabel for="email" value="Email"/>
 
+                        <TextInput
+                            id="email"
+                            type="email"
+                            class="mt-1 block w-full"
+                            v-model="form.email"
+                            required
+                            autofocus
+                            autocomplete="username"
+                        />
 
+                        <InputError class="mt-2" :message="form.errors.email"/>
+                    </div>
 
+                    <div class="mt-4">
+                        <InputLabel for="password" value="Password"/>
 
+                        <TextInput
+                            id="password"
+                            type="password"
+                            class="mt-1 block w-full"
+                            v-model="form.password"
+                            required
+                            autocomplete="current-password"
+                        />
 
-        <div v-if="status" class="mb-4 font-medium text-sm text-green-600">
-            {{ status }}
+                        <InputError class="mt-2" :message="form.errors.password"/>
+                    </div>
+
+                    <div class="block mt-4">
+                        <label class="flex items-center">
+                            <Checkbox name="remember" v-model:checked="form.remember"/>
+                            <span class="ml-2 text-sm text-gray-600">Remember me</span>
+                        </label>
+                    </div>
+
+                    <div class="flex items-center justify-end mt-4">
+                        <Link
+                            v-if="canResetPassword"
+                            :href="route('password.request')"
+                            class="underline text-sm text-gray-600 hover:text-gray-900 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+                        >
+                            Forgot your password?
+                        </Link>
+
+                        <PrimaryButton class="ml-4" :class="{ 'opacity-25': form.processing }"
+                                       :disabled="form.processing">
+                            Log in
+                        </PrimaryButton>
+                    </div>
+                </form>
+
+            </div>
         </div>
-
-        <form @submit.prevent="submit">
-            <div>
-                <InputLabel for="email" value="Email" />
-
-                <TextInput
-                    id="email"
-                    type="email"
-                    class="mt-1 block w-full"
-                    v-model="form.email"
-                    required
-                    autofocus
-                    autocomplete="username"
-                />
-
-                <InputError class="mt-2" :message="form.errors.email" />
-            </div>
-
-            <div class="mt-4">
-                <InputLabel for="password" value="Password" />
-
-                <TextInput
-                    id="password"
-                    type="password"
-                    class="mt-1 block w-full"
-                    v-model="form.password"
-                    required
-                    autocomplete="current-password"
-                />
-
-                <InputError class="mt-2" :message="form.errors.password" />
-            </div>
-
-            <div class="block mt-4">
-                <label class="flex items-center">
-                    <Checkbox name="remember" v-model:checked="form.remember" />
-                    <span class="ml-2 text-sm text-gray-600">Remember me</span>
-                </label>
-            </div>
-
-            <div class="flex items-center justify-end mt-4">
-                <Link
-                    v-if="canResetPassword"
-                    :href="route('password.request')"
-                    class="underline text-sm text-gray-600 hover:text-gray-900 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
-                >
-                    Forgot your password?
-                </Link>
-
-                <PrimaryButton class="ml-4" :class="{ 'opacity-25': form.processing }" :disabled="form.processing">
-                    Log in
-                </PrimaryButton>
-            </div>
-        </form>
-
-            </div>
-            </div>
-            </div>
+    </div>
 
 </template>
