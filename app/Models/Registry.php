@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+
 use App\Models\Company;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -17,5 +18,9 @@ class Registry extends Model
     public function companies(): Relation
     {
         return $this->belongsToMany(Company::class);
+    }
+    public function reports(): Relation
+    {
+        return $this->hasMany(Report::class);
     }
 }

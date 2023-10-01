@@ -27,7 +27,7 @@ defineProps({
             </Link>
         </div>
         <div class="mb-4">
-            <Link :href="route('workspace.dashboard', { company: company.id })" class="flex items-center group py-3">
+            <Link :href="route('workspace.registries.index', { company: company.id })" class="flex items-center group py-3">
                 <svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100"
                      class="w-4 h-4 mr-2 fill-zinc-400 group-hover:fill-white">
                     <path fill-rule="evenodd"

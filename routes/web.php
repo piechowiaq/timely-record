@@ -10,6 +10,8 @@ use App\Http\Controllers\RoleController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\VerifyUserController;
 use App\Http\Controllers\Workspace\WorkspaceDashboardSelectorController;
+use App\Http\Controllers\Workspace\WorkspaceRegistryController;
+use App\Http\Controllers\Workspace\WorkspaceRegistryReportController;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
@@ -88,8 +90,12 @@ Route::middleware('auth')->group(function () {
 
 
 Route::middleware(['auth', 'verified', 'company.access'])->group(function () {
-    Route::get('/dashboard/{company}',WorkspaceDashboardController::class)->name('workspace.dashboard');
+    Route::get('/{company}/dashboard',WorkspaceDashboardController::class)->name('workspace.dashboard');
     Route::get('/selector', WorkspaceDashboardSelectorController::class)->name('workspace.selector');
+    Route::get('/{company}/registries', [WorkspaceRegistryController::class, 'index'])->name('workspace.registries.index');
+    Route::get('/{company}/registries/{registry}', [WorkspaceRegistryController::class, 'show'])->name('workspace.registries.show');
+    Route::get('/{company}/registries/{registry}/reports/create', [WorkspaceRegistryReportController::class, 'create'])->name('workspace.registry.reports.create');
+    Route::post('/{company}/registries/{registry}/reports', [WorkspaceRegistryReportController::class, 'store'])->name('workspace.registry.reports.store');
 });
 
 require __DIR__.'/auth.php';
