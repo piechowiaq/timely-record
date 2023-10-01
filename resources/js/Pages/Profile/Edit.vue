@@ -4,6 +4,7 @@ import UpdatePasswordForm from './Partials/UpdatePasswordForm.vue';
 import UpdateProfileInformationForm from './Partials/UpdateProfileInformationForm.vue';
 import { Head } from '@inertiajs/vue3';
 import WorkspaceLayout from "@/Layouts/WorkspaceLayout.vue";
+import FlashMessages from "@/Components/FlashMessages.vue";
 
 defineProps({
     mustVerifyEmail: {
@@ -12,13 +13,19 @@ defineProps({
     status: {
         type: String,
     },
+    company: {
+        type: Object,
+    },
+    companiesCount: {
+        type: Number,
+    },
 });
 </script>
 
 <template>
     <Head title="Profile" />
 
-    <WorkspaceLayout>
+    <WorkspaceLayout :company="company" :companies-count="companiesCount">
         <div class="bg-gray-100 py-2 px-3 h-12 items-center flex  justify-between font-bold mb-2">
             <p class="text-gray-600">Profile</p>    <FlashMessages />
         </div>

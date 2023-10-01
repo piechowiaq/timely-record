@@ -24,7 +24,7 @@ class WorkspaceDashboardSelectorController extends Controller
 
         if ($companyCount === 1) {
             $company = $user->companies()->first();
-            // Assuming you want to redirect to a different route if there's only one company
+            // Redirect to a different route if there's only one company
             return redirect()->route('workspace.dashboard', ['company' => $company->id]);
         }
 

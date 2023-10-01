@@ -1,5 +1,5 @@
 <script setup>
-import {defineProps, ref} from 'vue';
+import {ref} from 'vue';
 
 import Dropdown from '@/Components/Dropdown.vue';
 import DropdownLink from '@/Components/DropdownLink.vue';
@@ -10,12 +10,19 @@ import WorkspaceLeftNavigationBar from '@/Layouts/WorkspaceLeftNavigationBar.vue
 const showingNavigationDropdown = ref(false);
 
 defineProps({
-    company: Object,
-})
+    company: {
+        type: Object,
+    },
+    companiesCount: {
+        type: Number,
+    },
+});
+
 
 </script>
 
 <template>
+
 
             <div class="flex flex-col h-screen ">
                 <div class="justify-between md:flex">
@@ -92,7 +99,7 @@ defineProps({
                                                 </template>
 
                                                 <template #content>
-                                                    <DropdownLink :href="route('profile.edit')"> Profile </DropdownLink>
+                                                    <DropdownLink :href="route('profile.edit', { company_id : company.id })"> Profile </DropdownLink>
                                                     <DropdownLink :href="route('logout')" method="post" as="button">
                                                         Log Out
                                                     </DropdownLink>
@@ -176,11 +183,12 @@ defineProps({
 
                 <div class="flex flex-grow overflow-hidden">
                     <!-- Left Nav Bar -->
-                    <WorkspaceLeftNavigationBar :company="company"/>
+                    <WorkspaceLeftNavigationBar :company="company" :companies-count="companiesCount"/>
 
                     <div class="flex-1 overflow-y-auto p-2" >
                         <!--Content-->
                         <main>
+
                             <slot />
                         </main>
 

@@ -12,9 +12,11 @@ class WorkspaceDashboardController extends Controller
 {
     public function __invoke(Company $company): Response
     {
+        $companiesCount = Auth::user()->companies()->count();
 
         return Inertia::render('Workspace/Dashboard', [
             'company' => $company,
+            'companiesCount' => $companiesCount
         ]);
     }
 }
