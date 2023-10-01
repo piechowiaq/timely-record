@@ -98,8 +98,12 @@ defineProps({
                                             </span>
                                                 </template>
 
+
                                                 <template #content>
-                                                    <DropdownLink :href="route('profile.edit', { company_id : company.id })"> Profile </DropdownLink>
+
+                                                    <DropdownLink v-if="$page.props.auth.user.id === 1" :href="route('admin.dashboard')" as="button"> Admin Dashboard</DropdownLink>
+                                                    <DropdownLink v-else :href="route('profile.edit', { company_id : company.id })"> Profile </DropdownLink>
+
                                                     <DropdownLink :href="route('logout')" method="post" as="button">
                                                         Log Out
                                                     </DropdownLink>

@@ -15,7 +15,11 @@ class Company extends Model
 
     public function registries(): Relation
     {
-        return $this->belongsToMany(Registry::class)->withPivot('assigned');;
+        return $this->belongsToMany(Registry::class)->withPivot('assigned');
+    }
+    public function users(): Relation
+    {
+        return $this->belongsToMany(User::class);
     }
 
 

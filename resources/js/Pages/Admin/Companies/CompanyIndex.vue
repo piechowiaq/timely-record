@@ -48,8 +48,8 @@
                               class="px-6 py-4 flex items-center focus:text-indigo-500">{{ company.phone }}
                         </Link>
                     </td>
-                    <td class="w-px border-t">
-                        <Link class="flex items-center px-4" :href="route('companies.edit', company)" tabindex="-1">
+                    <td class="w-px border-t bg-red-100">
+                        <Link class="flex items-center px-4" :href="route('workspace.dashboard', company)" tabindex="-1">
                             <icon name="cheveron-right" class="block w-6 h-6 fill-gray-400"/>
                         </Link>
                     </td>

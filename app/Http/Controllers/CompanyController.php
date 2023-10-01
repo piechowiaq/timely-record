@@ -6,6 +6,7 @@ use App\Models\Company;
 use App\Http\Requests\StoreCompanyRequest;
 use App\Http\Requests\UpdateCompanyRequest;
 use App\Models\Registry;
+use App\Models\User;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Redirect;
@@ -74,6 +75,12 @@ class CompanyController extends Controller
         $company->registries()->syncWithPivotValues($registries, ['assigned' => false]);
         $company->registries()->detach($companyRegistries);
         $company->registries()->attach($companyRegistries, ['assigned' => true]);
+
+        $superAdmins = User::whereHas('roles', function ($query) {
+            $query->where('name', 'Super Admin');
+        })->get();
+
+        $company->users()->attach($superAdmins);
 
         return Redirect::route('companies.index')->with('success', 'Company created.');;
     }
