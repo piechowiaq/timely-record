@@ -51,7 +51,7 @@ class WorkspaceRegistryController extends Controller
             'company' => $company,
             'companies' => $companies,
             'companiesCount' => $companiesCount,
-            'countOfUpToDateRegistries' => $query->whereNotNull('expiry_date')->where('expiry_date', '>', Carbon::now() )->get()->count()
+            'countOfUpToDateRegistries' => $query->whereNotNull('expiry_date')->where('expiry_date', '>', Carbon::now() )->get()->count(),
         ]);
     }
 

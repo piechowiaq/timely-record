@@ -9,7 +9,7 @@
                     <div>
                         <div class="mb-6 flex justify-between items-center">
                             <h1 class="mb-8 font-bold text-3xl">{{registry.name}}</h1>
-                            <Link :href="route('workspace.dashboard', company)">
+                            <Link :href="route('workspace.registry.reports.create', [company, registry])">
                                 Submit Report
                             </Link>
                         </div>
