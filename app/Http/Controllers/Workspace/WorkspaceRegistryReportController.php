@@ -44,6 +44,6 @@ class WorkspaceRegistryReportController extends Controller
         $report->registry_id = $request->registry_id;
         $report->save();
 
-        return Redirect::route('workspace.registries.show', ['company' => $company, 'registry'=> $registry])->with('success', 'Role created.');
+        return Redirect::route('workspace.registries.show', ['company' => $company, 'registry'=> $registry])->with('success', 'Report uploaded.');
     }
 }

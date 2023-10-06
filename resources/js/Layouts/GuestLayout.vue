@@ -52,9 +52,7 @@ defineProps({
                     Welcome to your Timely Record application!
                 </div>
                 <div class="mt-6 text-gray-500 text-justify">
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin tristique, libero vel fringilla
-                    cursus, dolor tortor varius nisl, eu volutpat nulla ex nec sapien. Sed dictum, arcu sed bibendum
-                    imperdiet, lorem est bibendum tellus, eu varius libero turpis at est.
+                    "Timely Record - Zapis na czas" to innowacyjna aplikacja przeznaczona do zarządzania i monitorowania dokumentacji w obiektach hotelowych, aby zapewnić, że wszystkie ważne dokumenty i rekordy są aktualizowane i nie przeterminowane. Aplikacja koncentruje się na automatyzacji przepływu pracy i upewnieniu się, że wszelka dokumentacja, tak jak umowy, certyfikaty czy inne ważne dokumenty są aktualizowane zgodnie z wymaganiami prawnymi oraz standardami branży hotelowej.
                 </div>
             </div>
 

@@ -10,9 +10,9 @@
         </div>
 
 
-        <div class="mb-6 flex justify-between items-center">
-            <Search v-model="form.search" v-model:trashed="form.trashed" @reset="reset"
-                    class="flex items-center w-full max-w-md mr-4"/>
+        <div class="mb-6 flex items-center">
+            <input v-model="form.search"  type="text" name="search" placeholder="Search…" class="text-sm w-1/4 h-8 px-6 py-3 border-gray-200 ">
+            <button type="button" class="ml-3 text-sm text-gray-500 hover:text-gray-700 focus:text-cyan-600"   @click="reset">Reset</button>
         </div>
         <div class="bg-white rounded-md shadow overflow-x-auto">
             <table class="w-full whitespace-nowrap">
@@ -24,15 +24,16 @@
 
                     </th>
                     <th class="px-6 pt-6 pb-4"></th>
-                    <th colspan="2" class="px-6 pt-6 pb-4 flex" @click="sort('expiry_date')">
+                    <th colspan="2" class="px-6 pt-6 pb-4 flex text-center" @click="sort('expiry_date')">
                         Wygasa za
 
                         <icon name="sorting" class="block m-auto ml-2 text-gray-300 "/>
 
 
                     </th>
-                    <th class="px-6 pt-6 pb-4">Pobierz</th>
                     <th class="px-6 pt-6 pb-4"></th>
+                    <th class="px-6 pt-6 pb-4 text-center">Pobierz</th>
+
                 </tr>
                 <tr v-for="registry of registries.data" :key="registry.id"
                     class="hover:bg-gray-100 focus-within:bg-gray-100">
@@ -135,7 +136,7 @@ export default defineComponent({
             isOpen: false,
             form: {
                 search: this.filters.search,
-                trashed: this.filters.trashed,
+
             },
         }
     },
