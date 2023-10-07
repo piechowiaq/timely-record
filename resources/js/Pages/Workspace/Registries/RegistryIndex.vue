@@ -51,6 +51,7 @@
                         <div v-if="expired(daysLeftUntilExpiryDate(registry.expiry_date))">
                             <icon name="expired" class="block m-auto text-red-500 h-6 w-6"/>
                         </div>
+
                     </td>
                     <td class="border-t">
                         <Link value="Edit"

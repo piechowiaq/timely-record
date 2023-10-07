@@ -42,12 +42,6 @@ const width =  ref(120)
 const height =  ref(100)
 
 
-
-// const percentage = computed(() => {
-//    return Math.floor((this.countOfUpToDateRegistries/this.registries.total)*100)
-// })
-
-
 </script>
 
 <template>

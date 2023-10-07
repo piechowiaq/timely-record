@@ -18,16 +18,28 @@ class WorkspaceRegistryController extends Controller
     {
         $query = DB::table('registries')
             ->join('company_registry', 'registries.id', '=', 'company_registry.registry_id')
-            ->leftJoin('reports', function ($join) {
-                $join->on('company_registry.registry_id', '=', 'reports.registry_id')
-                    ->on('company_registry.company_id', '=', 'reports.company_id')
-                    ->whereRaw('reports.expiry_date = (SELECT MAX(expiry_date) FROM reports WHERE reports.registry_id = company_registry.registry_id)');
+            ->leftJoin(DB::raw('(
+        SELECT registry_id, company_id, MAX(expiry_date) as max_expiry_date
+        FROM reports
+        GROUP BY registry_id, company_id
+    ) as max_reports'), function ($join) {
+                $join->on('company_registry.registry_id', '=', 'max_reports.registry_id')
+                    ->on('company_registry.company_id', '=', 'max_reports.company_id');
             })
             ->where('company_registry.company_id', '=', $company->id)
             ->where('assigned', true)
-            ->select('company_registry.registry_id', 'registries.name', DB::raw('MAX(reports.expiry_date) as expiry_date'), 'company_registry.company_id')
-            ->groupBy('company_registry.registry_id', 'registries.name', 'company_registry.company_id');
-
+            ->select(
+                'company_registry.registry_id',
+                'registries.name',
+                'max_reports.max_expiry_date as expiry_date',
+                'company_registry.company_id'
+            )
+            ->groupBy(
+                'company_registry.registry_id',
+                'registries.name',
+                'company_registry.company_id',
+                'max_reports.max_expiry_date'
+            );
 
 
 
@@ -51,7 +63,8 @@ class WorkspaceRegistryController extends Controller
             'company' => $company,
             'companies' => $companies,
             'companiesCount' => $companiesCount,
-            'countOfUpToDateRegistries' => $query->whereNotNull('expiry_date')->where('expiry_date', '>', Carbon::now() )->get()->count(),
+            'countOfUpToDateRegistries' => $query->paginate(10)
+                ->withQueryString()->whereNotNull('expiry_date')->where('expiry_date', '>', Carbon::now() )->count(),
         ]);
     }
 
