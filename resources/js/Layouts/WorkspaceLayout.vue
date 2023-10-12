@@ -151,9 +151,24 @@ defineProps({
                                 class="sm:hidden"
                             >
                                 <div class="pt-2 pb-3 space-y-1">
-                                    <ResponsiveNavLink :href="route('admin.dashboard')" :active="route().current('admin.dashboard')">
+                                    <ResponsiveNavLink :href="route('workspace.dashboard', { company: company.id })" :active="route().current('workspace.dashboard')">
                                         Dashboard
                                     </ResponsiveNavLink>
+                                    <ResponsiveNavLink :href="route('workspace.registries.index', { company: company.id })" :active="route().current('workspace.registries.index')">
+                                        Registries
+                                    </ResponsiveNavLink>
+
+                                        <hr >
+                                    <ResponsiveNavLink v-if="$page.props.auth.user.id === 1" :href="route('admin.dashboard')" :active="route().current('admin.dashboard')">
+                                        Admin
+                                    </ResponsiveNavLink>
+
+                                    <ResponsiveNavLink v-else-if="companiesCount > 1" :href="route('workspace.selector')" :active="route().current('workspace.selector')">
+                                        Workspace
+                                    </ResponsiveNavLink>
+
+
+
                                 </div>
 
                                 <!-- Responsive Settings Options -->

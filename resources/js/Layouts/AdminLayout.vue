@@ -37,7 +37,7 @@ const showingNavigationDropdown = ref(false);
                                     <!-- Navigation Links -->
                                     <div class="hidden space-x-8  sm:flex items-center">
                                         <Link :href="route('admin.dashboard')" :active="route().current('admin.dashboard')">
-                                            Radisson Blu
+                                            Admin Dashboard
                                         </Link>
                                     </div>
 
@@ -136,6 +136,21 @@ const showingNavigationDropdown = ref(false);
                             <div class="pt-2 pb-3 space-y-1">
                                 <ResponsiveNavLink :href="route('admin.dashboard')" :active="route().current('admin.dashboard')">
                                     Dashboard
+                                </ResponsiveNavLink>
+                                <ResponsiveNavLink :href="route('companies.index')" :active="route().current('companies.index')">
+                                    Companies
+                                </ResponsiveNavLink>
+                                <ResponsiveNavLink :href="route('permissions.index')" :active="route().current('permissions.index')">
+                                    Permissions
+                                </ResponsiveNavLink>
+                                <ResponsiveNavLink :href="route('roles.index')" :active="route().current('roles.index')">
+                                    Roles
+                                </ResponsiveNavLink>
+                                <ResponsiveNavLink :href="route('users.index')" :active="route().current('users.index')">
+                                    Users
+                                </ResponsiveNavLink>
+                                <ResponsiveNavLink :href="route('registries.index')" :active="route().current('registries.index')">
+                                    Registries
                                 </ResponsiveNavLink>
                             </div>
 
