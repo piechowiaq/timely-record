@@ -6,6 +6,7 @@ namespace Database\Seeders;
 
 use App\Models\Company;
 use App\Models\User;
+use Carbon\Carbon;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Hash;
 use Spatie\Permission\Models\Role;
@@ -24,10 +25,11 @@ class DatabaseSeeder extends Seeder
             'city' => 'Warszawa',
         ]);
 
-        $user = User::factory()->create([
+        $user = User::create([
              'name' => 'Super Admin',
              'email' => 'contact@timelyrecord.com',
-             'password' => Hash::make('12345678')
+             'password' => Hash::make('12345678'),
+            'email_verified_at' => Carbon::now()
 
          ])->assignRole('Super Admin');
 

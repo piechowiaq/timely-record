@@ -6,7 +6,7 @@
 
         <title inertia>{{ config('app.name', 'Laravel') }}</title>
 
-        <link rel="icon" href="{{ asset('storage/favicon.svg')}}" type="image/svg+xml">
+        <link rel="icon" href="https://timely-record.s3.eu-central-1.amazonaws.com/public/timely_record_favicon.svg" type="image/svg+xml">
 
         <!-- Fonts -->
         <link rel="preconnect" href="https://fonts.bunny.net">

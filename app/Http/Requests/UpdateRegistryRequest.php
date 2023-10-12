@@ -25,9 +25,7 @@ class UpdateRegistryRequest extends FormRequest
      */
     public function rules(): array
     {
-        if (! assert($this->route('registry') instanceof Registry)) {
-            throw new Exception('Received registry is not the required object');
-        }
+
         return [
             'name' => 'required|string|max:255',
             'description' => 'required|string',
