@@ -4,12 +4,12 @@ import {ref} from 'vue';
 import Dropdown from '@/Components/Dropdown.vue';
 import DropdownLink from '@/Components/DropdownLink.vue';
 import ResponsiveNavLink from '@/Components/ResponsiveNavLink.vue';
-import { Link } from '@inertiajs/vue3';
+import { Link, usePage } from '@inertiajs/vue3';
 import WorkspaceLeftNavigationBar from '@/Layouts/WorkspaceLeftNavigationBar.vue'
 
 const showingNavigationDropdown = ref(false);
 
-defineProps({
+const { company, companiesCount } =defineProps({
     company: {
         type: Object,
     },
@@ -17,6 +17,18 @@ defineProps({
         type: Number,
     },
 });
+
+const page = usePage()
+
+const isSuperUser = () => page.props.auth.user.id === 1;
+const hasMultipleCompanies = (companiesCount) => companiesCount > 1;
+
+const menuOptions = [
+    { name: 'Dashboard', route: 'workspace.dashboard', icon: 'dashboard', active: true },
+    { name: 'Registries', route: 'workspace.registries.index', icon: 'registries', active: true },
+    { name: 'Admin', route: 'admin.dashboard' , icon: 'admin', active: isSuperUser()  },
+    { name: 'Workspace', route: 'workspace.selector', icon: 'workspace', active: !isSuperUser() && hasMultipleCompanies(companiesCount)  },
+];
 
 
 </script>
@@ -151,24 +163,13 @@ defineProps({
                                 class="sm:hidden"
                             >
                                 <div class="pt-2 pb-3 space-y-1">
-                                    <ResponsiveNavLink :href="route('workspace.dashboard', { company: company.id })" :active="route().current('workspace.dashboard')">
-                                        Dashboard
-                                    </ResponsiveNavLink>
-                                    <ResponsiveNavLink :href="route('workspace.registries.index', { company: company.id })" :active="route().current('workspace.registries.index')">
-                                        Registries
-                                    </ResponsiveNavLink>
-
-                                        <hr >
-                                    <ResponsiveNavLink v-if="$page.props.auth.user.id === 1" :href="route('admin.dashboard')" :active="route().current('admin.dashboard')">
-                                        Admin
-                                    </ResponsiveNavLink>
-
-                                    <ResponsiveNavLink v-else-if="companiesCount > 1" :href="route('workspace.selector')" :active="route().current('workspace.selector')">
-                                        Workspace
-                                    </ResponsiveNavLink>
-
-
-
+                                    <ul>
+                                        <li v-for="option in menuOptions" :key="option.route">
+                                            <ResponsiveNavLink v-if="option.active" :href="route(option.route, { company: company.id })" :active="route().current(option.route)">
+                                                {{ option.name }}
+                                            </ResponsiveNavLink>
+                                        </li>
+                                    </ul>
                                 </div>
 
                                 <!-- Responsive Settings Options -->
@@ -202,7 +203,7 @@ defineProps({
 
                 <div class="flex flex-grow overflow-hidden">
                     <!-- Left Nav Bar -->
-                    <WorkspaceLeftNavigationBar :company="company" :companies-count="companiesCount"/>
+                    <WorkspaceLeftNavigationBar :company="company" :companies-count="companiesCount" :menuOptions="menuOptions"/>
 
                     <div class="flex-1 overflow-y-auto p-2" >
                         <!--Content-->
