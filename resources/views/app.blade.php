@@ -4,8 +4,9 @@
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
 
-        <title inertia>{{ config('app.name', 'Laravel') }}</title>
+        <title inertia>{{ config('app.name', 'Timely Record') }}</title>
 
+        <!-- Favicon -->
         <link rel="icon" href="https://timely-record.s3.eu-central-1.amazonaws.com/public/timely_record_favicon.svg" type="image/svg+xml">
 
         <!-- Fonts -->

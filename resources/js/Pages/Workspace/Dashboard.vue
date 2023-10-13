@@ -48,7 +48,7 @@ const height =  ref(100)
 
 
 <WorkspaceLayout :company="company" :companies-count="companiesCount">
-    <div class="bg-gray-100 py-2 px-3 h-12 items-center flex font-bold">
+    <div class="bg-gray-100 py-2 px-3 h-12 items-center flex font-bold text-cyan-600">
         <p>Dashboard</p>
     </div>
     <div class="w-1/4">
