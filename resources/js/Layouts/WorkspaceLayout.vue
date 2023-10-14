@@ -1,6 +1,6 @@
 <script setup>
 import {ref} from 'vue';
-
+import {useWorkspaceMenuStore} from "@/Stores/WorkspaceMenuStore.js";
 import Dropdown from '@/Components/Dropdown.vue';
 import DropdownLink from '@/Components/DropdownLink.vue';
 import ResponsiveNavLink from '@/Components/ResponsiveNavLink.vue';
@@ -19,21 +19,16 @@ const {company, companiesCount} = defineProps({
     },
 });
 
+const WorkspaceMenu = useWorkspaceMenuStore();
+
 const page = usePage()
 const isSuperUser = () => page.props.auth.user.id === 1;
 const hasMultipleCompanies = (companiesCount) => companiesCount > 1;
+const user = page.props.auth.user;
 
-const menuOptions = [
-    {name: 'Dashboard', route: 'workspace.dashboard', icon: 'dashboard', active: true},
-    {name: 'Registries', route: 'workspace.registries.index', icon: 'registries', active: true},
-    {name: 'Admin', route: 'admin.dashboard', icon: 'admin', active: isSuperUser()},
-    {
-        name: 'Workspace',
-        route: 'workspace.selector',
-        icon: 'workspace',
-        active: !isSuperUser() && hasMultipleCompanies(companiesCount)
-    },
-];
+WorkspaceMenu.setUser(user);
+WorkspaceMenu.setCompaniesCount(companiesCount);
+WorkspaceMenu.initializeOptions();
 
 </script>
 
@@ -158,7 +153,7 @@ const menuOptions = [
                 >
                     <div class="pt-2 pb-3 space-y-1">
                         <ul>
-                            <li v-for="option in menuOptions" :key="option.route">
+                            <li v-for="option in WorkspaceMenu.options" :key="option.route">
                                 <ResponsiveNavLink v-if="option.active"
                                                    :href="route(option.route, { company: company.id })"
                                                    :active="route().current(option.route)">
@@ -199,8 +194,7 @@ const menuOptions = [
 
         <div class="flex flex-grow overflow-hidden">
             <!-- Left Nav Bar -->
-            <WorkspaceLeftNavigationBar :company="company" :companies-count="companiesCount"
-                                        :menuOptions="menuOptions"/>
+            <WorkspaceLeftNavigationBar :company="company" :companies-count="companiesCount"/>
 
             <div class="flex-1 overflow-y-auto p-2">
                 <!--Content-->
