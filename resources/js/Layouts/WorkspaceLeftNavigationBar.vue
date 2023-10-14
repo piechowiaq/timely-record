@@ -1,28 +1,17 @@
 <script setup>
 
-import {Link, usePage} from '@inertiajs/vue3';
-import Icon from '@/Components/Icon.vue';
-import {useWorkspaceMenuStore} from "@/Stores/WorkspaceMenuStore.js";
-
-const {company, companiesCount} = defineProps({
-    company: {
-        type: Object,
-    },
-    companiesCount: {
-        type: Number,
-    },
-});
+import { useWorkspaceMenuStore } from "@/Stores/WorkspaceMenuStore.js";
+import { defineProps } from 'vue';
+import { Link } from '@inertiajs/vue3';
+import Icon from "@/Components/Icon.vue";
 
 const WorkspaceMenu = useWorkspaceMenuStore();
 
-const page = usePage()
-const isSuperUser = () => page.props.auth.user.id === 1;
-const hasMultipleCompanies = (companiesCount) => companiesCount > 1;
-const user = page.props.auth.user;
-
-WorkspaceMenu.setUser(user);
-WorkspaceMenu.setCompaniesCount(companiesCount);
-WorkspaceMenu.initializeOptions();
+defineProps({
+    company: {
+        type: Object,
+    },
+});
 
 </script>
 <template>

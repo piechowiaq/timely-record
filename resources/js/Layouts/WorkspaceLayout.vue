@@ -4,7 +4,7 @@ import {useWorkspaceMenuStore} from "@/Stores/WorkspaceMenuStore.js";
 import Dropdown from '@/Components/Dropdown.vue';
 import DropdownLink from '@/Components/DropdownLink.vue';
 import ResponsiveNavLink from '@/Components/ResponsiveNavLink.vue';
-import {Link, usePage} from '@inertiajs/vue3';
+import {Link, usePage, Head} from '@inertiajs/vue3';
 import WorkspaceLeftNavigationBar from '@/Layouts/WorkspaceLeftNavigationBar.vue';
 import Icon from "@/Components/Icon.vue";
 
@@ -22,8 +22,6 @@ const {company, companiesCount} = defineProps({
 const WorkspaceMenu = useWorkspaceMenuStore();
 
 const page = usePage()
-const isSuperUser = () => page.props.auth.user.id === 1;
-const hasMultipleCompanies = (companiesCount) => companiesCount > 1;
 const user = page.props.auth.user;
 
 WorkspaceMenu.setUser(user);
@@ -33,6 +31,8 @@ WorkspaceMenu.initializeOptions();
 </script>
 
 <template>
+
+    <Head title="Workspace"/>
 
     <div class="flex flex-col h-screen ">
         <div class="justify-between md:flex">
@@ -185,25 +185,15 @@ WorkspaceMenu.initializeOptions();
 
 
         <!-- Page Heading -->
-        <header class="bg-white shadow" v-if="$slots.header">
-            <div class="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
-                <slot name="header"/>
-            </div>
-        </header>
 
 
         <div class="flex flex-grow overflow-hidden">
             <!-- Left Nav Bar -->
-            <WorkspaceLeftNavigationBar :company="company" :companies-count="companiesCount"/>
-
-            <div class="flex-1 overflow-y-auto p-2">
-                <!--Content-->
-                <main>
-
-                    <slot/>
-                </main>
-
-            </div>
+            <WorkspaceLeftNavigationBar :company="company"/>
+            <!--Content-->
+            <main class="flex-1 overflow-y-auto p-2">
+                <slot/>
+            </main>
         </div>
     </div>
 
