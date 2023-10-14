@@ -1,13 +1,10 @@
 <template>
 
-    <Head title="Registries" />
+
 
     <WorkspaceLayout :company="company" :companies-count="companiesCount">
 
-
-        <div class="bg-gray-100 py-2 px-3 h-12 items-center flex  justify-between font-bold mb-2">
-            <p class="text-gray-600">Registries</p>    <FlashMessages />
-        </div>
+        <WorkspaceBanner :href="route('workspace.registries.index', company)" :name="'Index'"/>
 
 
         <div class="mb-6 flex items-center">
@@ -96,8 +93,6 @@
 
         <Pagination :links="registries.links" class="flex flex-wrap py-6"></Pagination>
 
-
-
     </WorkspaceLayout>
 
 </template>
@@ -112,6 +107,7 @@ import Pagination from '@/Components/Pagination.vue'
 import Search from "@/Components/Search.vue"
 import WorkspaceLayout from "@/Layouts/WorkspaceLayout.vue"
 import FlashMessages from "@/Components/FlashMessages.vue";
+import WorkspaceBanner from "@/Components/WorkspaceBanner.vue"
 
 
 export default defineComponent({
@@ -123,7 +119,8 @@ export default defineComponent({
         Icon,
         Search,
         FlashMessages,
-        Head
+        Head,
+        WorkspaceBanner
     },
     props: {
         company: Object,

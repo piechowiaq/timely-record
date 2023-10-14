@@ -7,6 +7,7 @@ import ResponsiveNavLink from '@/Components/ResponsiveNavLink.vue';
 import {Link, usePage, Head} from '@inertiajs/vue3';
 import WorkspaceLeftNavigationBar from '@/Layouts/WorkspaceLeftNavigationBar.vue';
 import Icon from "@/Components/Icon.vue";
+import WorkspaceLogo from "@/Components/WorkspaceLogo.vue";
 
 const showingNavigationDropdown = ref(false);
 
@@ -35,20 +36,19 @@ WorkspaceMenu.initializeOptions();
     <Head title="Workspace"/>
 
     <div class="flex flex-col h-screen ">
+        <!-- Top Layout -->
         <div class="justify-between md:flex">
-            <div class=" sm:block hidden">
-                <div class="md:w-56 md:flex-shrink-0 h-16 flex items-center justify-center md:bg-gray-100">
-                    <Icon :name="'logo'" class="w-12 h-12"/>
-                    <p class="ml-2 font-bold whitespace-nowrap tracking-widest text-gray-600"><span
-                        class="text-cyan-600 ">TIMELY</span> RECORD</p>
-                </div>
-            </div>
+
+            <!-- Workspace Logo -->
+            <WorkspaceLogo/>
+
             <nav class="bg-white border-b border-gray-100 w-full ">
                 <!-- Primary Navigation Menu -->
                 <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                     <div class="flex justify-between h-16">
+                        <!-- Banner -->
                         <div class="flex">
-                            <!-- Navigation Links -->
+                            <!-- Workspace Name -->
                             <div class="hidden space-x-8  sm:flex items-center">
                                 <Link v-if="company && company.name"
                                       :href="route('workspace.dashboard', { company: company.id })"
@@ -56,7 +56,7 @@ WorkspaceMenu.initializeOptions();
                                     {{ company.name }}
                                 </Link>
                             </div>
-
+                            <!-- Small Screen Logo -->
                             <div class="block sm:hidden">
                                 <div
                                     class="md:w-56 md:flex-shrink-0 h-16 flex items-center justify-center md:bg-gray-100">
@@ -66,9 +66,8 @@ WorkspaceMenu.initializeOptions();
                                 </div>
                             </div>
                         </div>
-
+                        <!-- Settings Dropdown -->
                         <div class="hidden sm:flex sm:items-center sm:ml-6">
-                            <!-- Settings Dropdown -->
                             <div class="ml-3 relative">
                                 <Dropdown align="right" width="48">
                                     <template #trigger>
@@ -113,7 +112,7 @@ WorkspaceMenu.initializeOptions();
                             </div>
                         </div>
 
-                        <!-- Hamburger -->
+                        <!-- Hamburger Button -->
                         <div class="-mr-2 flex items-center sm:hidden">
                             <button
                                 @click="showingNavigationDropdown = !showingNavigationDropdown"
@@ -146,11 +145,12 @@ WorkspaceMenu.initializeOptions();
                     </div>
                 </div>
 
-                <!-- Responsive Navigation Menu -->
+                <!-- Small Screen Workspace Settings -->
                 <div
                     :class="{ block: showingNavigationDropdown, hidden: !showingNavigationDropdown }"
                     class="sm:hidden"
                 >
+                    <!-- Small Screen Workspace Top Navigation -->
                     <div class="pt-2 pb-3 space-y-1">
                         <ul>
                             <li v-for="option in WorkspaceMenu.options" :key="option.route">
@@ -163,7 +163,7 @@ WorkspaceMenu.initializeOptions();
                         </ul>
                     </div>
 
-                    <!-- Responsive Settings Options -->
+                    <!-- Small Screen Settings-->
                     <div class="pt-4 pb-1 border-t border-gray-200">
                         <div class="px-4">
                             <div class="font-medium text-base text-gray-800">
@@ -184,9 +184,7 @@ WorkspaceMenu.initializeOptions();
         </div>
 
 
-        <!-- Page Heading -->
-
-
+        <!-- Bottom Layout -->
         <div class="flex flex-grow overflow-hidden">
             <!-- Left Nav Bar -->
             <WorkspaceLeftNavigationBar :company="company"/>
