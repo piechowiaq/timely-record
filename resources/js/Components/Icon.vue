@@ -32,7 +32,7 @@ defineProps({
               d="M3 8h14v7a2 2 0 01-2 2H5a2 2 0 01-2-2V8zm5 3a1 1 0 011-1h2a1 1 0 110 2H9a1 1 0 01-1-1z"
               clip-rule="evenodd"/>
     </svg>
-    <svg v-else-if="name === 'workspace'" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+    <svg v-else-if="name === 'workspace'" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
         <path fill-rule="evenodd"
               d="M7 0h86v100H57.108V88.418H42.892V100H7V0zm9 64h11v15H16V64zm57 0h11v15H73V64zm-19 0h11v15H54V64zm-19 0h11v15H35V64zM16 37h11v15H16V37zm57 0h11v15H73V37zm-19 0h11v15H54V37zm-19 0h11v15H35V37zM16 11h11v15H16V11zm57 0h11v15H73V11zm-19 0h11v15H54V11zm-19 0h11v15H35V11z"></path>
     </svg>

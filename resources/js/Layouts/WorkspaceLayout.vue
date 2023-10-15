@@ -27,7 +27,6 @@ const user = page.props.auth.user;
 
 WorkspaceMenu.setUser(user);
 WorkspaceMenu.setCompaniesCount(companiesCount);
-WorkspaceMenu.initializeOptions();
 
 </script>
 
