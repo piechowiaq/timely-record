@@ -14,17 +14,18 @@ defineProps({
 });
 
 </script>
+
 <template>
-    <nav class="flex-shrink-0 hidden md:block w-56 p-12 bg-cyan-600">
+    <nav class="flex-shrink-0 hidden pt-2 md:block w-56 bg-cyan-600">
         <ul>
-            <li v-for="option in WorkspaceMenu.options" :key="option.route">
-                <div class="mb-4">
+            <li v-for="option in WorkspaceMenu.options" :key="option.route" >
+
                     <Link v-if="option.active" :href="route(option.route, { company: company.id })"
-                          class="flex items-center group py-3">
-                        <Icon :name="option.icon" class="w-6 h-6 mr-2 fill-gray-300 group-hover:fill-white"/>
-                        <span class="text-gray-300 group-hover:text-white"> {{ option.name }}</span>
+                          class="flex items-center group hover:bg-gray-100 p-3 ">
+                        <Icon :name="option.icon" class="ml-4 w-4 h-4 mr-2 fill-white group-hover:fill-cyan-600"/>
+                        <span class="text-white  group-hover:text-cyan-600"> {{ option.name }}</span>
                     </Link>
-                </div>
+
             </li>
         </ul>
     </nav>
