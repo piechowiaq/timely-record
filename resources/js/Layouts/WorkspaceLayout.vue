@@ -28,6 +28,8 @@ const user = page.props.auth.user;
 WorkspaceMenu.setUser(user);
 WorkspaceMenu.setCompaniesCount(companiesCount);
 
+const isSuperAdmin = WorkspaceMenu.isSuperAdmin;
+const hasMultipleCompanies = WorkspaceMenu.hasMultipleCompanies;
 </script>
 
 <template>
@@ -153,10 +155,24 @@ WorkspaceMenu.setCompaniesCount(companiesCount);
                     <div class="pt-2 pb-3 space-y-1">
                         <ul>
                             <li v-for="option in WorkspaceMenu.options" :key="option.route">
-                                <ResponsiveNavLink v-if="option.active"
+                                <ResponsiveNavLink
                                                    :href="route(option.route, { company: company.id })"
                                                    :active="route().current(option.route)">
                                     {{ option.name }}
+                                </ResponsiveNavLink>
+                            </li>
+                            <li v-if="isSuperAdmin" class="border-t border-gray-200" >
+                                <ResponsiveNavLink
+                                    :href="route(WorkspaceMenu.superAdminOptions.route, { company: company.id })"
+                                    :active="route().current(WorkspaceMenu.superAdminOptions.route)">
+                                    {{ WorkspaceMenu.superAdminOptions.name }}
+                                </ResponsiveNavLink>
+                            </li>
+                            <li v-if="hasMultipleCompanies && !isSuperAdmin" class="border-t border-gray-200">
+                                <ResponsiveNavLink
+                                    :href="route(WorkspaceMenu.multipleCompaniesOptions.route, { company: company.id })"
+                                    :active="route().current(WorkspaceMenu.multipleCompaniesOptions.route)">
+                                    {{ WorkspaceMenu.multipleCompaniesOptions.name }}
                                 </ResponsiveNavLink>
                             </li>
                         </ul>
