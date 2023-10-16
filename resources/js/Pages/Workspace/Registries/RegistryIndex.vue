@@ -1,14 +1,77 @@
+<script setup>
+import {defineProps, ref, watch} from 'vue'
+import {debounce, mapValues} from "lodash"
+import { Link, Head , router } from "@inertiajs/vue3";
+import Icon from "@/Components/Icon.vue"
+import Pagination from '@/Components/Pagination.vue'
+import Search from "@/Components/Search.vue"
+import WorkspaceLayout from "@/Layouts/WorkspaceLayout.vue"
+import FlashMessages from "@/Components/FlashMessages.vue";
+import WorkspaceBanner from "@/Components/WorkspaceBanner.vue"
+
+const props = defineProps({
+        company: {
+            type: Object,
+        },
+        registries: {
+            type: Object,
+        },
+        filters: {
+            type: Object,
+        },
+        companiesCount: {
+            type: Number,
+        },
+        countOfUpToDateRegistries: {
+            type: Number,
+        }
+})
+
+
+const search = ref(props.filters.search)
+
+watch(search, debounce( function (value) {
+    router.get(route('workspace.registries.index', props.company), { search: value }, {
+        preserveState: true,
+        replace: true
+    });
+}, 150), { deep: true });
+
+
+function reset() {
+    this.search = mapValues(search, () => null);
+}
+
+function sort(field) {
+    this.search.field = field;
+    this.search.direction = this.search.direction === 'asc' ? 'desc' : 'asc';
+}
+
+function expired(registry) {
+    return registry <= 0;
+}
+
+function daysLeftUntilExpiryDate(expiry_date) {
+    const today = new Date();
+    const expiryDate = new Date(!expiry_date ? today : expiry_date);
+    const diffTime = expiryDate - today;
+    return Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+}
+
+</script>
+
+
+
 <template>
 
 
-
     <WorkspaceLayout :company="company" :companies-count="companiesCount">
-
         <WorkspaceBanner :href="route('workspace.registries.index', company)" :name="'Index'"/>
 
+      {{company.value}}
 
         <div class="mb-6 flex items-center">
-            <input v-model="form.search"  type="text" name="search" placeholder="Search…" class="text-sm w-1/4 h-8 px-6 py-3 border-gray-200 ">
+            <input v-model="search"  type="text" name="search" placeholder="Search…" class="text-sm w-1/4 h-8 px-6 py-3 border-gray-200 ">
             <button type="button" class="ml-3 text-sm text-gray-500 hover:text-gray-700 focus:text-cyan-600"   @click="reset">Reset</button>
         </div>
         <div class="bg-white rounded-md shadow overflow-x-auto">
@@ -24,7 +87,7 @@
                     <th colspan="2" class="px-6 pt-6 pb-4 flex text-center" @click="sort('expiry_date')">
                         Wygasa za
 
-                        <icon name="sorting" class="block m-auto ml-2 text-gray-300 "/>
+                        <Icon name="sorting" class="block m-auto ml-2 text-gray-300 "/>
 
 
                     </th>
@@ -98,80 +161,63 @@
 </template>
 
 
-<script>
-import {defineComponent} from 'vue'
-import {debounce, mapValues} from "lodash"
-import { Link, Head } from "@inertiajs/vue3";
-import Icon from "@/Components/Icon.vue"
-import Pagination from '@/Components/Pagination.vue'
-import Search from "@/Components/Search.vue"
-import WorkspaceLayout from "@/Layouts/WorkspaceLayout.vue"
-import FlashMessages from "@/Components/FlashMessages.vue";
-import WorkspaceBanner from "@/Components/WorkspaceBanner.vue"
+<!--<script>-->
 
 
-export default defineComponent({
 
-    components: {
-        WorkspaceLayout,
-        Link,
-        Pagination,
-        Icon,
-        Search,
-        FlashMessages,
-        Head,
-        WorkspaceBanner
-    },
-    props: {
-        company: Object,
-        registries: Object,
-        filters: Object,
-        companiesCount: Number,
-        countOfUpToDateRegistries: Number,
-    },
-    data() {
-        return {
-            isOpen: false,
-            form: {
-                search: this.filters.search,
-
-            },
-        }
-    },
-    watch: {
-        form: {
-            deep: true,
-            handler: debounce(function () {
-                this.$inertia.get(this.route('workspace.registries.index', this.company), this.form, {preserveState: true, replace: true})
-            }, 150),
-        },
-    },
-    methods: {
-        destroy(registry) {
-            this.$inertia.delete(this.route('registries.destroy', registry))
-        },
-        reset() {
-            this.form = mapValues(this.form, () => null)
-        },
-        sort(field) {
-            this.form.field = field;
-            this.form.direction = this.form.direction === 'asc' ? 'desc' : 'asc';
-        },
-        expired(registry) {
-            return registry <= 0
-        },
-        daysLeftUntilExpiryDate(expiry_date) {
-
-            const today = new Date();
-            const expiryDate = new Date(!expiry_date ? today : expiry_date);
-            const diffTime = expiryDate - today;
-            return Math.ceil(diffTime / (1000 * 60 * 60 * 24))
-        },
+<!--export default defineComponent({-->
 
 
-    },
+<!--    props: {-->
+<!--        company: Object,-->
+<!--        registries: Object,-->
+<!--        filters: Object,-->
+<!--        companiesCount: Number,-->
+<!--        countOfUpToDateRegistries: Number,-->
+<!--    },-->
+<!--    data() {-->
+<!--        return {-->
+<!--            isOpen: false,-->
+<!--            form: {-->
+<!--                search: this.filters.search,-->
 
-})
-</script>
+<!--            },-->
+<!--        }-->
+<!--    },-->
+<!--    watch: {-->
+<!--        form: {-->
+<!--            deep: true,-->
+<!--            handler: debounce(function () {-->
+<!--                this.$inertia.get(this.route('workspace.registries.index', this.company), this.form, {preserveState: true, replace: true})-->
+<!--            }, 150),-->
+<!--        },-->
+<!--    },-->
+<!--    methods: {-->
+<!--        destroy(registry) {-->
+<!--            this.$inertia.delete(this.route('registries.destroy', registry))-->
+<!--        },-->
+<!--        reset() {-->
+<!--            this.form = mapValues(this.form, () => null)-->
+<!--        },-->
+<!--        sort(field) {-->
+<!--            this.form.field = field;-->
+<!--            this.form.direction = this.form.direction === 'asc' ? 'desc' : 'asc';-->
+<!--        },-->
+<!--        expired(registry) {-->
+<!--            return registry <= 0-->
+<!--        },-->
+<!--        daysLeftUntilExpiryDate(expiry_date) {-->
+
+<!--            const today = new Date();-->
+<!--            const expiryDate = new Date(!expiry_date ? today : expiry_date);-->
+<!--            const diffTime = expiryDate - today;-->
+<!--            return Math.ceil(diffTime / (1000 * 60 * 60 * 24))-->
+<!--        },-->
+
+
+<!--    },-->
+
+<!--})-->
+<!--</script>-->
 
 

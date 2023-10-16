@@ -53,7 +53,7 @@ const hasMultipleCompanies = WorkspaceMenu.hasMultipleCompanies;
                             <div class="hidden space-x-8  sm:flex items-center">
                                 <Link v-if="company && company.name"
                                       :href="route('workspace.dashboard', { company: company.id })"
-                                      :active="route().current('workspace.dashboard', { company: company.id })">
+                                    >
                                     {{ company.name }}
                                 </Link>
                             </div>
@@ -97,14 +97,12 @@ const hasMultipleCompanies = WorkspaceMenu.hasMultipleCompanies;
 
 
                                     <template #content>
-
-                                        <DropdownLink v-if="$page.props.auth.user.id === 1"
+                                        <DropdownLink v-if="isSuperAdmin"
                                                       :href="route('admin.dashboard')" as="button"> Admin Dashboard
                                         </DropdownLink>
                                         <DropdownLink v-else :href="route('profile.edit', { company_id : company.id })">
                                             Profile
                                         </DropdownLink>
-
                                         <DropdownLink :href="route('logout')" method="post" as="button">
                                             Log Out
                                         </DropdownLink>
@@ -188,7 +186,7 @@ const hasMultipleCompanies = WorkspaceMenu.hasMultipleCompanies;
                         </div>
 
                         <div class="mt-3 space-y-1">
-                            <ResponsiveNavLink :href="route('profile.edit')"> Profile</ResponsiveNavLink>
+                            <ResponsiveNavLink v-if="!isSuperAdmin" :href="route('profile.edit')"> Profile</ResponsiveNavLink>
                             <ResponsiveNavLink :href="route('logout')" method="post" as="button">
                                 Log Out
                             </ResponsiveNavLink>
