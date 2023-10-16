@@ -157,7 +157,7 @@ const hasMultipleCompanies = WorkspaceMenu.hasMultipleCompanies;
                             <li v-for="option in WorkspaceMenu.options" :key="option.route">
                                 <ResponsiveNavLink
                                                    :href="route(option.route, { company: company.id })"
-                                                   :active="route().current(option.route)">
+                                                   :active="route().current(option.route)" >
                                     {{ option.name }}
                                 </ResponsiveNavLink>
                             </li>

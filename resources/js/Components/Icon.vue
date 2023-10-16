@@ -1,11 +1,22 @@
 <script setup>
 
-defineProps({
+import {computed} from "vue";
+
+const props = defineProps({
     name: {
         type: String,
         required: true,
     },
+    active: {
+        type: Boolean,
+    },
 })
+
+const classes = computed(() =>
+    props.active
+        ? 'ml-4 w-4 h-4 mr-2 fill-cyan-600 group-hover:fill-cyan-600'
+        : 'ml-4 w-4 h-4 mr-2 fill-white group-hover:fill-cyan-600'
+);
 
 </script>
 
@@ -22,21 +33,21 @@ defineProps({
 
     <!--Navigation Icons-->
 
-    <svg v-else-if="name === 'dashboard'" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+    <svg v-else-if="name === 'dashboard'" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" :class="classes">
         <path
             d="M10 20a10 10 0 1 1 0-20 10 10 0 0 1 0 20zm-5.6-4.29a9.95 9.95 0 0 1 11.2 0 8 8 0 1 0-11.2 0zm6.12-7.64l3.02-3.02 1.41 1.41-3.02 3.02a2 2 0 1 1-1.41-1.41z"></path>
     </svg>
-    <svg v-else-if="name === 'registries'" viewBox="0 0 24 24">
+    <svg v-else-if="name === 'registries'" viewBox="0 0 24 24" :class="classes">
         <path d="M4 3a2 2 0 100 4h12a2 2 0 100-4H4z"/>
         <path fill-rule="evenodd"
               d="M3 8h14v7a2 2 0 01-2 2H5a2 2 0 01-2-2V8zm5 3a1 1 0 011-1h2a1 1 0 110 2H9a1 1 0 01-1-1z"
               clip-rule="evenodd"/>
     </svg>
-    <svg v-else-if="name === 'workspace'" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
+    <svg v-else-if="name === 'workspace'" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" :class="classes">
         <path fill-rule="evenodd"
               d="M7 0h86v100H57.108V88.418H42.892V100H7V0zm9 64h11v15H16V64zm57 0h11v15H73V64zm-19 0h11v15H54V64zm-19 0h11v15H35V64zM16 37h11v15H16V37zm57 0h11v15H73V37zm-19 0h11v15H54V37zm-19 0h11v15H35V37zM16 11h11v15H16V11zm57 0h11v15H73V11zm-19 0h11v15H54V11zm-19 0h11v15H35V11z"></path>
     </svg>
-    <svg v-else-if="name === 'admin'" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+    <svg v-else-if="name === 'admin'" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" :class="classes">
         <path
             d="M12 23C6.443 21.765 2 16.522 2 11V5l10-4l10 4v6c0 5.524-4.443 10.765-10 12ZM4 6v5a10.58 10.58 0 0 0 8 10a10.58 10.58 0 0 0 8-10V6l-8-3Z"/>
         <circle cx="12" cy="8.5" r="2.5"/>
