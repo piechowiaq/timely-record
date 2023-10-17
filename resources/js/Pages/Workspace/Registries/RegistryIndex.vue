@@ -1,7 +1,7 @@
 <script setup>
-import {defineProps, ref, watch} from 'vue'
+import {computed, defineProps, ref, watch} from 'vue'
 import {debounce, mapValues} from "lodash"
-import { Link, Head , router } from "@inertiajs/vue3";
+import {Link, Head, router} from "@inertiajs/vue3";
 import Icon from "@/Components/Icon.vue"
 import Pagination from '@/Components/Pagination.vue'
 import WorkspaceLayout from "@/Layouts/WorkspaceLayout.vue"
@@ -9,38 +9,38 @@ import WorkspaceLayout from "@/Layouts/WorkspaceLayout.vue"
 import WorkspaceBanner from "@/Components/WorkspaceBanner.vue"
 
 const props = defineProps({
-        company: {
-            type: Object,
-        },
-        registries: {
-            type: Object,
-        },
-        filters: {
-            type: Object
-        },
-        companiesCount: {
-            type: Number,
-        },
-        countOfUpToDateRegistries: {
-            type: Number,
-        }
+    company: {
+        type: Object,
+    },
+    registries: {
+        type: Object,
+    },
+    filters: {
+        type: Object
+    },
+    companiesCount: {
+        type: Number,
+    },
+    countOfUpToDateRegistries: {
+        type: Number,
+    }
 })
+
 
 const index = ref({
-        search: props.filters.search,
+    search: props.filters.search,
 })
 
-watch(index, debounce( function () {
-    router.get(route('workspace.registries.index', props.company), index.value , {
+watch(index, debounce(function () {
+    router.get(route('workspace.registries.index', props.company), index.value, {
         preserveState: true,
         replace: true
     });
-}, 150), { deep: true });
+}, 150), {deep: true});
 
 
 const reset = () => {
     index.value = mapValues(index.value, () => null)
-
 }
 
 const sort = (field) => {
@@ -48,19 +48,34 @@ const sort = (field) => {
     index.value.direction = index.value.direction === 'asc' ? 'desc' : 'asc';
 }
 
-function expired(registry) {
-    return registry <= 0;
+const isRegistryExpired = (expiry_date) => {
+    return expiry_date <= 0;
 }
 
-function daysLeftUntilExpiryDate(expiry_date) {
+const daysLeftUntilExpiryDate = (expiry_date) => {
     const today = new Date();
     const expiryDate = new Date(!expiry_date ? today : expiry_date);
     const diffTime = expiryDate - today;
-    return Math.ceil(diffTime / (1000 * 60 * 60 * 24));
-}
+    let days = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+
+    if (!expiry_date){
+        return "Awaiting upload"
+    }
+    else if (days <= 0) {
+        return "Expired";
+    } else if (days < 30) {
+        return `${days} day(s)`;
+    } else if (days < 365) {
+        const months = Math.floor(days / 30);
+        return `${months} month(s)`;
+    } else {
+        const years = Math.floor(days / 365);
+        const remainingMonths = Math.floor((days % 365) / 30);
+        return `${years} year(s) ${remainingMonths ? `${remainingMonths} month(s)` : ''}`.trim();
+    }
+};
 
 </script>
-
 
 
 <template>
@@ -69,8 +84,11 @@ function daysLeftUntilExpiryDate(expiry_date) {
     <WorkspaceLayout :company="company" :companies-count="companiesCount">
         <WorkspaceBanner :href="route('workspace.registries.index', company)" :name="'Index'"/>
         <div class="mb-6 flex items-center">
-            <input v-model="index.search"  type="text" name="search" placeholder="Search…" class="text-sm w-1/4 h-8 px-6 py-3 border-gray-200 ">
-            <button type="button" class="ml-3 text-sm text-gray-500 hover:text-gray-700 focus:text-cyan-600"   @click="reset">Reset</button>
+            <input v-model="index.search" type="text" name="search" placeholder="Search…"
+                   class="text-sm w-1/4 h-8 px-6 py-3 border-gray-200 ">
+            <button type="button" class="ml-3 text-sm text-gray-500 hover:text-gray-700 focus:text-cyan-600"
+                    @click="reset">Reset
+            </button>
         </div>
         <div class="bg-white rounded-md shadow overflow-x-auto">
             <table class="w-full whitespace-nowrap">
@@ -97,16 +115,17 @@ function daysLeftUntilExpiryDate(expiry_date) {
                     class="hover:bg-gray-100 focus-within:bg-gray-100">
 
                     <td class="border-t">
+
                         <Link value="Edit"
                               :href="route('workspace.registries.show', [registry.company_id, registry.registry_id])"
 
                               class="px-6 py-3 flex items-center focus:text-indigo-500">{{
-                            registry.name
+                                registry.name
                             }}
                         </Link>
                     </td>
                     <td class="border-t w-px">
-                        <div v-if="expired(daysLeftUntilExpiryDate(registry.expiry_date))">
+                        <div v-if="isRegistryExpired(registry.expiry_date)">
                             <icon name="expired" class="block m-auto text-red-500 h-6 w-6"/>
                         </div>
 
@@ -115,7 +134,7 @@ function daysLeftUntilExpiryDate(expiry_date) {
                         <Link value="Edit"
                               :href="route('workspace.registries.show', [registry.company_id, registry.registry_id])"
                               class="px-6 py-3 flex items-center focus:text-indigo-500">
-                            {{ daysLeftUntilExpiryDate(registry.expiry_date) }} dni
+                            {{ daysLeftUntilExpiryDate(registry.expiry_date) }}
                         </Link>
                     </td>
                     <td class="border-t">
@@ -126,7 +145,7 @@ function daysLeftUntilExpiryDate(expiry_date) {
                         </Link>
                     </td>
                     <td class="border-t">
-                        <Link value="Edit" v-if="! expired(daysLeftUntilExpiryDate(registry.expiry_date))"
+                        <Link value="Edit" v-if="! isRegistryExpired(registry.expiry_date)"
                               :href="route('workspace.registries.show', [registry.company_id, registry.registry_id])"
                               class=" hover:bg-indigo-300 px-6 py-3 flex items-center focus:text-indigo-500">
 
