@@ -51,8 +51,36 @@ const height =  ref(100)
     <div class="bg-gray-100 py-2 px-3 h-12 items-center flex font-bold text-cyan-600">
         <p>Dashboard</p>
     </div>
+    <div class="md:flex  space-x-2">
+        <div class="md:w-1/4">
+            <div class="border border-cyan-600 py-2 px-3 h-12 items-center flex font-bold text-gray-600 mt-2">
+                <p>Registries</p>
+            </div>
+            <DoughnutChart :chart-data="chartDataRegistries" class="w-full p-8"/>
+        </div>
+
+        <div class="md:w-1/4">
+            <div class="border border-cyan-600 py-2 px-3 h-12 items-center flex font-bold text-gray-600 mt-2">
+                <p >Dashboard</p>
+            </div>
+            <DoughnutChart :chart-data="chartDataRegistries" class="w-full p-8"/>
+        </div>
+        <div class="md:w-1/4">
+            <div class="border border-cyan-600 py-2 px-3 h-12 items-center flex font-bold text-gray-600 mt-2">
+                <p>Dashboard</p>
+            </div>
+            <DoughnutChart :chart-data="chartDataRegistries" class="w-full p-8"/>
+        </div>
+        <div class="md:w-1/4">
+            <div class="border border-cyan-600 py-2 px-3 h-12 items-center flex font-bold text-gray-600 mt-2">
+                <p>Dashboard</p>
+            </div>
+            <DoughnutChart  :chart-data="chartDataRegistries" class="w-full p-8"/>
+        </div>
+    </div>
+
     <div class="w-1/4">
-        <DoughnutChart :chart-data="chartDataRegistries" class="w-full p-8"/>
+
     </div>
 
 

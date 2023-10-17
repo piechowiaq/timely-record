@@ -96,12 +96,12 @@ const daysLeftUntilExpiryDate = (expiry_date) => {
                     <th class="px-6 pt-6 pb-4 w-2/3 flex" @click="sort('name')">
                         Nazwa przeglądu
 
-                        <icon name="sorting" class="block m-auto ml-2 text-gray-300"/>
+                        <Icon name="sorting" class="block m-auto ml-2 text-gray-300"/>
 
                     </th>
                     <th class="px-6 pt-6 pb-4"></th>
                     <th colspan="2" class="px-6 pt-6 pb-4 flex text-center" @click="sort('expiry_date')">
-                        Wygasa za
+                        Wygasa za | dnia
 
                         <Icon name="sorting" class="block m-auto ml-2 text-gray-300 "/>
 
@@ -140,26 +140,26 @@ const daysLeftUntilExpiryDate = (expiry_date) => {
                     <td class="border-t">
                         <Link value="Edit"
                               :href="route('workspace.registries.show', [registry.company_id, registry.registry_id])"
-                              class="pr-6 py-3 w-auto flex items-center text-sm text-gray-300 focus:text-indigo-500">
+                              class="pr-6 py-3 w-auto flex items-center text-sm text-gray-300 focus:text-cyan-600">
                             {{ registry.expiry_date }}
                         </Link>
                     </td>
                     <td class="border-t">
                         <Link value="Edit" v-if="! isRegistryExpired(registry.expiry_date)"
                               :href="route('workspace.registries.show', [registry.company_id, registry.registry_id])"
-                              class=" hover:bg-indigo-300 px-6 py-3 flex items-center focus:text-indigo-500">
+                              class=" hover:bg-cyan-600 group px-6 py-3 flex items-center focus:text-cyan-600">
 
-                            <icon name="download" class="block m-auto h-6 w-6 "/>
+                            <Icon name="download" class="block m-auto h-6 w-6 group-hover:fill-white "/>
 
                         </Link>
-                        <icon v-else name="download" class="text-gray-300 block m-auto h-6 w-6 "/>
+                        <Icon v-else name="download" class="text-gray-300 block m-auto h-6 w-6 "/>
 
                     </td>
                     <td class="border-t">
                         <Link class="flex items-center px-4"
                               :href="route('workspace.registries.show', [registry.company_id, registry.registry_id])"
                               tabindex="-1">
-                            <icon name="cheveron-right" class="block w-6 h-6 fill-gray-400"/>
+                            <Icon name="cheveron-right" class="block w-6 h-6 fill-gray-400"/>
                         </Link>
                     </td>
                 </tr>
