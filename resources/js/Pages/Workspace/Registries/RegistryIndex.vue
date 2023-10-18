@@ -119,7 +119,7 @@ const daysLeftUntilExpiryDate = (expiry_date) => {
                         <Link value="Edit"
                               :href="route('workspace.registries.show', [registry.company_id, registry.registry_id])"
 
-                              class="px-6 py-3 flex items-center focus:text-indigo-500">{{
+                              class="px-6 py-3 flex items-center focus:text-indigo-500 ">{{
                                 registry.name
                             }}
                         </Link>
