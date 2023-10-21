@@ -31,8 +31,8 @@ defineProps({
             <div class="px-4 py-8 md:flex-1 md:p-12 md:overflow-y-auto">
                 <div>
                     <div class="mb-6 flex justify-between items-center">
-                        <h1 class="mb-8 font-bold text-3xl">{{ registry.name }}</h1>
-                        <Link :href="route('workspace.registry.reports.create', [company, registry])">
+                        <h1 class="mb-8 font-bold text-3xl pr-4">{{ registry.name }}</h1>
+                        <Link :href="route('workspace.registry.reports.create', [company, registry])" class="block whitespace-nowrap">
                             Submit Report
                         </Link>
                     </div>

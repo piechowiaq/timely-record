@@ -40,15 +40,18 @@ class EloquentRegistryRepository implements RegistryRepositoryInterface
     public function getMostOutdatedRegistries(Company $company, int $limit): array
     {
         $registries = $this->baseRegistryQuery($company)
-            ->whereNotNull('max_reports.max_expiry_date')
-            ->where('max_reports.max_expiry_date', '<', Carbon::now())
-            ->orderBy('max_reports.max_expiry_date', 'asc')
+            ->where(function ($query) {
+                $query->whereNull('max_reports.max_expiry_date')
+                    ->orWhere('max_reports.max_expiry_date', '<', Carbon::now());
+            })
+            ->orderBy('max_reports.max_expiry_date', 'asc') // This will put NULL expiry_dates (i.e., no reports) at the top.
             ->limit($limit);
 
         return $registries->get()->map(function ($registry) {
             return [
                 'name' => $registry->name,
-                'expiry_date' => $registry->expiry_date
+                'registry_id' => $registry->registry_id,
+                'company_id' => $registry->company_id
             ];
         })->all();
     }
@@ -64,7 +67,8 @@ class EloquentRegistryRepository implements RegistryRepositoryInterface
         return $query->get()->map(function ($registry) {
             return [
                 'name' => $registry->name,
-                'expiry_date' => $registry->expiry_date
+                'registry_id' => $registry->registry_id,
+                'company_id' => $registry->company_id
             ];
         })->all();
     }
@@ -86,6 +90,16 @@ class EloquentRegistryRepository implements RegistryRepositoryInterface
 
         $results = $query->get();
         return $results->toArray();
+    }
+
+    public function countOfUpToDateRegistries(Company $company): int
+    {
+        return count($this->getUpToDateRegistries($company));
+    }
+
+    public function countOfExpiredRegistries(Company $company): int
+    {
+        return count($this->getExpiredRegistries($company));
     }
 
 }

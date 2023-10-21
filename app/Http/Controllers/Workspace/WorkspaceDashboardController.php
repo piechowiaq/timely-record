@@ -2,41 +2,39 @@
 
 namespace App\Http\Controllers\Workspace;
 
-use App\Http\Controllers\Controller;
+use App\Services\Workspace\RegistryService;
 use App\Models\Company;
-use App\Repositories\Contracts\Workspace\RegistryRepositoryInterface;
-use Carbon\Carbon;
-use Illuminate\Support\Facades\Auth;
+use App\Http\Controllers\Controller;
 use Inertia\Inertia;
 use Inertia\Response;
 
 class WorkspaceDashboardController extends Controller
 {
-    private $registryRepository;
+    private RegistryService $registryService;
 
-    public function __construct(RegistryRepositoryInterface $registryRepository)
+    public function __construct(RegistryService $registryService)
     {
-        $this->registryRepository = $registryRepository;
+        $this->registryService = $registryService;
     }
 
     public function __invoke(Company $company): Response
     {
-        $mostOutdatedRegistries = $this->registryRepository->getMostOutdatedRegistries($company, 3);
-        $recentlyUpdatedRegistries = $this->registryRepository->getRecentlyUpdatedRegistries($company, 3);
-        $countOfUpToDateRegistries = count($this->registryRepository->getUpToDateRegistries($company));
-        $countOfExpiredRegistries = count($this->registryRepository->getExpiredRegistries($company));
+        $mostOutdatedRegistries = $this->registryService->getMostOutdatedRegistries($company, 3);
+        $recentlyUpdatedRegistries = $this->registryService->getRecentlyUpdatedRegistries($company, 3);
+        $percentageOfUpToDate = $this->registryService->getPercentageOfUpToDate($company);
+        $countOfUpToDateRegistries = $this->registryService->countOfUpToDateRegistries($company);
+        $countOfExpiredRegistries = $this->registryService->countOfExpiredRegistries($company);
 
-        $totalRegistries = $countOfUpToDateRegistries + $countOfExpiredRegistries;
 
-        $percentageOfUpToDate = round(($countOfUpToDateRegistries / $totalRegistries) * 100, 2);
 
         return Inertia::render('Workspace/Dashboard', [
             'company' => $company,
             'mostOutdatedRegistries' => $mostOutdatedRegistries,
             'recentlyUpdatedRegistries' => $recentlyUpdatedRegistries,
+            'percentageOfUpToDate' => $percentageOfUpToDate,
             'countOfUpToDateRegistries' => $countOfUpToDateRegistries,
-            'countOfExpiredRegistries' => $countOfExpiredRegistries,
-            'percentageOfUpToDate' => $percentageOfUpToDate
+            'countOfExpiredRegistries' => $countOfExpiredRegistries
         ]);
     }
+
 }

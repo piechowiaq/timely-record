@@ -91,7 +91,7 @@ const daysLeftUntilExpiryDate = (expiry_date) => {
             </button>
         </div>
         <div class="bg-white rounded-md shadow overflow-x-auto">
-            <table class="w-full whitespace-nowrap">
+            <table class="w-full">
                 <tr class="text-left font-bold">
                     <th class="px-6 pt-6 pb-4 w-2/3 flex" @click="sort('name')">
                         Nazwa przeglądu
@@ -119,7 +119,7 @@ const daysLeftUntilExpiryDate = (expiry_date) => {
                         <Link value="Edit"
                               :href="route('workspace.registries.show', [registry.company_id, registry.registry_id])"
 
-                              class="px-6 py-3 flex items-center focus:text-indigo-500 ">{{
+                              class="px-6 py-3 flex items-center focus:text-indigo-500">{{
                                 registry.name
                             }}
                         </Link>
