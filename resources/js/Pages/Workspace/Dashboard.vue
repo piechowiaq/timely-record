@@ -18,9 +18,9 @@ const props = defineProps({
     recentlyUpdatedRegistries: {
         type: Array,
     },
-    countOfUpToDateRegistries: {
-        type: Number
-    }
+    // countOfUpToDateRegistries: {
+    //     type: Number
+    // }
 });
 
 
