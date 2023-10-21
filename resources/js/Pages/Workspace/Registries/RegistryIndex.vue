@@ -91,7 +91,7 @@ const daysLeftUntilExpiryDate = (expiry_date) => {
             </button>
         </div>
         <div class="bg-white rounded-md shadow overflow-x-auto">
-            <table class="w-full">
+            <table class="w-full whitespace-nowrap">
                 <tr class="text-left font-bold">
                     <th class="px-6 pt-6 pb-4 w-2/3 flex" @click="sort('name')">
                         Nazwa przeglądu
