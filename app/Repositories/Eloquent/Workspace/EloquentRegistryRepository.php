@@ -75,4 +75,17 @@ class EloquentRegistryRepository implements RegistryRepositoryInterface
         return $results->where('expiry_date', '>', Carbon::now())->toArray();
 
     }
+
+    public function getExpiredRegistries(Company $company): array
+    {
+        $query = $this->baseRegistryQuery($company)
+            ->where(function ($query) {
+                $query->where('max_reports.max_expiry_date', '<', Carbon::now())
+                    ->orWhereNull('max_reports.max_expiry_date');
+            });
+
+        $results = $query->get();
+        return $results->toArray();
+    }
+
 }
