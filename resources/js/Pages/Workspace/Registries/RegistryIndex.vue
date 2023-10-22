@@ -90,88 +90,60 @@ const daysLeftUntilExpiryDate = (expiry_date) => {
                     @click="reset">Reset
             </button>
         </div>
-        <div class="bg-white rounded-md shadow overflow-x-auto">
-            <table class="w-full whitespace-nowrap">
-                <tr class="text-left font-bold">
-                    <th class="px-6 pt-6 pb-4 w-2/3 flex" @click="sort('name')">
-                        Nazwa przeglądu
-
+        <div class="bg-white rounded-md shadow overflow-x-auto p-2">
+            <table class="w-full">
+                <thead>
+                <tr>
+                    <th class="text-start flex p-2" @click="sort('name')">
+                        Nazwa Przeglądu
                         <Icon name="sorting" class="block m-auto ml-2 text-gray-300"/>
-
                     </th>
-                    <th class="px-6 pt-6 pb-4"></th>
-                    <th colspan="2" class="px-6 pt-6 pb-4 flex text-center" @click="sort('expiry_date')">
-                        Wygasa za | dnia
-
-                        <Icon name="sorting" class="block m-auto ml-2 text-gray-300 "/>
-
-
+                    <th class="p-2">Icon</th>
+                    <th class="p-2 flex" @click="sort('expiry_date')">
+                        Wygasa dnia | za
+                        <Icon name="sorting" class="block m-auto ml-2 text-gray-300"/>
                     </th>
-                    <th class="px-6 pt-6 pb-4"></th>
-                    <th class="px-6 pt-6 pb-4 text-center">Pobierz</th>
-
+                    <th class="p-2">Pobierz</th>
                 </tr>
-                <tr v-for="registry of registries.data" :key="registry.id"
-                    class="hover:bg-gray-100 focus-within:bg-gray-100">
-
-                    <td class="border-t">
-
-                        <Link value="Edit"
-                              :href="route('workspace.registries.show', [registry.company_id, registry.registry_id])"
-
-                              class="px-6 py-3 flex items-center focus:text-indigo-500">{{
-                                registry.name
-                            }}
+                </thead>
+                <tbody>
+                <tr v-for="registry of registries.data" :key="registry.id">
+                    <td class="border-b p-2 w-2/3 truncate ...">
+                        <Link :href="route('workspace.registries.show', [registry.company_id, registry.registry_id])"
+                              class="hover:text-cyan-600 text-sm">
+                            {{ registry.name }}
                         </Link>
-                    </td>
-                    <td class="border-t w-px">
-                        <div v-if="isRegistryExpired(registry.expiry_date)">
-                            <Icon name="expired" class="block m-auto text-red-500 h-6 w-6"/>
-                        </div>
 
                     </td>
-                    <td class="border-t">
-                        <Link value="Edit"
-                              :href="route('workspace.registries.show', [registry.company_id, registry.registry_id])"
-                              class="px-6 py-3 flex items-center focus:text-indigo-500">
-                            {{ daysLeftUntilExpiryDate(registry.expiry_date) }}
-                        </Link>
+                    <td class="border-b p-2 px-2 w-16">
+                        <Icon v-if="isRegistryExpired(registry.expiry_date)" name="expired" class="block m-auto text-red-500 h-6 w-6"/>
                     </td>
-                    <td class="border-t">
-                        <Link value="Edit"
-                              :href="route('workspace.registries.show', [registry.company_id, registry.registry_id])"
-                              class="pr-6 py-3 w-auto flex items-center text-sm text-gray-300 focus:text-cyan-600">
-                            {{ registry.expiry_date }}
-                        </Link>
+                    <td class="border-b p-2 text-sm truncate ... ">
+
+                       {{ registry.expiry_date }} <span class="ml-2 text-xs italic text-gray-400"> {{ daysLeftUntilExpiryDate(registry.expiry_date) }} </span>
                     </td>
-                    <td class="border-t">
-                        <Link value="Edit" v-if="! isRegistryExpired(registry.expiry_date)"
-                              :href="route('workspace.registries.show', [registry.company_id, registry.registry_id])"
-                              class=" hover:bg-cyan-600 group px-6 py-3 flex items-center focus:text-cyan-600">
-
-                            <Icon name="download" class="block m-auto h-6 w-6 group-hover:fill-white "/>
-
+                    <td class="border-b p-2 w-24">
+                        <Link
+                            v-if="!isRegistryExpired(registry.expiry_date)"
+                            :href="route('workspace.registries.show', [registry.company_id, registry.registry_id])"
+                            class="hover:bg-cyan-600 group flex items-center"
+                        >
+                            <Icon name="download" class="block m-auto h-6 w-6 group-hover:fill-white" />
                         </Link>
-                        <Icon v-else name="download" class="text-gray-300 block m-auto h-6 w-6 "/>
-
-                    </td>
-                    <td class="border-t">
-                        <Link class="flex items-center px-4"
-                              :href="route('workspace.registries.show', [registry.company_id, registry.registry_id])"
-                              tabindex="-1">
-                            <Icon name="chevron-right" class="block w-6 h-6 fill-gray-400"/>
-                        </Link>
+                        <Icon
+                            v-else
+                            name="download"
+                            class="text-gray-300 block m-auto h-6 w-6"
+                        />
                     </td>
                 </tr>
 
-
-                <tr v-if="registries.length === 0">
-                    <td class="px-6 py-4 border-t" colspan="4">No registries found.</td>
-                </tr>
+                </tbody>
             </table>
+            <Pagination :links="registries.links" class="flex flex-wrap pt-2"></Pagination>
         </div>
 
-        <Pagination :links="registries.links" class="flex flex-wrap py-6"></Pagination>
+
 
     </WorkspaceLayout>
 

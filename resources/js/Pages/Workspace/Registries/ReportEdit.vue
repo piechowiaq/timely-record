@@ -43,7 +43,7 @@ const destroy = (report) => {
                     <TextInput v-model="form.notes" :error="form.errors.notes" class="pb-8 pr-6 w-full lg:w-1/2"
                                label="Notes"/>
                 </div>
-                <div class="px-8 py-4 bg-gray-50 border-t border-gray-100 flex justify-end items-center">
+                <div class="px-8 py-4 bg-gray-50 border-t border-gray-100 flex justify-between items-center">
                     <PrimaryButton v-if="!report.deleted_at" value="Delete"
                                    @click.once="destroy(report)" tabindex="-1"
                                    type="button" class="text-red-600 hover:underline">Delete Report
