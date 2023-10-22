@@ -49,10 +49,20 @@ const sort = (field) => {
 }
 
 const isRegistryExpired = (expiry_date) => {
-    return expiry_date <= 0;
+    const today = new Date();
+    const expiryDate = new Date(expiry_date);
+    return expiryDate <= today;
 }
 
-const daysLeftUntilExpiryDate = (expiry_date) => {
+const isRegistryExpiringInLessThanAMonth = (expiry_date) => {
+    const today = new Date();
+    const expiryDate = new Date(expiry_date);
+    const diffTime = expiryDate - today;
+    const daysUntilExpiry = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+    return daysUntilExpiry > 0 && daysUntilExpiry < 30;
+}
+
+const timeLeftUntilExpiryDate = (expiry_date) => {
     const today = new Date();
     const expiryDate = new Date(!expiry_date ? today : expiry_date);
     const diffTime = expiryDate - today;
@@ -98,7 +108,7 @@ const daysLeftUntilExpiryDate = (expiry_date) => {
                         Nazwa Przeglądu
                         <Icon name="sorting" class="block m-auto ml-2 text-gray-300"/>
                     </th>
-                    <th class="p-2">Icon</th>
+                    <th class="p-2"></th>
                     <th class="p-2 flex" @click="sort('expiry_date')">
                         Wygasa dnia | za
                         <Icon name="sorting" class="block m-auto ml-2 text-gray-300"/>
@@ -117,18 +127,20 @@ const daysLeftUntilExpiryDate = (expiry_date) => {
                     </td>
                     <td class="border-b p-2 px-2 w-16">
                         <Icon v-if="isRegistryExpired(registry.expiry_date)" name="expired" class="block m-auto text-red-500 h-6 w-6"/>
+
+                        <Icon v-else-if="isRegistryExpiringInLessThanAMonth(registry.expiry_date)" name="bell" class="block m-auto text-yellow-500 h-6 w-6"/>
+
                     </td>
                     <td class="border-b p-2 text-sm truncate ... ">
-
-                       {{ registry.expiry_date }} <span class="ml-2 text-xs italic text-gray-400"> {{ daysLeftUntilExpiryDate(registry.expiry_date) }} </span>
+                       {{ registry.expiry_date }} <span class="ml-2 text-xs italic text-gray-400"> {{ timeLeftUntilExpiryDate(registry.expiry_date) }} </span>
                     </td>
                     <td class="border-b p-2 w-24">
                         <Link
                             v-if="!isRegistryExpired(registry.expiry_date)"
                             :href="route('workspace.registries.show', [registry.company_id, registry.registry_id])"
-                            class="hover:bg-cyan-600 group flex items-center"
+                            class="hover:bg-gray-100 group flex items-center border"
                         >
-                            <Icon name="download" class="block m-auto h-6 w-6 group-hover:fill-white" />
+                            <Icon name="download" class="block m-auto h-6 w-6 group-hover:fill-cyan-600 fill-gray-600" />
                         </Link>
                         <Icon
                             v-else
@@ -136,6 +148,9 @@ const daysLeftUntilExpiryDate = (expiry_date) => {
                             class="text-gray-300 block m-auto h-6 w-6"
                         />
                     </td>
+                </tr>
+                <tr v-if="registries.data.length === 0">
+                    <td class="p-2 border-t text-red-600" colspan="4">No registries assigned.</td>
                 </tr>
 
                 </tbody>

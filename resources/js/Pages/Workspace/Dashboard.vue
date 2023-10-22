@@ -14,6 +14,9 @@ const props = defineProps({
     recentlyUpdatedRegistries: {
         type: Array,
     },
+    getExpiringSoonRegistries: {
+        type: Array,
+    },
     countOfUpToDateRegistries: {
         type: Number
     },
@@ -43,7 +46,8 @@ const props = defineProps({
                             :countOfUpToDateRegistries="countOfUpToDateRegistries"
                             :countOfExpiredRegistries="countOfExpiredRegistries"
                             :mostOutdatedRegistries="mostOutdatedRegistries"
-                            :recentlyUpdatedRegistries="recentlyUpdatedRegistries" class=" sm:w-1/2 "/>
+                            :recentlyUpdatedRegistries="recentlyUpdatedRegistries"
+                            :getExpiringSoonRegistries="getExpiringSoonRegistries" class=" sm:w-1/2 "/>
 
 
 

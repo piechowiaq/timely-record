@@ -24,6 +24,8 @@ class WorkspaceDashboardController extends Controller
         $percentageOfUpToDate = $this->registryService->getPercentageOfUpToDate($company);
         $countOfUpToDateRegistries = $this->registryService->countOfUpToDateRegistries($company);
         $countOfExpiredRegistries = $this->registryService->countOfExpiredRegistries($company);
+        $getExpiringSoonRegistries = $this->registryService->getExpiringSoonRegistries($company, 3);
+
 
 
 
@@ -33,7 +35,8 @@ class WorkspaceDashboardController extends Controller
             'recentlyUpdatedRegistries' => $recentlyUpdatedRegistries,
             'percentageOfUpToDate' => $percentageOfUpToDate,
             'countOfUpToDateRegistries' => $countOfUpToDateRegistries,
-            'countOfExpiredRegistries' => $countOfExpiredRegistries
+            'countOfExpiredRegistries' => $countOfExpiredRegistries,
+            'getExpiringSoonRegistries' => $getExpiringSoonRegistries,
         ]);
     }
 

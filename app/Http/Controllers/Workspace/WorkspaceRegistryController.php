@@ -74,13 +74,29 @@ class WorkspaceRegistryController extends Controller
 
         $companiesCount = Auth::user()->companies()->count();
 
+        $mostCurrentReport = $registry->reports()
+            ->where('company_id', $company->id)
+            ->latest('expiry_date')
+            ->first();
+
+        $reports = $registry->reports()->where('company_id', $company->id)->get()->toArray();
+
+        $historicalReports = array_filter($reports, function ($report) use ($mostCurrentReport) {
+            return $report['id'] !== $mostCurrentReport->id;
+        });
+
+
+        $historicalReports = array_values($historicalReports);
+
+
         return Inertia::render('Workspace/Registries/RegistryShow', [
             'company' => $company,
             'registry' => $registry,
-            'reports' => $registry->reports()->where('company_id', $company->id)->get()->toArray(),
+            'historicalReports' => $historicalReports,
             'companies' => $companies,
             'companiesCount' => $companiesCount,
-
+            'mostCurrentReport' => $mostCurrentReport,
+            'reports' => $reports
         ]);
     }
 }

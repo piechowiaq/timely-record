@@ -14,8 +14,14 @@ const props = defineProps({
     registry: {
         type: Object,
     },
-    reports: {
+    historicalReports: {
         type: Array,
+    },
+    mostCurrentReport: {
+        type: Object
+    },
+    reports: {
+        type: Array
     }
 })
 
@@ -37,6 +43,14 @@ const isReportExpired = (expiry_date) => {
     const currentDate = new Date();
     const expiryDate = new Date(expiry_date);
     return expiryDate <= currentDate;
+}
+
+const isReportExpiringInLessThanAMonth = (expiry_date) => {
+    const today = new Date();
+    const expiryDate = new Date(expiry_date);
+    const diffTime = expiryDate - today;
+    const daysUntilExpiry = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+    return daysUntilExpiry > 0 && daysUntilExpiry < 30;
 }
 
 const timeLeftUntilExpiryDate = (expiry_date) => {
@@ -84,177 +98,127 @@ const timeLeftUntilExpiryDate = (expiry_date) => {
                         <div class=" text-sm mb-6">{{ registry.description }}</div>
                         <div class=" font-bold"> Valid for: {{ validFor }}</div>
                     </div>
-                    <div class="bg-white shadow overflow-x-auto ">
 
+                    <div class="bg-white rounded-md shadow overflow-x-auto p-2">
 
-
-                        <table class="w-full border border-cyan-600 rounded-lg whitespace-nowrap">
-                            <caption class="text-start ml-4">Current most recent report</caption>
-                            <tr class="text-sm -mt-2">
-                                <th class="p-4 w-2/3 flex">
-                                    Data przeglądu
-                                <Icon name="sorting" class="block m-auto ml-2 text-gray-300"/>
+                        <table class="w-full">
+                            <thead>
+                            <tr>
+                                <th class="text-start flex p-2">
+                                    Data Przeglądu
+                                    <Icon name="sorting" class="block m-auto ml-2 text-gray-300"/>
                                 </th>
-                                <th class="p-4">Ikonka</th>
-                                <th colspan="2" class="px-6 pt-6 pb-4 flex text-center" @click="sort('expiry_date')">
-                                    Wygasa za
-                                    <Icon name="sorting" class="block m-auto ml-2 text-gray-300 "/>
-
+                                <th class="p-2"></th>
+                                <th class="p-2 flex">
+                                    Wygasa dnia | za
+                                    <Icon name="sorting" class="block m-auto ml-2 text-gray-300"/>
                                 </th>
-                                <th class="p-4">Wygasa dnia</th>
-                                <th class="p-4 text-center">Pobierz</th>
+                                <th class="p-2">Pobierz</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr v-if="!mostCurrentReport">
+                                <td class="p-2 text-red-600" colspan="4">Awaiting upoload.</td>
+                            </tr>
+                            <tr v-else>
+                                <td class="border-b p-2 w-2/3 truncate ...">
+                                    <Link :href="route('workspace.registry.reports.edit', [company.id, registry.id, mostCurrentReport.id ])"
+                                          class="hover:text-cyan-600 text-sm">
+                                        {{ mostCurrentReport.report_date }}
+                                    </Link>
+                                    <span class="text-xs text-gray-400 italic  ml-6">
+                                        Created: {{ mostCurrentReport.created_at }} - {{ mostCurrentReport.notes }} - Updated: {{ mostCurrentReport.updated_at }}
+                                    </span>
 
+                                </td>
+                                <td class="border-b p-2 px-2 w-16">
+                                    <Icon v-if="isReportExpired(mostCurrentReport.expiry_date)" name="expired" class="block m-auto text-red-500 h-6 w-6"/>
+
+                                    <Icon v-else-if="isReportExpiringInLessThanAMonth(mostCurrentReport.expiry_date)" name="bell" class="block m-auto text-yellow-500 h-6 w-6"/>
+
+                                </td>
+                                <td class="border-b p-2 text-sm truncate ... ">
+                                    {{ mostCurrentReport.expiry_date }} <span class="ml-2 text-xs italic text-gray-400"> {{ timeLeftUntilExpiryDate(mostCurrentReport.expiry_date) }} </span>
+                                </td>
+                                <td class="border-b p-2 w-24">
+                                    <Link
+                                        v-if="!isReportExpired(mostCurrentReport.expiry_date)"
+                                        :href="route('workspace.registry.reports.edit', [company.id, registry.id, mostCurrentReport.id ])"
+                                        class="hover:bg-gray-100 group flex items-center border"
+                                    >
+                                        <Icon name="download" class="block m-auto h-6 w-6 group-hover:fill-cyan-600 fill-gray-600" />
+                                    </Link>
+                                    <Icon
+                                        v-else
+                                        name="download"
+                                        class="text-gray-300 block m-auto h-6 w-6"
+                                    />
+                                </td>
                             </tr>
 
-
-                            <tr v-for="report of reports" :key="report.id"
-                               >
-
-                                <td class=" flex items-center border-t">
-
-                                    <Link value="Edit"
-                                          :href="route('workspace.registry.reports.edit', [company.id, registry.id, report.id ])"
-
-
-                                          class="px-6 py-3 flex items-center hover:text-cyan-600 focus:text-cyan-600">
-                                        {{
-                                            report.report_date
-                                        }}
-                                    </Link>
-                                    <span class="text-xs text-gray-400 italic  ml-6">Created: {{
-                                        report.created_at
-                                    }} - {{ report.notes }} - Updated: {{ report.updated_at }}</span>
-                                </td>
-                                <td class="border-t w-px">
-                                    <div v-if="isReportExpired(report.expiry_date)">
-                                        <Icon name="expired" class="block m-auto text-red-500 h-6 w-6"/>
-                                    </div>
-
-                                </td>
-                                <td class="border-t">
-                                    <Link value="Edit"
-                                          :href="route('workspace.registry.reports.edit', [company.id, registry.id, report.id ])"
-
-
-                                          class="px-6 py-3 flex items-center focus:text-cyan-600"
-
-                                      >
-                                        {{ timeLeftUntilExpiryDate(report.expiry_date) }}
-                                    </Link>
-                                </td>
-                                <td class="border-t">
-                                    <Link value="Edit"
-                                          :href="route('workspace.registry.reports.edit', [company.id, registry.id, report.id ])"
-
-
-                                          class="px-6 py-3 flex items-center focus:text-cyan-600"
-
-                                      >
-                                        {{ report.expiry_date }}
-                                    </Link>
-                                </td>
-                                <td class="border-t">
-                                    <p
-
-                                        class=" hover:bg-cyan-600 group px-6 py-3 flex items-center">
-
-                                        <Icon name="download" class="block m-auto h-6 w-6 group-hover:fill-white "/>
-
-                                    </p>
-
-
-                                </td>
-
-                            </tr>
-
-
-                            <tr v-if="reports.length === 0">
-                                <td class="px-6 py-4 border-t" colspan="4">Awaiting upoload.</td>
-                            </tr>
+                            </tbody>
                         </table>
 
-                        <div class="bg-white shadow overflow-x-auto mt-4">
-                            <table class="w-full border border-cyan-600 rounded-lg whitespace-nowrap">
-                                <caption class="text-start ml-4">Current most recent report</caption>
-                                <tr class="text-sm">
-                                    <th class="p-4 w-2/3 flex">
-                                        Data przeglądu
+                    </div>
+                    <div class="bg-white rounded-md shadow overflow-x-auto p-2">
 
-                                        <Icon name="sorting" class="block m-auto ml-2 text-gray-300"/>
+                        <table class="w-full">
+                            <thead>
+                            <tr>
+                                <th class="text-start flex p-2">
+                                    Data Przeglądu
+                                    <Icon name="sorting" class="block m-auto ml-2 text-gray-300"/>
+                                </th>
+                                <th class="p-2"></th>
+                                <th class="p-2 flex">
+                                    Wygasa dnia | za
+                                    <Icon name="sorting" class="block m-auto ml-2 text-gray-300"/>
+                                </th>
+                                <th class="p-2">Pobierz</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr v-if="historicalReports.length === 0">
+                                <td class="p-2 text-red-600" colspan="4">No other reports.</td>
+                            </tr>
+                            <tr v-else v-for="report of historicalReports" :key="report.id">
+                                <td class="border-b p-2 w-2/3 truncate ...">
+                                    <Link :href="route('workspace.registry.reports.edit', [company.id, registry.id, report.id ])"
+                                          class="hover:text-cyan-600 text-sm">
+                                        {{ report.report_date }}
+                                    </Link>
+                                    <span class="text-xs text-gray-400 italic  ml-6">
+                                        Created: {{ report.created_at }} - {{ report.notes }} - Updated: {{ report.updated_at }}
+                                    </span>
 
-                                    </th>
-                                    <th class="p-4">Ikonka</th>
-                                    <th colspan="2" class="px-6 pt-6 pb-4 flex text-center"
-                                        @click="sort('expiry_date')">
-                                        Wygasa za
+                                </td>
+                                <td class="border-b p-2 px-2 w-16">
+                                    <Icon v-if="isReportExpired(report.expiry_date)" name="expired" class="block m-auto text-red-200 h-6 w-6"/>
 
-                                        <Icon name="sorting" class="block m-auto ml-2 text-gray-300 "/>
+                                    <Icon v-else-if="isReportExpiringInLessThanAMonth(report.expiry_date)" name="bell" class="block m-auto text-yellow-500 h-6 w-6"/>
 
+                                </td>
+                                <td class="border-b p-2 text-sm truncate ... ">
+                                    {{ report.expiry_date }} <span class="ml-2 text-xs italic text-gray-400"> {{ timeLeftUntilExpiryDate(report.expiry_date) }} </span>
+                                </td>
+                                <td class="border-b p-2 w-24">
+                                    <Link
+                                        v-if="!isReportExpired(report.expiry_date)"
+                                        :href="route('workspace.registry.reports.edit', [company.id, registry.id, report.id ])"
+                                        class="hover:bg-gray-100 group flex items-center border"
+                                    >
+                                        <Icon name="download" class="block m-auto h-6 w-6 group-hover:fill-cyan-600 fill-gray-600" />
+                                    </Link>
+                                    <Icon
+                                        v-else
+                                        name="download"
+                                        class="text-gray-300 block m-auto h-6 w-6"
+                                    />
+                                </td>
+                            </tr>
 
-                                    </th>
-                                    <th class="p-4">Wygasa dnia</th>
-                                    <th class="p-4 text-center">Pobierz</th>
-
-                                </tr>
-
-
-                                <tr v-for="report of reports" :key="report.id"
-                                   >
-
-                                    <td class="border-t">
-
-                                        <p
-
-
-                                            class="px-6 py-3 flex items-center focus:text-indigo-500">
-                                            {{
-                                                report.report_date
-                                            }} <span class="text-xs text-gray-400 italic  ml-6">Uploaded: 2023-10-12 - Bartosz Piechowiak</span>
-                                        </p>
-                                    </td>
-                                    <td class="border-t w-px">
-                                        <div>
-                                            <Icon name="expired" class="block m-auto text-red-100 h-6 w-6"/>
-                                        </div>
-
-                                    </td>
-                                    <td class="border-t">
-                                        <p
-
-                                            class="px-6 py-3 flex items-center focus:text-indigo-500">
-                                            50 days
-                                        </p>
-                                    </td>
-                                    <td class="border-t">
-                                        <p
-
-                                            class="pr-6 py-3 w-auto flex items-center text-sm text-gray-300 focus:text-cyan-600">
-                                            2024-10-10
-                                        </p>
-                                    </td>
-                                    <td class="border-t">
-                                        <p
-
-                                            class=" hover:bg-cyan-600 group px-6 py-3 flex items-center focus:text-cyan-600">
-
-                                            <Icon name="download" class="block m-auto h-6 w-6 group-hover:fill-white "/>
-
-                                        </p>
-
-
-                                    </td>
-
-                                </tr>
-
-
-                                <tr v-if="reports.length === 0">
-                                    <td class="px-6 py-4 border-t" colspan="4">Awaiting upoload.</td>
-                                </tr>
-                            </table>
-
-
-                        </div>
-
+                            </tbody>
+                        </table>
 
                     </div>
                 </div>

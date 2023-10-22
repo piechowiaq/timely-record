@@ -9,6 +9,9 @@ defineProps({
     mostOutdatedRegistries: {
         type: Array,
     },
+    getExpiringSoonRegistries: {
+        type: Array,
+    },
     recentlyUpdatedRegistries: {
         type: Array,
     },
@@ -66,11 +69,10 @@ defineProps({
             </ul>
             <p v-else class="text-green-600">All of the registries are updated.</p>
         </aside>
-
         <aside class=" text-xs py-2">
-            <h3 class="py-2">Recently updated:</h3>
+            <h3 class="py-2">Expiring Soon:</h3>
             <ul class="text-cyan-600 ">
-                <li v-for="registry in recentlyUpdatedRegistries" :key="registry.name" class="py-1 truncate">
+                <li v-for="registry in getExpiringSoonRegistries" :key="registry.name" class="py-1 truncate">
                     <Link :href="route('workspace.registries.show', [registry.company_id, registry.registry_id])">
                         {{ registry.name }}
                     </Link>

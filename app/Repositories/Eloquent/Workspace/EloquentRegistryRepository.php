@@ -92,6 +92,26 @@ class EloquentRegistryRepository implements RegistryRepositoryInterface
         return $results->toArray();
     }
 
+    public function getExpiringSoonRegistries(Company $company, int $limit): array
+    {
+        $today = Carbon::now();
+        $endOfRange = $today->copy()->addDays(30); // 30 days from today
+
+        $query = $this->baseRegistryQuery($company)
+            ->whereBetween('max_reports.max_expiry_date', [$today, $endOfRange])
+            ->orderBy('max_reports.max_expiry_date', 'asc')->limit($limit); // This will order registries by their expiry date, starting with the ones expiring soonest.
+
+        return $query->get()->map(function ($registry) {
+            return [
+                'name' => $registry->name,
+                'registry_id' => $registry->registry_id,
+                'company_id' => $registry->company_id,
+                'expiry_date' => $registry->expiry_date
+            ];
+        })->all();
+    }
+
+
     public function countOfUpToDateRegistries(Company $company): int
     {
         return count($this->getUpToDateRegistries($company));

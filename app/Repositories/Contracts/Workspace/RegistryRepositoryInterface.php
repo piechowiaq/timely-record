@@ -12,4 +12,5 @@ interface RegistryRepositoryInterface
     public function getExpiredRegistries (Company $company): array;
     public function countOfUpToDateRegistries(Company $company): int;
     public function countOfExpiredRegistries(Company $company): int;
+    public function getExpiringSoonRegistries(Company $company, int $limit): array;
 }

@@ -24,6 +24,11 @@ class RegistryService
         return $this->registryRepository->getRecentlyUpdatedRegistries($company, $limit);
     }
 
+    public function getExpiringSoonRegistries(Company $company, int $limit): array
+    {
+        return $this->registryRepository->getExpiringSoonRegistries($company, $limit);
+    }
+
     public function getPercentageOfUpToDate(Company $company): float
     {
         $countOfUpToDateRegistries = count($this->registryRepository->getUpToDateRegistries($company));
@@ -31,8 +36,13 @@ class RegistryService
 
         $totalRegistries = $countOfUpToDateRegistries + $countOfExpiredRegistries;
 
+        if ($totalRegistries == 0) {
+            return 0.0; // or any other default value you'd like to return when there's no registry
+        }
+
         return round(($countOfUpToDateRegistries / $totalRegistries) * 100);
     }
+
 
     public function countOfUpToDateRegistries(Company $company): int
     {

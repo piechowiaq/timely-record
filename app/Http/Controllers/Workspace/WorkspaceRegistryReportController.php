@@ -18,10 +18,6 @@ class WorkspaceRegistryReportController extends Controller
 {
     public function create(Company $company, Registry $registry)
     {
-        $companies = Auth::user()->companies()->pluck('company_id');
-
-        $companiesCount = Auth::user()->companies()->count();
-
         return Inertia::render('Workspace/Registries/ReportCreate', [
             'company' => $company,
             'registry' => $registry,
