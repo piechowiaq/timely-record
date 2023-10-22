@@ -126,7 +126,7 @@ const daysLeftUntilExpiryDate = (expiry_date) => {
                     </td>
                     <td class="border-t w-px">
                         <div v-if="isRegistryExpired(registry.expiry_date)">
-                            <icon name="expired" class="block m-auto text-red-500 h-6 w-6"/>
+                            <Icon name="expired" class="block m-auto text-red-500 h-6 w-6"/>
                         </div>
 
                     </td>
@@ -159,7 +159,7 @@ const daysLeftUntilExpiryDate = (expiry_date) => {
                         <Link class="flex items-center px-4"
                               :href="route('workspace.registries.show', [registry.company_id, registry.registry_id])"
                               tabindex="-1">
-                            <Icon name="cheveron-right" class="block w-6 h-6 fill-gray-400"/>
+                            <Icon name="chevron-right" class="block w-6 h-6 fill-gray-400"/>
                         </Link>
                     </td>
                 </tr>

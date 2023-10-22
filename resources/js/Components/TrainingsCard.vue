@@ -29,7 +29,7 @@ defineProps({
     <section :class="{'border-green-600': percentageOfUpToDate === 100, 'border-cyan-600': percentageOfUpToDate !== 100}" class="border bg-gray-300 flex-grow p-4 rounded-lg shadow-2xl font-bold text-gray-600 mt-2">
         <article class="">
             <header class="justify-between items-center flex border-b pb-2 block whitespace-nowrap">
-                <h2 class="truncate">Trainings</h2>
+                <h2 class="truncate">Trainings TEST</h2>
                 <template v-if="percentageOfUpToDate === 100">
                     <span class="bg-green-500 px-2 mb-2 rounded text-white text-xs font-medium">EXCELLENT</span>
                 </template>
