@@ -95,6 +95,10 @@ Route::middleware(['auth', 'verified', 'company.access'])->group(function () {
     Route::get('/{company}/registries', [WorkspaceRegistryController::class, 'index'])->name('workspace.registries.index');
     Route::get('/{company}/registries/{registry}', [WorkspaceRegistryController::class, 'show'])->name('workspace.registries.show');
     Route::get('/{company}/registries/{registry}/reports/create', [WorkspaceRegistryReportController::class, 'create'])->name('workspace.registry.reports.create');
+    Route::get('/{company}/registries/{registry}/reports/{report}/edit', [WorkspaceRegistryReportController::class, 'edit'])->name('workspace.registry.reports.edit');
+    Route::put('/{company}/registries/{registry}/reports/{report}/restore', [WorkspaceRegistryReportController::class, 'restore'])->name('workspace.registry.reports.restore');
+    Route::put('/{company}/registries/{registry}/reports/{report}', [WorkspaceRegistryReportController::class, 'update'])->name('workspace.registry.reports.update');
+    Route::delete('/{company}/registries/{registry}/reports/{report}', [WorkspaceRegistryReportController::class, 'destroy'])->name('workspace.registry.reports.destroy');
     Route::post('/{company}/registries/{registry}/reports', [WorkspaceRegistryReportController::class, 'store'])->name('workspace.registry.reports.store');
 });
 

@@ -80,7 +80,7 @@ const timeLeftUntilExpiryDate = (expiry_date) => {
                             Submit Report
                         </Link>
                     </div>
-                    <div class="bg-white shadow overflow-x-auto p-4">
+                    <div class="bg-white shadow overflow-x-auto px-4 pb-4">
                         <div class="font-bold"> Description: </div>
                         <br>
 
@@ -94,7 +94,7 @@ const timeLeftUntilExpiryDate = (expiry_date) => {
                     <div class="bg-white shadow overflow-x-auto ">
                         <table class="w-full border border-cyan-600 rounded-lg whitespace-nowrap">
                             <caption class="text-start ml-4">Current most recent report</caption>
-                            <tr class="text-sm">
+                            <tr class="text-sm -mt-2">
                                 <th class="p-4 w-2/3 flex">
                                     Data przeglądu
 
@@ -120,13 +120,14 @@ const timeLeftUntilExpiryDate = (expiry_date) => {
 
                                 <td class="border-t">
 
-                                    <Link value="Edit"
+                                    <Link value="Edit" :href="route('workspace.registry.reports.edit', [company.id, registry.id, report.id ])"
+
 
 
                                           class="px-6 py-3 flex items-center focus:text-indigo-500">
                                         {{
                                             report.report_date
-                                        }} <span class="text-xs text-gray-400 italic  ml-6">Uploaded: {{ report.created_at }} - {{ report.notes }}</span>
+                                        }} <span class="text-xs text-gray-400 italic  ml-6">Created: {{ report.created_at }} - {{ report.notes }} - Updated: {{ report.updated_at }}</span>
                                     </Link>
                                 </td>
                                 <td class="border-t w-px">

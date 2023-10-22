@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Workspace;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreReportRequest;
+use App\Http\Requests\UpdateReportRequest;
 use App\Models\Company;
 use App\Models\Registry;
 use App\Models\Report;
@@ -24,9 +25,6 @@ class WorkspaceRegistryReportController extends Controller
         return Inertia::render('Workspace/Registries/ReportCreate', [
             'company' => $company,
             'registry' => $registry,
-            'companies' => $companies,
-            'companiesCount' => $companiesCount,
-
         ]);
     }
 
@@ -45,5 +43,50 @@ class WorkspaceRegistryReportController extends Controller
         $report->save();
 
         return Redirect::route('workspace.registries.show', ['company' => $company, 'registry'=> $registry])->with('success', 'Report uploaded.');
+    }
+
+    public function edit(Company $company, Registry $registry, Report $report)
+    {
+        return Inertia::render('Workspace/Registries/ReportEdit', [
+            'report' => $report,
+            'company' => $company,
+            'registry' => $registry,
+        ]);
+    }
+
+    /**
+     * Update the specified resource in storage.
+     */
+    public function update(UpdateReportRequest $request, Company $company, Registry $registry, Report $report )
+    {
+        $report_date = new Carbon ($request->report_date);
+        $expiryDate= $report_date->addMonths($registry->valid_for)->toDateString();
+
+        $report->report_date = $request->report_date;
+        $report->expiry_date = $expiryDate;
+        $report->notes = $request->notes;
+        $report->company_id = $request->company_id;
+        $report->registry_id = $request->registry_id;
+        $report->save();
+
+
+        return Redirect::route('workspace.registries.show', ['company' => $company, 'registry'=> $registry])->with('success', 'Report updated.');
+    }
+
+    /**
+     * Remove the specified resource from storage.
+     */
+    public function destroy(Company $company, Registry $registry, Report $report)
+    {
+        $report->delete();
+
+        return Redirect::route('workspace.registries.show', ['company' => $company, 'registry'=> $registry])->with('success', 'Report deleted.');
+    }
+
+    public function restore(Report $report, Registry $registry, Company $company)
+    {
+        $report->restore();
+
+        return Redirect::route('workspace.registries.show', ['company' => $company, 'registry'=> $registry])->with('success', 'Report restored.');
     }
 }
