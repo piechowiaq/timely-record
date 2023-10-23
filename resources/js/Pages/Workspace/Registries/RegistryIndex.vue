@@ -100,7 +100,7 @@ const timeLeftUntilExpiryDate = (expiry_date) => {
                     @click="reset">Reset
             </button>
         </div>
-        <div class="bg-white rounded-md shadow overflow-x-auto p-2">
+        <div class="shadow overflow-x-auto p-2">
             <table class="w-full">
                 <thead>
                 <tr>
@@ -136,7 +136,7 @@ const timeLeftUntilExpiryDate = (expiry_date) => {
                     </td>
                     <td class="border-b p-2 w-24">
                         <Link
-                            v-if="!isRegistryExpired(registry.expiry_date)"
+                            v-if="registry.expiry_date"
                             :href="route('workspace.registries.show', [registry.company_id, registry.registry_id])"
                             class="hover:bg-gray-100 group flex items-center border"
                         >

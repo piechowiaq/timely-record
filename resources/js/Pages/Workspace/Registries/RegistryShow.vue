@@ -75,6 +75,11 @@ const timeLeftUntilExpiryDate = (expiry_date) => {
     }
 };
 
+const toDateString = (dateString) => {
+    return new Date(dateString).toISOString().split('T')[0];
+}
+
+
 
 </script>
 
@@ -92,26 +97,27 @@ const timeLeftUntilExpiryDate = (expiry_date) => {
                             Submit Report
                         </Link>
                     </div>
-                    <div class="bg-white shadow overflow-x-auto px-4 pb-4">
+                    <div class="shadow overflow-x-auto px-4 pb-4">
                         <div class="font-bold"> Description:</div>
                         <br>
                         <div class=" text-sm mb-6">{{ registry.description }}</div>
                         <div class=" font-bold"> Valid for: {{ validFor }}</div>
                     </div>
 
-                    <div class="bg-white rounded-md shadow overflow-x-auto p-2">
+                    <div class="shadow overflow-x-auto p-2">
 
-                        <table class="w-full">
-                            <thead>
+                        <table class="w-full border">
+                            <caption class="py-2">Most current report</caption>
+                            <thead v-if="mostCurrentReport">
                             <tr>
                                 <th class="text-start flex p-2">
                                     Data Przeglądu
-                                    <Icon name="sorting" class="block m-auto ml-2 text-gray-300"/>
+
                                 </th>
                                 <th class="p-2"></th>
                                 <th class="p-2 flex">
                                     Wygasa dnia | za
-                                    <Icon name="sorting" class="block m-auto ml-2 text-gray-300"/>
+
                                 </th>
                                 <th class="p-2">Pobierz</th>
                             </tr>
@@ -127,7 +133,7 @@ const timeLeftUntilExpiryDate = (expiry_date) => {
                                         {{ mostCurrentReport.report_date }}
                                     </Link>
                                     <span class="text-xs text-gray-400 italic  ml-6">
-                                        Created: {{ mostCurrentReport.created_at }} - {{ mostCurrentReport.notes }} - Updated: {{ mostCurrentReport.updated_at }}
+                                        Created: {{ toDateString(mostCurrentReport.created_at) }} - {{ mostCurrentReport.notes }} - Updated: {{ toDateString(mostCurrentReport.updated_at) }}
                                     </span>
 
                                 </td>
@@ -142,7 +148,7 @@ const timeLeftUntilExpiryDate = (expiry_date) => {
                                 </td>
                                 <td class="border-b p-2 w-24">
                                     <Link
-                                        v-if="!isReportExpired(mostCurrentReport.expiry_date)"
+                                        v-if="mostCurrentReport.expiry_date"
                                         :href="route('workspace.registry.reports.edit', [company.id, registry.id, mostCurrentReport.id ])"
                                         class="hover:bg-gray-100 group flex items-center border"
                                     >
@@ -160,10 +166,11 @@ const timeLeftUntilExpiryDate = (expiry_date) => {
                         </table>
 
                     </div>
-                    <div class="bg-white rounded-md shadow overflow-x-auto p-2">
+                    <div class="bg-white shadow overflow-x-auto p-2">
 
-                        <table class="w-full">
-                            <thead>
+                        <table class="w-full bg-gray-100 ">
+                            <caption class="py-2">Hisorical reports</caption>
+                            <thead v-if="historicalReports.length !== 0">
                             <tr>
                                 <th class="text-start flex p-2">
                                     Data Przeglądu
@@ -188,7 +195,7 @@ const timeLeftUntilExpiryDate = (expiry_date) => {
                                         {{ report.report_date }}
                                     </Link>
                                     <span class="text-xs text-gray-400 italic  ml-6">
-                                        Created: {{ report.created_at }} - {{ report.notes }} - Updated: {{ report.updated_at }}
+                                        Created: {{ toDateString(report.created_at) }} - {{ report.notes }} - Updated: {{ toDateString(report.updated_at) }}
                                     </span>
 
                                 </td>
@@ -203,7 +210,7 @@ const timeLeftUntilExpiryDate = (expiry_date) => {
                                 </td>
                                 <td class="border-b p-2 w-24">
                                     <Link
-                                        v-if="!isReportExpired(report.expiry_date)"
+                                        v-if="report.expiry_date"
                                         :href="route('workspace.registry.reports.edit', [company.id, registry.id, report.id ])"
                                         class="hover:bg-gray-100 group flex items-center border"
                                     >
