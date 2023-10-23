@@ -69,7 +69,7 @@ const timeLeftUntilExpiryDate = (expiry_date) => {
     let days = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
 
     if (!expiry_date){
-        return "Awaiting upload"
+        return "Awaiting upload."
     }
     else if (days <= 0) {
         return "Expired";

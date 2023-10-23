@@ -1,10 +1,11 @@
 <script setup>
 
-import {Link, usePage} from "@inertiajs/vue3";
+import {Link, router, usePage} from "@inertiajs/vue3";
 import WorkspaceLayout from "@/Layouts/WorkspaceLayout.vue"
 import WorkspaceBanner from "@/Components/WorkspaceBanner.vue"
-import {computed} from "vue";
+import {computed, ref, watch} from "vue";
 import Icon from "@/Components/Icon.vue"
+import {debounce} from "lodash";
 
 const props = defineProps({
     company: {
@@ -22,8 +23,29 @@ const props = defineProps({
     },
     reports: {
         type: Array
-    }
+    },
+    filters: {
+        type: Object
+    },
 })
+
+const index = ref(
+    props.filters
+)
+
+
+const sort = (field) => {
+    index.value.field = field;
+    index.value.direction = index.value.direction === 'asc' ? 'desc' : 'asc';
+}
+
+
+watch(index, debounce(function () {
+    router.get(route('workspace.registries.show', [props.company, props.registry]), index.value, {
+        preserveState: true,
+        replace: true
+    });
+}, 150), {deep: true});
 
 const validFor = computed(() => {
     if (props.registry.valid_for < 12) {
@@ -172,12 +194,12 @@ const toDateString = (dateString) => {
                             <caption class="py-2">Hisorical reports</caption>
                             <thead v-if="historicalReports.length !== 0">
                             <tr>
-                                <th class="text-start flex p-2">
+                                <th class="text-start flex p-2" @click="sort('report_date')" >
                                     Data Przeglądu
                                     <Icon name="sorting" class="block m-auto ml-2 text-gray-300"/>
                                 </th>
                                 <th class="p-2"></th>
-                                <th class="p-2 flex">
+                                <th class="p-2 flex" @click="sort('expiry_date')">
                                     Wygasa dnia | za
                                     <Icon name="sorting" class="block m-auto ml-2 text-gray-300"/>
                                 </th>

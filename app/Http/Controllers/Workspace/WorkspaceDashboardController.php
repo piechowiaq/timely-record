@@ -24,9 +24,7 @@ class WorkspaceDashboardController extends Controller
         $percentageOfUpToDate = $this->registryService->getPercentageOfUpToDate($company);
         $countOfUpToDateRegistries = $this->registryService->countOfUpToDateRegistries($company);
         $countOfExpiredRegistries = $this->registryService->countOfExpiredRegistries($company);
-        $getExpiringSoonRegistries = $this->registryService->getExpiringSoonRegistries($company, 3);
-
-
+        $expiringSoonRegistries = $this->registryService->getExpiringSoonRegistries($company, 3);
 
 
         return Inertia::render('Workspace/Dashboard', [
@@ -36,7 +34,7 @@ class WorkspaceDashboardController extends Controller
             'percentageOfUpToDate' => $percentageOfUpToDate,
             'countOfUpToDateRegistries' => $countOfUpToDateRegistries,
             'countOfExpiredRegistries' => $countOfExpiredRegistries,
-            'getExpiringSoonRegistries' => $getExpiringSoonRegistries,
+            'expiringSoonRegistries' => $expiringSoonRegistries,
         ]);
     }
 

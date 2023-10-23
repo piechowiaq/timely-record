@@ -68,7 +68,7 @@ class WorkspaceRegistryController extends Controller
         ]);
     }
 
-    public function show(Company $company, Registry $registry)
+    public function show(Request $request, Company $company, Registry $registry)
     {
         $companies = Auth::user()->companies()->pluck('company_id');
 
@@ -85,13 +85,25 @@ class WorkspaceRegistryController extends Controller
             return $report['id'] !== $mostCurrentReport->id;
         });
 
+        if ($request->has(['field', 'direction'])) {
+            $field = $request->get('field');
+            $direction = $request->get('direction');
+
+            usort($historicalReports, function ($a, $b) use ($field, $direction) {
+                if ($direction === 'asc') {
+                    return $a[$field] <=> $b[$field];
+                } else {
+                    return $b[$field] <=> $a[$field];
+                }
+            });
+        }
 
         $historicalReports = array_values($historicalReports);
-
 
         return Inertia::render('Workspace/Registries/RegistryShow', [
             'company' => $company,
             'registry' => $registry,
+            'filters'=> $request->all(['field', 'direction']),
             'historicalReports' => $historicalReports,
             'companies' => $companies,
             'companiesCount' => $companiesCount,

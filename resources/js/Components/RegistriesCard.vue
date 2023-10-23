@@ -9,7 +9,7 @@ defineProps({
     mostOutdatedRegistries: {
         type: Array,
     },
-    getExpiringSoonRegistries: {
+    expiringSoonRegistries: {
         type: Array,
     },
     recentlyUpdatedRegistries: {
@@ -29,9 +29,9 @@ defineProps({
 </script>
 
 <template>
-    <section :class="{'border-green-600': percentageOfUpToDate === 100, 'border-cyan-600': percentageOfUpToDate !== 100}" class="border flex-grow p-4 rounded-lg shadow-2xl font-bold text-gray-600 mt-2">
-        <article class="">
-            <header class="justify-between items-center flex border-b pb-2 block whitespace-nowrap">
+    <section :class="{'border-green-600': percentageOfUpToDate === 100, 'border-cyan-600': percentageOfUpToDate !== 100}" class="border flex-grow p-4 rounded-lg shadow-2xl  text-gray-600 mt-2">
+        <article class="font-bold">
+            <header class="justify-between items-center flex border-b pb-2 block whitespace-nowrap ">
                 <h2 class="truncate">Registries</h2>
                 <template v-if="percentageOfUpToDate === 100">
                     <span class="bg-green-500 px-2 mb-2 rounded text-white text-xs font-medium">EXCELLENT</span>
@@ -59,7 +59,7 @@ defineProps({
 
 
         <aside class=" text-xs py-2">
-            <h3 class="py-2">Most Outdated:</h3>
+            <h3 class="py-2 font-bold">Most Outdated:</h3>
             <ul v-if="mostOutdatedRegistries && mostOutdatedRegistries.length" class="text-cyan-600">
                 <li v-for="registry in mostOutdatedRegistries" :key="registry.name" class="py-1 truncate">
                     <Link :href="route('workspace.registries.show', [registry.company_id, registry.registry_id])">
@@ -67,17 +67,18 @@ defineProps({
                     </Link>
                 </li>
             </ul>
-            <p v-else class="text-green-600">All of the registries are updated.</p>
+            <p v-else class="text-green-600 italic">All of the registries are updated.</p>
         </aside>
         <aside class=" text-xs py-2">
-            <h3 class="py-2">Expiring Soon:</h3>
-            <ul class="text-cyan-600 ">
-                <li v-for="registry in getExpiringSoonRegistries" :key="registry.name" class="py-1 truncate">
+            <h3 class="py-2 font-bold">Expiring Soon:</h3>
+            <ul v-if="expiringSoonRegistries && expiringSoonRegistries.length" class="text-cyan-600 ">
+                <li v-for="registry in expiringSoonRegistries" :key="registry.name" class="py-1 truncate">
                     <Link :href="route('workspace.registries.show', [registry.company_id, registry.registry_id])">
                         {{ registry.name }}
                     </Link>
                 </li>
             </ul>
+            <p v-else class="text-gray-400 italic">None of the registries expiring within 30 days.</p>
         </aside>
     </section>
 </template>
