@@ -16,7 +16,7 @@ defineProps({
 
 <template>
     <div class="bg-gray-100 px-4 py-3  sm:flex sm:flex-grow sm:overflow-hidden items-center justify-between font-bold mb-2">
-        <div class="flex sm:pb-0 pb-2 truncate ... pr-2">
+        <div class="flex truncate pr-2">
             <Link :href="href" class="text-cyan-600">Registries</Link>
             <p class="text-gray-600 truncate ... ">&nbsp|&nbsp{{ name }}</p>
         </div>
