@@ -36,6 +36,7 @@ class WorkspaceRegistryReportController extends Controller
         $report->notes = $request->notes;
         $report->company_id = $request->company_id;
         $report->registry_id = $request->registry_id;
+        $report->created_by_user_id = Auth::id();
         $report->save();
 
         return Redirect::route('workspace.registries.show', ['company' => $company, 'registry'=> $registry])->with('success', 'Report uploaded.');
@@ -63,6 +64,7 @@ class WorkspaceRegistryReportController extends Controller
         $report->notes = $request->notes;
         $report->company_id = $request->company_id;
         $report->registry_id = $request->registry_id;
+        $report->updated_by_user_id = Auth::id();
         $report->save();
 
 

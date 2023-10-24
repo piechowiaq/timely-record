@@ -15,6 +15,8 @@ use Illuminate\Database\Eloquent\Relations\Relation;
  * @property date $expiry_date
  * @property integer $registry_id
  * @property integer $company_id
+ * @property integer $created_by_user_id
+ * @property integer $updated_by_user_id
  *
  */
 
@@ -30,5 +32,15 @@ class Report extends Model
     public function registry(): Relation
     {
         return $this->belongsTo(Registry::class);
+    }
+
+    public function updatedByUser(): Relation
+    {
+        return $this->belongsTo(User::class, 'updated_by_user_id');
+    }
+
+    public function createdByUser(): Relation
+    {
+        return $this->belongsTo(User::class, 'created_by_user_id');
     }
 }

@@ -71,18 +71,37 @@ class WorkspaceRegistryController extends Controller
     public function show(Request $request, Company $company, Registry $registry)
     {
         $companies = Auth::user()->companies()->pluck('company_id');
-
         $companiesCount = Auth::user()->companies()->count();
 
+        // Load the most current report with the associated created and updated users
         $mostCurrentReport = $registry->reports()
+            ->with(['updatedByUser', 'createdByUser'])
             ->where('company_id', $company->id)
             ->latest('expiry_date')
             ->first();
 
-        $reports = $registry->reports()->where('company_id', $company->id)->get()->toArray();
+        if ($mostCurrentReport) {
+            $mostCurrentReport->load('updatedByUser', 'createdByUser');
+            $mostCurrentReport->created_by_user_name = $mostCurrentReport->createdByUser->full_name ?? null;
+            $mostCurrentReport->updated_by_user_name = $mostCurrentReport->updatedByUser->full_name ?? null;
+        }
+
+        // Load reports with the associated created and updated users
+        $reports = $registry->reports()
+            ->with(['updatedByUser', 'createdByUser'])
+            ->where('company_id', $company->id)
+            ->get()
+            ->toArray();
 
         $historicalReports = array_filter($reports, function ($report) use ($mostCurrentReport) {
             return $report['id'] !== $mostCurrentReport->id;
+        });
+
+        array_walk($historicalReports, function (&$report) {
+            $report['updated_by_user_name'] = $report['updated_by_user']['first_name'] ?? null;
+            unset($report['updated_by_user']); // Remove the full user object
+            $report['created_by_user_name'] = $report['created_by_user']['first_name'] ?? null;
+            unset($report['created_by_user']); // Remove the full user object
         });
 
         if ($request->has(['field', 'direction'])) {
@@ -103,7 +122,7 @@ class WorkspaceRegistryController extends Controller
         return Inertia::render('Workspace/Registries/RegistryShow', [
             'company' => $company,
             'registry' => $registry,
-            'filters'=> $request->all(['field', 'direction']),
+            'filters' => $request->all(['field', 'direction']),
             'historicalReports' => $historicalReports,
             'companies' => $companies,
             'companiesCount' => $companiesCount,
@@ -111,4 +130,6 @@ class WorkspaceRegistryController extends Controller
             'reports' => $reports
         ]);
     }
+
+
 }

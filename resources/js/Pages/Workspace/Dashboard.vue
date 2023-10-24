@@ -49,9 +49,6 @@ const props = defineProps({
                             :recentlyUpdatedRegistries="recentlyUpdatedRegistries"
                             :expiringSoonRegistries="expiringSoonRegistries" class=" sm:w-1/2 "/>
 
-
-
-
             <!-- Trainings Section -->
             <TrainingsCard class="sm:w-1/2"/>
 

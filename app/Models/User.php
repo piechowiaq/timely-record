@@ -6,6 +6,7 @@ use App\Models\Company;
 use App\Notifications\RegisterUser;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Contracts\Auth\CanResetPassword;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\Relation;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -62,6 +63,14 @@ class User extends Authenticatable implements MustVerifyEmail
     public function hasCompanyAccess()
     {
         return $this->companies->first();
+    }
+    protected function fullName(): Attribute
+    {
+        return Attribute::make(
+            get: function () {
+                return ucfirst($this->attributes['first_name']) . ' ' . ucfirst($this->attributes['last_name']);
+            }
+        );
     }
 
 

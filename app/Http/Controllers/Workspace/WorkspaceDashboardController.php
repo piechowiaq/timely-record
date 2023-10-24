@@ -26,7 +26,6 @@ class WorkspaceDashboardController extends Controller
         $countOfExpiredRegistries = $this->registryService->countOfExpiredRegistries($company);
         $expiringSoonRegistries = $this->registryService->getExpiringSoonRegistries($company, 3);
 
-
         return Inertia::render('Workspace/Dashboard', [
             'company' => $company,
             'mostOutdatedRegistries' => $mostOutdatedRegistries,

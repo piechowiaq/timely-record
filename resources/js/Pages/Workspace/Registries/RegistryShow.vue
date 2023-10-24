@@ -155,7 +155,12 @@ const toDateString = (dateString) => {
                                         {{ mostCurrentReport.report_date }}
                                     </Link>
                                     <span class="text-xs text-gray-400 italic  ml-6">
-                                        Created: {{ toDateString(mostCurrentReport.created_at) }} - {{ mostCurrentReport.notes }} - Updated: {{ toDateString(mostCurrentReport.updated_at) }}
+                                        Created: {{ toDateString(mostCurrentReport.created_at) }} - {{ mostCurrentReport.created_by_user_name }}
+                                    <span v-if="new Date(mostCurrentReport.updated_at) > new Date(mostCurrentReport.created_at)">
+                                    | Updated: {{ toDateString(mostCurrentReport.updated_at) }} - {{ mostCurrentReport.updated_by_user_name }}
+                                        </span>
+
+
                                     </span>
 
                                 </td>
@@ -217,7 +222,10 @@ const toDateString = (dateString) => {
                                         {{ report.report_date }}
                                     </Link>
                                     <span class="text-xs text-gray-400 italic  ml-6">
-                                        Created: {{ toDateString(report.created_at) }} - {{ report.notes }} - Updated: {{ toDateString(report.updated_at) }}
+                                        Created: {{ toDateString(report.created_at) }} - {{ report.created_by_user_name }}
+                                        <span v-if="new Date(report.updated_at) > new Date(report.created_at)">
+                                        / Updated: {{ toDateString(report.updated_at) }} - {{ report.updated_by_user_name }}
+                                        </span>
                                     </span>
 
                                 </td>

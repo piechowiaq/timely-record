@@ -5,6 +5,7 @@ namespace App\Repositories\Eloquent\Workspace;
 use App\Models\Company;
 use App\Repositories\Contracts\Workspace\RegistryRepositoryInterface;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
 class EloquentRegistryRepository implements RegistryRepositoryInterface
@@ -47,11 +48,12 @@ class EloquentRegistryRepository implements RegistryRepositoryInterface
             ->orderBy('max_reports.max_expiry_date', 'asc') // This will put NULL expiry_dates (i.e., no reports) at the top.
             ->limit($limit);
 
+
         return $registries->get()->map(function ($registry) {
             return [
                 'name' => $registry->name,
                 'registry_id' => $registry->registry_id,
-                'company_id' => $registry->company_id
+                'company_id' => $registry->company_id,
             ];
         })->all();
     }
