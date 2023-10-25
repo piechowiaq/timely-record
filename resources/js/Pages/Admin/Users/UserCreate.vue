@@ -1,3 +1,40 @@
+<script setup>
+import {defineComponent, reactive, ref} from 'vue'
+import {useRemember, useForm, Link} from "@inertiajs/vue3";
+import AdminLayout from "@/Layouts/AdminLayout.vue"
+import TextInput from "@/Components/TextInputPing.vue";
+import PrimaryButton from "@/Components/PrimaryButton.vue";
+import SelectInput from "@/Components/SelectInput.vue";
+
+const props = defineProps({
+    roles: Array,
+    errors: Object,
+    companies: Array,
+
+})
+
+const form = useForm(useRemember(reactive({
+    first_name: null,
+    last_name: null,
+    email: null,
+    phone: null,
+    password: null,
+    password_confirmation: null,
+    role_id: '',
+    company_ids: [],
+    }))
+)
+
+const store = () => {
+    form.post(route('users.store'));
+};
+
+
+
+</script>
+
+
+
 <template>
 
     <AdminLayout>
@@ -11,7 +48,8 @@
             <div class="bg-white rounded-md shadow overflow-hidden max-w-3xl">
                 <form @submit.prevent="store">
                     <div class="p-8 -mr-6 -mb-8 flex flex-wrap">
-                        <TextInput v-model="form.name" :error="form.errors.name" class="pb-8 pr-6 w-full lg:w-1/2" label="First Name" />
+                        <TextInput v-model="form.first_name" :error="form.errors.first_name" class="pb-8 pr-6 w-full lg:w-1/2" label="First Name" />
+                        <TextInput v-model="form.last_name" :error="form.errors.last_name" class="pb-8 pr-6 w-full lg:w-1/2" label="Last Name" />
                         <TextInput v-model="form.email" :error="form.errors.email" class="pr-6 pb-8 w-full lg:w-1/2" label="Email" />
                         <SelectInput v-model="form.role_id" :error="form.errors.role_id" class="pb-8 pr-6 w-full lg:w-1/2" label="Role">
                             <option :value="null" />
@@ -33,58 +71,6 @@
     </AdminLayout>
 </template>
 
-<script>
-import {defineComponent, reactive, ref} from 'vue'
-import {useRemember, useForm, Link} from "@inertiajs/vue3";
-import AdminLayout from "@/Layouts/AdminLayout.vue"
-
-import TextInput from "@/Components/TextInputPing.vue";
-import PrimaryButton from "@/Components/PrimaryButton.vue";
-import SelectInput from "@/Components/SelectInput.vue";
-
-import _ from "lodash";
-
-
-export default defineComponent({
-    name: 'Admin/Companies/Create',
-    components: {
-        Link,
-        AdminLayout,
-        TextInput,
-        PrimaryButton,
-        SelectInput
-
-    },
-
-    props:{
-        roles: Array,
-        errors: Object,
-        companies: Array,
-    },
-
-    setup () {
-        const form = useForm(useRemember(
-            reactive({
-                name: null,
-                last_name: null,
-                email: null,
-                phone: null,
-                password: null,
-                password_confirmation: null,
-                role_id: '',
-                company_ids: [],
-            },)))
-
-        return { form }
-    },
-    methods:{
-        store() {
-            this.form.post(this.route('users.store'))
-        },
-    },
-});
-
-</script>
 
 
 

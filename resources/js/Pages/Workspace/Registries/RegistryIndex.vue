@@ -18,12 +18,6 @@ const props = defineProps({
     filters: {
         type: Object
     },
-    companiesCount: {
-        type: Number,
-    },
-    countOfUpToDateRegistries: {
-        type: Number,
-    }
 })
 
 
@@ -91,7 +85,7 @@ const timeLeftUntilExpiryDate = (expiry_date) => {
 <template>
 
 
-    <WorkspaceLayout :company="company" :companies-count="companiesCount">
+    <WorkspaceLayout :company="company">
         <WorkspaceBanner :href="route('workspace.registries.index', company)" :name="'Index'"/>
         <div class="mb-6 flex items-center">
             <input v-model="index.search" type="text" name="search" placeholder="Search…"

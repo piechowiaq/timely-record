@@ -48,7 +48,7 @@ class UserController extends Controller
                 ->withQueryString()
                 ->through(fn($user) => [
                     'id' => $user->id,
-                    'name' => $user->name,
+                    'first_name' => $user->first_name,
                     'last_name' => $user->last_name,
                     'email' => $user->email,
                     'phone' => $user->phone,
@@ -69,8 +69,10 @@ class UserController extends Controller
 
     public function store(StoreUserRequest $request)
     {
+
         $user = User::create([
-            'name' => $request->name,
+            'first_name' => $request->first_name,
+            'last_name' => $request->last_name,
             'email' => $request->email,
             'password' => Hash::make($request->password),
         ]);
@@ -94,8 +96,8 @@ class UserController extends Controller
 //
 //
 //        $url = route('user.register', ['token' => $token, 'email' => $request->email]);
-
-        $user->notify(new \App\Notifications\SendEmailRegistrationNotification());
+//
+//        $user->notify(new \App\Notifications\SendEmailRegistrationNotification());
 
         return Redirect::route('users.index')->with('success', 'User created.');
     }
@@ -127,7 +129,8 @@ class UserController extends Controller
      */
     public function update(UpdateUserRequest $request, User $user)
     {
-        $user->name = $request->get('name');
+        $user->first_name = $request->get('first_name');
+        $user->last_name = $request->get('last_name');
         $user->email = $request->get('email');
         $user->save();
 

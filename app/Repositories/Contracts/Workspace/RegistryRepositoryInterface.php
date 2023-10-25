@@ -13,4 +13,5 @@ interface RegistryRepositoryInterface
     public function countOfUpToDateRegistries(Company $company): int;
     public function countOfExpiredRegistries(Company $company): int;
     public function getExpiringSoonRegistries(Company $company, int $limit): array;
+    public function getAllRegistriesQuery(Company $company): \Illuminate\Database\Query\Builder;
 }

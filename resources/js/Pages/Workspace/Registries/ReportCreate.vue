@@ -11,7 +11,7 @@ const props = defineProps({
     company: Object,
     registry: Object,
     companies: Object,
-    companiesCount: Number,
+
 })
 
 const form = useForm(useRemember(reactive({
@@ -29,8 +29,8 @@ const store = () => {
 </script>
 
 <template>
-    <WorkspaceLayout :company="company" :companies-count="companiesCount">
-        <WorkspaceBanner :href="route('workspace.registries.index', company)" :name="registry.name"/>
+    <WorkspaceLayout :company="company">
+        <WorkspaceBanner :href="route('workspace.registries.index', company)" :name="'Create Report'"/>
         <div class="bg-white rounded-md shadow overflow-hidden max-w-3xl">
             <form @submit.prevent="store">
                 <div class="p-8 -mr-6 -mb-8 flex flex-wrap">

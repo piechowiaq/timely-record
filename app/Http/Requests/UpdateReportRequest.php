@@ -22,7 +22,7 @@ class UpdateReportRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'report_date' => ['required', 'date'],
+            'report_date' => ['required', 'date', 'before_or_equal:today'],
             'notes' => ['string', 'max:255'],
             'company_id' => ['required','exists:companies,id'],
             'registry_id' => ['required', 'exists:registries,id'],

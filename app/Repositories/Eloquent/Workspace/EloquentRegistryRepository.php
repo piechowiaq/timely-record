@@ -38,6 +38,11 @@ class EloquentRegistryRepository implements RegistryRepositoryInterface
             );
     }
 
+    public function getAllRegistriesQuery(Company $company): \Illuminate\Database\Query\Builder
+    {
+        return $this->baseRegistryQuery($company);
+    }
+
     public function getMostOutdatedRegistries(Company $company, int $limit): array
     {
         $registries = $this->baseRegistryQuery($company)

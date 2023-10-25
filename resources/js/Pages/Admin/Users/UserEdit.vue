@@ -39,7 +39,7 @@ const props = defineProps({
 
 const form = useForm(useRemember(
     reactive({
-        name: props.user.name,
+        first_name: props.user.first_name,
         last_name: props.user.last_name,
         email: props.user.email,
         phone: props.user.phone,
@@ -91,8 +91,10 @@ const restore = (user) => {
 
                 <form @submit.prevent="update()">
                     <div class="p-8 -mr-6 -mb-8 flex flex-wrap">
-                        <TextInput v-model="form.name" :error="form.errors.name" class="pb-8 pr-6 w-full lg:w-1/2"
+                        <TextInput v-model="form.first_name" :error="form.errors.first_name" class="pb-8 pr-6 w-full lg:w-1/2"
                                     label="First Name"/>
+                        <TextInput v-model="form.last_name" :error="form.errors.last_name" class="pb-8 pr-6 w-full lg:w-1/2"
+                                   label="Last Name"/>
                         <TextInput v-model="form.email" :error="form.errors.email" class="pr-6 pb-8 w-full lg:w-1/2"
                                     label="Email"/>
                         <SelectInput v-model="form.role_id" :error="form.errors.role_id"

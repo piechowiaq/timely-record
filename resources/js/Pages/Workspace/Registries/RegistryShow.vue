@@ -11,12 +11,11 @@ const props = defineProps({
     company: {
         type: Object,
     },
-
     registry: {
         type: Object,
     },
     historicalReports: {
-        type: Array,
+        type: Object,
     },
     mostCurrentReport: {
         type: Object
@@ -155,9 +154,11 @@ const toDateString = (dateString) => {
                                         {{ mostCurrentReport.report_date }}
                                     </Link>
                                     <span class="text-xs text-gray-400 italic  ml-6">
-                                        Created: {{ toDateString(mostCurrentReport.created_at) }} - {{ mostCurrentReport.created_by_user_name }}
+                                        Created: {{ toDateString(mostCurrentReport.created_at) }} -
+                                        {{ mostCurrentReport?.created_by_user?.first_name }} {{ mostCurrentReport?.created_by_user?.last_name }}
                                     <span v-if="new Date(mostCurrentReport.updated_at) > new Date(mostCurrentReport.created_at)">
-                                    | Updated: {{ toDateString(mostCurrentReport.updated_at) }} - {{ mostCurrentReport.updated_by_user_name }}
+                                    | Updated: {{ toDateString(mostCurrentReport.updated_at) }} -
+                                        {{ mostCurrentReport?.updated_by_user?.first_name }} {{ mostCurrentReport?.updated_by_user?.last_name }}
                                         </span>
 
 
@@ -222,9 +223,11 @@ const toDateString = (dateString) => {
                                         {{ report.report_date }}
                                     </Link>
                                     <span class="text-xs text-gray-400 italic  ml-6">
-                                        Created: {{ toDateString(report.created_at) }} - {{ report.created_by_user_name }}
+                                        Created: {{ toDateString(report.created_at) }} -
+                                        {{ report?.created_by_user?.first_name }} {{ report?.created_by_user?.last_name }}
                                         <span v-if="new Date(report.updated_at) > new Date(report.created_at)">
-                                        / Updated: {{ toDateString(report.updated_at) }} - {{ report.updated_by_user_name }}
+                                        / Updated: {{ toDateString(report.updated_at) }} -
+                                            {{ report?.updated_by_user?.first_name }} {{ report?.updated_by_user?.last_name }}
                                         </span>
                                     </span>
 
