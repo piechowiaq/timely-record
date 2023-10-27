@@ -18,10 +18,15 @@ return new class extends Migration
             $table->string('notes');
             $table->unsignedBigInteger('company_id');
             $table->unsignedBigInteger('registry_id');
+            $table->unsignedBigInteger('created_by_user_id')->nullable();
+            $table->unsignedBigInteger('updated_by_user_id')->nullable();
+
             $table->timestamps();
 
             $table->foreign('company_id')->references('id')->on('companies')->onDelete('cascade');
             $table->foreign('registry_id')->references('id')->on('registries')->onDelete('cascade');
+            $table->foreign('created_by_user_id')->references('id')->on('users')->onDelete('cascade');
+            $table->foreign('updated_by_user_id')->references('id')->on('users')->onDelete('cascade');
         });
     }
 

@@ -3,8 +3,10 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
+use App\Models\Project;
 use App\Models\User;
 use App\Providers\RouteServiceProvider;
+use Carbon\Carbon;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -32,13 +34,18 @@ class RegisteredUserController extends Controller
     public function store(Request $request): RedirectResponse
     {
         $request->validate([
-            'name' => 'required|string|max:255',
+            'first_name' => 'required|string|max:255',
+            'last_name' => 'required|string|max:255',
             'email' => 'required|string|email|max:255|unique:'.User::class,
             'password' => ['required', 'confirmed', Rules\Password::defaults()],
         ]);
 
+        $project = Project::create();
+
         $user = User::create([
-            'name' => $request->name,
+            'first_name' => $request->first_name,
+            'last_name' => $request->last_name,
+            'project_id' => $project->id,
             'email' => $request->email,
             'password' => Hash::make($request->password),
         ]);

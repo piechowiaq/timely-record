@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Auth\LoginRequest;
+use App\Models\Workspace;
 use App\Providers\RouteServiceProvider;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -11,6 +12,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 use Inertia\Response;
+use Inertia\Response as InertiaResponse;
 
 class AuthenticatedSessionController extends Controller
 {
@@ -65,28 +67,45 @@ class AuthenticatedSessionController extends Controller
      * Users with no companies have their session destroyed (though this could be changed).
      *
      * @param LoginRequest $request
-     * @return RedirectResponse
+     * @return InertiaResponse|RedirectResponse
      */
-    protected function redirectToAppropriateDashboard(LoginRequest $request): RedirectResponse
+    protected function redirectToAppropriateDashboard(LoginRequest $request):  InertiaResponse|RedirectResponse
     {
         $user = Auth::user();
 
         if ($user->isSuperAdmin()) {
             return redirect()->intended(route('admin.dashboard'));
         }
+//
+//        $companyCount = $user->companies()->count();
+//
+//        if ($companyCount === 1) {
+//            $company = $user->companies()->first();
+//            return redirect()->intended(route('workspace.dashboard', $company));
+//        } elseif ($companyCount > 1) {
+//            return redirect()->intended(route('workspace.selector'));
+//        }
 
-        $companyCount = $user->companies()->count();
 
-        if ($companyCount === 1) {
-            $company = $user->companies()->first();
-            return redirect()->intended(route('workspace.dashboard', $company));
-        } elseif ($companyCount > 1) {
-            return redirect()->intended(route('workspace.selector'));
+        $project = Auth::user()->project;
+
+        // Load workspaces associated with the project
+        $workspacesCount = Workspace::where('project_id', [$project->id])->count();
+
+        if ($workspacesCount === 0) {
+
+            return redirect()->intended(route('workspaces.create', $project));
+
+        } elseif ($workspacesCount === 1) {
+            return redirect()->intended(route('workspaces.show', Workspace::where('project_id', $project->id)->first()->id));
         }
+        return redirect()->intended(route('project.dashboard', $project));
+
 
         // If the user has no companies, destroy the session.
         // This seems unusual, consider handling differently or providing a reason.
-        return $this->destroy($request);
+//        return $this->destroy($request);
+
     }
 }
 

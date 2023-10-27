@@ -129,6 +129,9 @@ const showingNavigationDropdown = ref(false);
                                 <ResponsiveNavLink :href="route('permissions.index')" :active="route().current('permissions.index')">
                                     Permissions
                                 </ResponsiveNavLink>
+                                <ResponsiveNavLink :href="route('projects.index')" :active="route().current('projects.index')">
+                                    Projects
+                                </ResponsiveNavLink>
                                 <ResponsiveNavLink :href="route('roles.index')" :active="route().current('roles.index')">
                                     Roles
                                 </ResponsiveNavLink>

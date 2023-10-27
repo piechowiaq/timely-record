@@ -8,6 +8,7 @@ use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Contracts\Auth\CanResetPassword;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\Relation;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -29,6 +30,7 @@ class User extends Authenticatable implements MustVerifyEmail
         'first_name',
         'last_name',
         'email',
+        'project_id',
         'password',
     ];
 
@@ -52,6 +54,11 @@ class User extends Authenticatable implements MustVerifyEmail
         'password' => 'hashed',
     ];
 
+    public function project(): BelongsTo
+    {
+        return $this->belongsTo(Project::class);
+    }
+
     public function isSuperAdmin(): bool
     {
         return $this->hasRole('Super Admin');
@@ -65,6 +72,7 @@ class User extends Authenticatable implements MustVerifyEmail
     {
         return $this->companies->first();
     }
+    
     protected function fullName(): Attribute
     {
         return Attribute::make(

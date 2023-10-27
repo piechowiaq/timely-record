@@ -1,40 +1,34 @@
 <script setup>
-import {ref} from 'vue';
-import {useWorkspaceMenuStore} from "@/Stores/WorkspaceMenuStore.js";
+
+import WorkspaceLayout from "@/Layouts/WorkspaceLayout.vue";
+import RegistriesCard from "@/Components/RegistriesCard.vue"
+import TrainingsCard from "@/Components/TrainingsCard.vue";
+
 import Dropdown from '@/Components/Dropdown.vue';
 import DropdownLink from '@/Components/DropdownLink.vue';
 import ResponsiveNavLink from '@/Components/ResponsiveNavLink.vue';
-import {Link, usePage, Head} from '@inertiajs/vue3';
 import WorkspaceLeftNavigationBar from '@/Layouts/WorkspaceLeftNavigationBar.vue';
 import Icon from "@/Components/Icon.vue";
 import WorkspaceLogo from "@/Components/WorkspaceLogo.vue";
+import {ref} from "vue";
+import {Link, usePage, Head} from '@inertiajs/vue3';
+import NavLink from "@/Components/NavLink.vue";
 
 const showingNavigationDropdown = ref(false);
 
+
 const props = defineProps({
-    workspace: {
+    project: {
         type: Object,
     },
-    workspacesCount: {
-        type: Number,
-    },
+    workspace: {
+        type: Object,
+    }
 });
 
-const WorkspaceMenu = useWorkspaceMenuStore();
-
-const page = usePage()
-const user = page.props.auth.user;
-
-WorkspaceMenu.setUser(user);
-WorkspaceMenu.setWorkspacesCount(props.workspacesCount);
-
-const isSuperAdmin = WorkspaceMenu.isSuperAdmin;
-const hasMultipleWorkspaces = WorkspaceMenu.hasMultipleWorkspaces;
 </script>
 
 <template>
-
-    <Head title="Workspace"/>
     <div class="flex flex-col h-screen ">
         <!-- Top Layout -->
         <div class="justify-between md:flex">
@@ -51,9 +45,14 @@ const hasMultipleWorkspaces = WorkspaceMenu.hasMultipleWorkspaces;
                             <!-- Workspace Name -->
                             <div class="hidden space-x-8  sm:flex items-center">
                                 <Link v-if="workspace && workspace.name"
-                                      :href="route('workspaces.show', workspace)"
-                                    >
+                                      :href="route('workspaces.show', { workspace: workspace.id })"
+                                >
                                     {{ workspace.name }}
+                                </Link>
+                                <Link else-if="project && project.name"
+                                      :href="route('project.dashboard', project)"
+                                >
+                                    {{ project.name }}
                                 </Link>
                             </div>
                             <!-- Small Screen Logo -->
@@ -76,7 +75,9 @@ const hasMultipleWorkspaces = WorkspaceMenu.hasMultipleWorkspaces;
                                                     type="button"
                                                     class="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-gray-500 bg-white hover:text-gray-700 focus:outline-none transition ease-in-out duration-150"
                                                 >
-                                                     {{ $page.props.auth.user.first_name }}  {{ $page.props.auth.user.last_name }}
+                                                     {{
+                                                        $page.props.auth.user.first_name
+                                                    }}  {{ $page.props.auth.user.last_name }}
 
                                                     <svg
                                                         class="ml-2 -mr-0.5 h-4 w-4"
@@ -96,12 +97,12 @@ const hasMultipleWorkspaces = WorkspaceMenu.hasMultipleWorkspaces;
 
 
                                     <template #content>
-                                        <DropdownLink v-if="isSuperAdmin"
-                                                      :href="route('admin.dashboard')" as="button"> Admin Dashboard
-                                        </DropdownLink>
-                                        <DropdownLink v-else :href="route('profile.edit', user )">
-                                            Profile
-                                        </DropdownLink>
+                                        <!--                                        <DropdownLink v-if="isSuperAdmin"-->
+                                        <!--                                                      :href="route('admin.dashboard')" as="button"> Admin Dashboard-->
+                                        <!--                                        </DropdownLink>-->
+                                        <!--                                        <DropdownLink v-else :href="route('profile.edit', { company_id : company.id })">-->
+                                        <!--                                            Profile-->
+                                        <!--                                        </DropdownLink>-->
                                         <DropdownLink :href="route('logout')" method="post" as="button">
                                             Log Out
                                         </DropdownLink>
@@ -151,27 +152,33 @@ const hasMultipleWorkspaces = WorkspaceMenu.hasMultipleWorkspaces;
                     <!-- Small Screen Workspace Top Navigation -->
                     <div class="pt-2 pb-3 space-y-1">
                         <ul>
-                            <li v-for="option in WorkspaceMenu.options" :key="option.route">
-                                <ResponsiveNavLink
-                                                   :href="route(option.route, workspace )"
-                                                   :active="route().current(option.route)" >
-                                    {{ option.name }}
+                            <li>
+                                <ResponsiveNavLink :href="route('project.dashboard', project)"
+                                >
+                                    Workspaces
                                 </ResponsiveNavLink>
                             </li>
-                            <li v-if="isSuperAdmin" class="border-t border-gray-200" >
-                                <ResponsiveNavLink
-                                    :href="route(WorkspaceMenu.superAdminOptions.route, workspace)"
-                                    :active="route().current(WorkspaceMenu.superAdminOptions.route)">
-                                    {{ WorkspaceMenu.superAdminOptions.name }}
-                                </ResponsiveNavLink>
-                            </li>
-                            <li v-if="hasMultipleWorkspaces && !isSuperAdmin" class="border-t border-gray-200">
-                                <ResponsiveNavLink
-                                    :href="route(WorkspaceMenu.multipleWorkspacesOptions.route, workspace)"
-                                    :active="route().current(WorkspaceMenu.multipleWorkspacesOptions.route)">
-                                    {{ WorkspaceMenu.multipleWorkspacesOptions.name }}
-                                </ResponsiveNavLink>
-                            </li>
+                            <!--                            <li v-for="option in WorkspaceMenu.options" :key="option.route">-->
+                            <!--                                <ResponsiveNavLink-->
+                            <!--                                    :href="route(option.route, { company: company.id })"-->
+                            <!--                                    :active="route().current(option.route)" >-->
+                            <!--                                    {{ option.name }}-->
+                            <!--                                </ResponsiveNavLink>-->
+                            <!--                            </li>-->
+                            <!--                            <li v-if="isSuperAdmin" class="border-t border-gray-200" >-->
+                            <!--                                <ResponsiveNavLink-->
+                            <!--                                    :href="route(WorkspaceMenu.superAdminOptions.route, { company: company.id })"-->
+                            <!--                                    :active="route().current(WorkspaceMenu.superAdminOptions.route)">-->
+                            <!--                                    {{ WorkspaceMenu.superAdminOptions.name }}-->
+                            <!--                                </ResponsiveNavLink>-->
+                            <!--                            </li>-->
+                            <!--                            <li v-if="hasMultipleCompanies && !isSuperAdmin" class="border-t border-gray-200">-->
+                            <!--                                <ResponsiveNavLink-->
+                            <!--                                    :href="route(WorkspaceMenu.multipleCompaniesOptions.route, { company: company.id })"-->
+                            <!--                                    :active="route().current(WorkspaceMenu.multipleCompaniesOptions.route)">-->
+                            <!--                                    {{ WorkspaceMenu.multipleCompaniesOptions.name }}-->
+                            <!--                                </ResponsiveNavLink>-->
+                            <!--                            </li>-->
                         </ul>
                     </div>
 
@@ -179,13 +186,13 @@ const hasMultipleWorkspaces = WorkspaceMenu.hasMultipleWorkspaces;
                     <div class="pt-4 pb-1 border-t border-gray-200">
                         <div class="px-4">
                             <div class="font-medium text-base text-gray-800">
-                                {{ $page.props.auth.user.first_name }}  {{ $page.props.auth.user.last_name }}
+                                {{ $page.props.auth.user.first_name }} {{ $page.props.auth.user.last_name }}
                             </div>
                             <div class="font-medium text-sm text-gray-500">{{ $page.props.auth.user.email }}</div>
                         </div>
 
                         <div class="mt-3 space-y-1">
-                            <ResponsiveNavLink v-if="!isSuperAdmin" :href="route('profile.edit', user)">Profile</ResponsiveNavLink>
+                            <!--                            <ResponsiveNavLink v-if="!isSuperAdmin" :href="route('profile.edit')"> Profile</ResponsiveNavLink>-->
                             <ResponsiveNavLink :href="route('logout')" method="post" as="button">
                                 Log Out
                             </ResponsiveNavLink>
@@ -194,18 +201,62 @@ const hasMultipleWorkspaces = WorkspaceMenu.hasMultipleWorkspaces;
                 </div>
             </nav>
         </div>
-
-
         <!-- Bottom Layout -->
         <div class="flex flex-grow overflow-hidden">
             <!-- Left Nav Bar -->
-            <WorkspaceLeftNavigationBar :workspace="workspace"/>
+<!--            <nav class="flex-shrink-0 hidden pt-2 md:block w-56 bg-cyan-600">-->
+<!--                <ul>-->
+<!--                    <li  class="pb-2" >-->
+<!--                        <NavLink :href="route('test')"-->
+<!--                                 class="flex items-center group">-->
+<!--                            <Icon :name="'workspace'" />-->
+<!--                            <span class="group-hover:text-cyan-600"> Registries </span>-->
+<!--                        </NavLink>-->
+<!--                    </li>               </ul>-->
+
+
+
+
+<!--            </nav>-->
+
+
+
             <!--Content-->
             <main class="flex-1 overflow-y-auto p-2">
-                <slot/>
+
+                <div class="sm:flex sm:space-x-2">
+
+
+                            <TrainingsCard
+                                v-for="workspace in project.workspaces"
+                                :key="workspace.id"
+                                :workspace="workspace"
+                                />
+                </div>
+
+
+
             </main>
         </div>
     </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 </template>

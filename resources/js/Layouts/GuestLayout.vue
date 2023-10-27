@@ -5,7 +5,12 @@ import GuestFooter from "@/Layouts/GuestFooter.vue";
 import Icon from "@/Components/Icon.vue";
 
 defineProps({
-    canLogin: Boolean,
+    canLogin: {
+        type: Boolean,
+    },
+    canRegister: {
+        type: Boolean,
+    },
 })
 
 </script>
@@ -16,18 +21,28 @@ defineProps({
 
     <div class="relative flex items-top justify-center min-h-screen min-w-fit bg-gray-100 dark:bg-gray-900">
 
-        <div v-if="canLogin && $page.props.auth.user" class=" absolute top-0 right-0 px-6 py-4 block">
-            <Link :href="route('workspace.selector')" class=" text-sm text-gray-700 underline mr-1">
-                Dashboard
-            </Link>
-            <Link :href="route('logout')" method="post" as="button" class=" text-sm text-gray-700 underline">
-                Logout
-            </Link>
-        </div>
-        <div v-if="canLogin && !$page.props.auth.user" class=" absolute xl:fixed top-0 right-0 px-6 py-4 block">
-            <Link :href="route('login')" class=" text-sm text-gray-700 underline mr-1">
-                Login
-            </Link>
+        <div v-if="canLogin" class="sm:fixed sm:top-0 sm:right-0 p-6 text-right">
+            <Link
+                v-if="$page.props.auth.user"
+                :href="route('project.dashboard')"
+                class="font-semibold text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white focus:outline focus:outline-2 focus:rounded-sm focus:outline-red-500"
+            >Dashboard</Link
+            >
+
+            <template v-else>
+                <Link
+                    :href="route('login')"
+                    class="font-semibold text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white focus:outline focus:outline-2 focus:rounded-sm focus:outline-red-500"
+                >Log in</Link
+                >
+
+                <Link
+                    v-if="canRegister"
+                    :href="route('register')"
+                    class="ml-4 font-semibold text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white focus:outline focus:outline-2 focus:rounded-sm focus:outline-red-500"
+                >Register</Link
+                >
+            </template>
         </div>
 
         <div class="max-w-6xl mx-auto sm:px-6 lg:px-8">

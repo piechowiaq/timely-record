@@ -16,7 +16,7 @@ defineProps({
     company: {
         type: Object,
     },
-    companiesCount: {
+    workspacesCount: {
         type: Number,
     },
 });
@@ -25,7 +25,7 @@ defineProps({
 <template>
     <Head title="Profile" />
 
-    <WorkspaceLayout :company="company" :companies-count="companiesCount">
+    <WorkspaceLayout :company="company" :workspacesCount="workspacesCount">
         <div class="bg-gray-100 py-2 px-3 h-12 items-center flex  justify-between font-bold mb-2">
             <p class="text-gray-600">Profile</p>    <FlashMessages />
         </div>

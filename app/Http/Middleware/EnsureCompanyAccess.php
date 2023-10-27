@@ -24,7 +24,7 @@ class EnsureCompanyAccess
         }
 
         if (!$request->user() || !$request->user()->hasCompanyAccess()) {
-
+            dd('middleware');
             // Redirect or abort, based on your preference.
             return abort(403, 'Unauthorized access.');
         }

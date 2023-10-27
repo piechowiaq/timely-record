@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\ProfileUpdateRequest;
 use App\Models\Company;
+use App\Models\Workspace;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -21,7 +22,11 @@ class ProfileController extends Controller
     {
         $companyId = $request->query('company_id');
 
-        $companiesCount = Auth::user()->companies()->count();
+        $project = Auth::user()->project;
+
+        // Load workspaces associated with the project
+        $workspacesCount = Workspace::where('project_id', $project->id)->count();
+
 
         // Fetch the company using the $companyId
         $company = Company::find($companyId);
@@ -30,7 +35,7 @@ class ProfileController extends Controller
             'company' => $company,
             'mustVerifyEmail' => $request->user() instanceof MustVerifyEmail,
             'status' => session('status'),
-            'companiesCount' => $companiesCount
+            'workspacesCount' => $workspacesCount
         ]);
     }
 

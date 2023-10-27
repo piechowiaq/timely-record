@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\Admin\ProjectController;
+use App\Http\Controllers\Project\ProjectDashboardController;
 use App\Http\Controllers\Workspace\WorkspaceDashboardController;
 use App\Http\Controllers\CompanyController;
 use App\Http\Controllers\ContactController;
@@ -12,6 +14,7 @@ use App\Http\Controllers\VerifyUserController;
 use App\Http\Controllers\Workspace\WorkspaceDashboardSelectorController;
 use App\Http\Controllers\Workspace\WorkspaceRegistryController;
 use App\Http\Controllers\Workspace\WorkspaceRegistryReportController;
+use App\Http\Controllers\WorkspaceController;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
@@ -27,7 +30,7 @@ use Inertia\Inertia;
 */
 Route::get('/test', function () {
     return Inertia::render('Workspace/WorkspaceSelector');
-});
+})->name('test');
 
 
 
@@ -52,14 +55,24 @@ Route::middleware('guest')->group(function(){
 
 });
 
+Route::middleware(['auth', 'verified'])->group(function () {
+
+    Route::get('/dashboard',ProjectDashboardController::class)->name('project.dashboard');
+    Route::resource('workspaces', WorkspaceController::class);
 
 
 
 
+});
 
-Route::get('/dashboardh', function () {
-    return Inertia::render('Dashboard');
-})->name('dashboard');
+
+//Route::get('/dashboard', function () {
+//    return Inertia::render('Dashboard');
+//})->middleware(['auth', 'verified'])->name('dashboard');
+//
+//
+//
+
 
 Route::middleware(['auth', 'verified', 'admin'])->prefix('admin')->group(function () {
 
@@ -68,6 +81,7 @@ Route::middleware(['auth', 'verified', 'admin'])->prefix('admin')->group(functio
     })->name('admin.dashboard');
 
     Route::resource('companies', CompanyController::class);
+    Route::resource('projects', ProjectController::class);
     Route::put('companies/{company}/restore', [CompanyController::class, 'restore'])->name('companies.restore');
     Route::resource('registries', RegistryController::class);
     Route::put('registries/{registry}/restore', [RegistryController::class, 'restore'])->name('registries.restore');
@@ -81,7 +95,6 @@ Route::middleware(['auth', 'verified', 'admin'])->prefix('admin')->group(functio
 });
 
 
-
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
@@ -89,7 +102,7 @@ Route::middleware('auth')->group(function () {
 });
 
 
-Route::middleware(['auth', 'verified', 'company.access'])->group(function () {
+Route::middleware(['auth', 'verified', 'project.access', ])->group(function () {
     Route::get('/{company}/dashboard',WorkspaceDashboardController::class)->name('workspace.dashboard');
     Route::get('/selector', WorkspaceDashboardSelectorController::class)->name('workspace.selector');
     Route::get('/{company}/registries', [WorkspaceRegistryController::class, 'index'])->name('workspace.registries.index');

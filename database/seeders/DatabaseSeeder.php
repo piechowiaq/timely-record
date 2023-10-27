@@ -26,7 +26,8 @@ class DatabaseSeeder extends Seeder
         ]);
 
         $user = User::create([
-             'name' => 'Super Admin',
+             'first_name' => 'Super Admin',
+             'last_name' => 'Super Admin',
              'email' => 'contact@timelyrecord.com',
              'password' => Hash::make('12345678'),
             'email_verified_at' => Carbon::now()
